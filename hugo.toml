@@ -7,6 +7,9 @@ languageCode = "en-US"
 nableRobotsTXT = true
 ignoreErrors = ["error-disable-taxonomy"]
 
+[markup.goldmark.renderer]
+unsafe = true
+
 [permalinks]
   blog = "/:slug/"
   tags = "/blog/:slug"
