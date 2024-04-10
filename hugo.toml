@@ -1,0 +1,19 @@
+baseURL = "https://kristianfreeman.com"
+theme = 'hugo-bearblog'
+title = "Kristian Freeman"
+author = "Kristian Freeman"
+copyright = "Copyright © 2024, Kristian Freeman"
+languageCode = "en-US"
+nableRobotsTXT = true
+ignoreErrors = ["error-disable-taxonomy"]
+
+[permalinks]
+  blog = "/:slug/"
+  tags = "/blog/:slug"
+
+[params]
+  title = "Kristian Freeman"
+  description = "Kristian Freeman's personal website"
+  favicon = "images/favicon.png"
+  images = ["images/share.png"]
+  hideMadeWithLine = true
