@@ -1,5 +1,7 @@
 **I'm Kristian Freeman.** I'm a software developer and developer advocate based in San Marcos, Texas.
 
+You can find me on Twitter as [@kristianf_](https://twitter.com/@kristianf_).
+
 This website is a collection of random blog posts I've been writing, as well as notes, ideas, and other stuff I want to track online.
 
 Here are three things I'm working on right now that you can check out:
