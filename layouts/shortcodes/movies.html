@@ -1,0 +1,13 @@
+{{ $list_url := "https://letterboxd.com/kristian/rss/" }}
+{{ $list_rss := resources.GetRemote $list_url }}
+{{ $list_rssContent := $list_rss.Content | transform.Unmarshal }}
+
+<ul>
+  {{ range $list_rssContent.channel.item }}
+    {{ if eq .memberRating "5.0" }}
+      <li>
+        <a href="{{ .link }}">{{ .filmTitle }}</a> ({{.filmYear}})
+      </li>
+    {{ end }}
+  {{ end }}
+</ul>

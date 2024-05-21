@@ -4,7 +4,7 @@ title = "Kristian Freeman"
 author = "Kristian Freeman"
 copyright = "Copyright © 2024, Kristian Freeman"
 languageCode = "en-US"
-nableRobotsTXT = true
+enableRobotsTXT = true
 ignoreErrors = ["error-disable-taxonomy"]
 
 [markup.goldmark.renderer]
