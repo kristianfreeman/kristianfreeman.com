@@ -1,0 +1,39 @@
+---
+title: ShipFast Vulnerabilities
+pubDate: 'Oct 21 2024'
+---
+
+I wrote back in May about [ShipFast](https://kristianfreeman.com/shipfast-and-the-world-of-starter-kits/), a JavaScript-based starter kit for building apps that's popular in the indie hacking community.
+
+Currently, [according to 𝕏](https://x.com/marc_louvion), ShipFast is making about $53k/month. That's at least 300 users a month buying the product.
+
+Here's what I wrote about it in my original post:
+
+> The thing that gets missed with [starter kits] is that you have to be a pretty skilled programmer as soon as you go off the beaten path.
+>
+> I'm working on a JavaScript-based MVP right now around real estate + AI, so I bought ShipFast because I wanted to have all of the auth/payments stuff done for me. But I pretty quickly found myself going into the internals and drastically altering some of the core decisions in the codebase -- what mailers to use, how auth works, etc.
+
+That take is still correct, I think. For most advanced developers, it doesn't provide a huge amount of value beyond just rolling something on your own. And for starter devs who want to _just build_, it basically narrows the road to be a _very_ paved, very linear path that you need to follow at all costs, lest you get completely lost and confused.
+
+Now, there's an added wrinkle: it's coming out now that ShipFast has some pretty serious vulnerabilities.
+
+Vulnerabilities happen. I've written a ton of code that had security issues. No one writes perfect code.
+
+But the response from ShipFast's founder hasn't been great:
+
+![CleanShot 2024-10-21 at 12](https://bear-images.sfo2.cdn.digitaloceanspaces.com/kristian/082x.webp)
+
+Just from what I've seen in my algo, there's a few major ones, as well as many mentions from users that vulns have been reported directly to the founder, with no resolution:
+
+- [Getting access to ShipFast for free/bypassing paywall code](https://x.com/soeckly/status/1848280887504302087)[^1] (!!)
+- [Insecure webhook endpoint for sending emails via a shipped ShipFast app](https://x.com/soeckly/status/1847634581999984716)
+- [Lots of other examples out there on 𝕏](https://x.com/search?q=shipfast%20vulnerability&src=typed_query)
+
+At the least, there should be some public documentation that these endpoints, and the starter kit overall, is not rigorously tested for security vulnerabilities. Devs should know that they're deploying insecure code. Even better, the ShipFast team could take 20% of a month's worth of ShipFast income and get a security audit done, and then start implementing solutions to these issues. ShipFast is a GitHub org + repo that all customers are invited to, so if there were updates done to improve security, they would be viewable as PRs and diffs that every customer could look at themselves, which would do a lot to restore confidence.
+
+By the way, this isn't _just_ a ShipFast-specific issue, either: most starter kits probably aren't security tested[^2]. It speaks largely to the dream that starter kits sell, captured best by the name of this specific project - **ship fast!** Security feels like something you can tackle later on. But if the selling point is _all the batteries are included_, presumably at some level of success, one of those things included should be robust security.
+
+For now, I'm going to update [my previous post](https://kristianfreeman.com/shipfast-and-the-world-of-starter-kits/) - which receives a modest amount of search traffic for the term "ShipFast review" - to indicate that I don't recommend people buy it. I hope to be able to remove that notice in the future!
+
+[^1]: Presumably, ShipFast's marketing page uses the same paywall code as the kit itself. I'll update this, if it turns out to not be the case.
+[^2]: Though if you use a great framework under the hood - for instance, the excellent [Jumpstart, built on Ruby on Rails](https://jumpstartrails.com/) - you're going to get great defaults, _because the framework has them_.
