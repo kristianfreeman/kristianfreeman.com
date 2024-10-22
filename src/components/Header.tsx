@@ -6,7 +6,7 @@ import { Github, Home, Lightbulb, Notebook, Twitter, Youtube } from 'lucide-reac
 
 type BlogPost = CollectionEntry<'blog'>['data'];
 
-export default ({ post, url }: { post: BlogPost, url: string }) => (
+export default ({ post, url }: { post?: BlogPost, url: URL }) => (
   <header className="space-y-4">
     <a className="title" href="/">
       {SITE_TITLE}

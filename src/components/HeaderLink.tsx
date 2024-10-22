@@ -1,6 +1,13 @@
 import clsx from 'clsx';
 
-const HeaderLink = ({ active, children, href, ...props }) => {
+type HeaderLinkProps = {
+  active?: boolean;
+  className?: string;
+  children: React.ReactNode;
+  href: string;
+};
+
+const HeaderLink = ({ active, children, href, ...props }: HeaderLinkProps) => {
   return (
     <a
       href={href}
