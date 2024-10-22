@@ -28,17 +28,17 @@ export default ({ post, url }: { post?: BlogPost, url: URL }) => (
         Tips
       </HeaderLink>
 
-      <a href="https://twitter.com/kristianf_" target="_blank" className="flex items-center gap-2 nav-link">
+      <a href="https://twitter.com/kristianf_" target="_blank" className="hidden md:flex items-center gap-2 nav-link">
         <Twitter size={24} />
         @kristianf_
       </a>
 
-      <a href="https://kristianf.dev/youtube" target="_blank" className="flex items-center gap-2 nav-link">
+      <a href="https://kristianf.dev/youtube" target="_blank" className="hidden md:flex items-center gap-2 nav-link">
         <Youtube size={24} />
         YouTube
       </a>
 
-      <a href="https://github.com/kristianfreeman" target="_blank" className="flex items-center gap-2 nav-link">
+      <a href="https://github.com/kristianfreeman" target="_blank" className="hidden md:flex items-center gap-2 nav-link">
         <Github size={24} />
         GitHub
       </a>
