@@ -120,6 +120,12 @@ img {
   max-width: 100%;
 }
 
+.not-prose img {
+  border: none;
+  max-width: inherit;
+  height: auto;
+}
+
 pre, code {
   font-family: var(--monospace-font);
 }

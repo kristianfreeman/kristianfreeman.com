@@ -9,7 +9,7 @@ import { SiYoutube, SiX, SiGithub } from '@icons-pack/react-simple-icons';
 type BlogPost = CollectionEntry<'blog'>['data'];
 
 export default ({ post, url }: { post?: BlogPost, url: URL }) => (
-  <header className="space-y-4">
+  <header className="space-y-4 mb-12">
     <a className="title" href="/">
       {SITE_TITLE}
     </a>
