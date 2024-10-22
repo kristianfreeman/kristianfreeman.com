@@ -1,0 +1,55 @@
+---
+title: Understanding Astro's getStaticPaths function
+pubDate: 'Oct 08 2024'
+tags:
+  - astro
+  - webdev
+---
+
+`getStaticPaths` is the secret sauce for one of [Astro's](/an-introduction-to-astros-content-system/) main tricks: generating _static pages_ for _dynamic routes_.
+
+Imagine we have a blog with three posts (slugs defined below):
+
+1. `hello-corgi`
+2. `building-chatgpt-for-corgis`
+3. `addressing-the-haters`
+
+Given an index page to list all of our blog posts (`/blog`), we have four routes in total.
+
+In Astro, we would define two page files in `src/pages` to handle these:
+
+1. `src/pages/blog.astro` - render the `/blog` page
+2. `src/pages/blog/[slug].astro` - render a blog post, at `/blog/:slug`
+
+By default, the blog post page is _dynamic_. If your Astro app gets a request to `/blog/hello-corgi`, it will look through the routes it knows about, and generate the blog post page.
+
+That's great! File-based routing is incredibly easy to implement.
+
+But what about if we want to know about those pages ahead of time? We already have `src/content/blog/hello-corgi.md` and so on - we know these routes will _always_ exist. Couldn't we optimize by making those pages _static_?
+
+This is where the `getStaticPaths` comes in handy. First, we'll indicate to Astro that we want this blog post page to be static, by setting the `prerender` attribute to `true`. Second, we'll get _all_ of the blog posts, and export a list of static paths, based on the slug:
+
+```astro
+---
+export const prerender = true
+import { getCollection  } from "astro:content";
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection("blog");
+  return blogEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+// Do other stuff to render the blog post
+---
+```
+
+By implementing static paths, the Astro build engine can generate these pages ahead of time.
+
+This gets even cooler when you introduce headless CMS tools like [Sanity.io](https://sanity.io). You can have all of your blog posts live in a CMS, but when it comes time to build the site, you can make an API call at build time, grab X number of posts, and build X number of static pages.
+
+Another place this can be helpful is with building [sitemaps](https://docs.astro.build/en/guides/integrations-guide/sitemap). When I first implemented a sitemap for [Gangsheet](https://gangsheet.app), I noticed it had every page... but my blog posts. Because these were dynamically generated and rendered, they weren't able to be added onto the sitemap.[^1] By adding `getStaticPaths` to my blog post page, and prerendering it, I was able to see it show up [on the Gangsheet sitemap](https://gangsheet.app/sitemap-0.xml).
+
+[^1]: Most crawlers are pretty smart nowadays. If the blog post is linked somewhere on the site, the average Google/whatever search engine crawler can _still_ render JS apps and grab the URLs as needed. But I'm old-school!

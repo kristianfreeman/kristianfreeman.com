@@ -9,8 +9,21 @@ import FormattedDate from '../../components/FormattedDate.astro';
 let posts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
-
 const tags = [...new Set(posts.map((post) => post.data.tags).flat().filter(Boolean))];
+
+const tag = Astro.params.tag;
+posts = posts.filter((post) => post.data.tags.includes(tag));
+
+export async function getStaticPaths() {
+  let posts = (await getCollection('blog')).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  );
+  const tags = [...new Set(posts.map((post) => post.data.tags).flat().filter(Boolean))];
+  return tags.map((tag) => ({
+    params: { tag },
+    props: { tag },
+  }));
+}
 ---
 
 <!doctype html>
@@ -22,7 +35,7 @@ const tags = [...new Set(posts.map((post) => post.data.tags).flat().filter(Boole
     <Header url={Astro.url} />
     <main class="space-y-8">
       <h1 class="text-2xl font-bold">
-        Blog
+        Posts tagged with <span class="text-blue-500">#{tag}</span>
       </h1>
       <section>
         <div class="flex flex-col gap-8">
@@ -52,3 +65,4 @@ const tags = [...new Set(posts.map((post) => post.data.tags).flat().filter(Boole
     <Footer />
   </body>
 </html>
+

@@ -1,0 +1,31 @@
+---
+title: IDGAF git commit
+pubDate: 'Sep 22 2024'
+tags:
+  - tip
+---
+
+Commit quickly and often. 
+
+It's better to commit a hundred times and be able to checkout _any_ version of your project than to only commit once a day and have very low fidelity into your codebase.
+
+Two aliases for this.
+
+`g` is the "I don't care about git commit logs, just commit" alias. 
+
+`gp` says "just commit whatever _and_ push it".
+
+I run these 20+ times a day for projects where git history is not that important (solo projects).
+
+```zsh
+function g() {
+  git add .
+  git commit -m "$(date +%Y-%m-%d-%H:%M:%S)"
+}
+
+function gp() {
+  g && git push
+}
+```
+
+BTW - you can always `git reflog` these, either in the UI during a PR merge, or manually in your terminal, if it feels bad 👍

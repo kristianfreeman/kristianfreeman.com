@@ -1,0 +1,21 @@
+---
+title: Create a Zellij instance with a useful session name
+pubDate: 'Sep 22 2024'
+tags:
+  - tip
+---
+
+[zellij](https://kristianfreeman.com/quick-review-of-zellij/) is a great modern alternative to tmux.
+
+The only thing I don't like about it is the _random session names_. Every session is automatically named something like `colorful-aardvark` when you start it up. This makes it very hard to find existing sessions for projects when you come back to them.
+
+The `za` alias either uses the current directory name, or a parameter as the `session_name` variable. It then tries to join an existing zellij session with that name, or creates a new one:
+
+```zsh
+za() {
+  local session_name=${1:-${PWD:t}}
+  zellij attach "$session_name" || zellij -s "$session_name"
+}
+```
+
+Now, in any directory, you can type `za`. For instance, if I'm in `~/src/blog`, it will look for a session called `blog` and join it, or create a new one if it doesn't exist.

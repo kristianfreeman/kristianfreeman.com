@@ -1,0 +1,90 @@
+---
+title: How to Add Cloudflare Turnstile to Your Ruby on Rails Application
+pubDate: 'Oct 07 2024'
+tags:
+  - cloudflare
+  - tip
+  - webdev
+---
+
+tl;dr - the `rails-cloudflare-turnstile` gem[^1] ([GitHub link](https://github.com/instrumentl/rails-cloudflare-turnstile)) is a great way to add [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile) to your Rails app. Let's learn how to use it!
+
+## Setup
+
+First, install the gem:
+
+```ruby
+bundle add rails-cloudflare-turnstile
+```
+
+If you haven't enabled Turnstile yet in your Cloudflare account, follow the ["Get Started" guide](https://developers.cloudflare.com/turnstile/get-started/). You'll need a sitekey and secret key. Make sure to associate it with your domain too - for instance, `kristianfreeman.com` - in the Turnstile settings.
+
+Add your sitekey and secret key to your Rails app - I like to use `rails credentials:edit`:
+
+```sh
+$ rails credentials:edit -e development
+$ rails credentials:edit -e production
+```
+
+My credentials are structured like this:
+
+```yaml
+cloudflare_turnstile:
+  site_key: foo
+  secret_key: bar
+```
+
+Create an initializer file, called `config/initializers/turnstile.rb`:
+
+```ruby
+RailsCloudflareTurnstile.configure do |c|
+  c.site_key = Rails.application.credentials.cloudflare_turnstile[:site_key]
+  c.secret_key = Rails.application.credentials.cloudflare_turnstile[:secret_key]
+  c.fail_open = false
+end
+```
+
+## Usage
+
+First, we'll add the Turnstile JS script into an application layout file. If you are super performance-sensitive, you may want to do this _specifically_ on the pages you're going to use Turnstile. Here, I'll just add it in `app/views/layouts/application.html.erb`:
+
+```erb
+<head>
+  <%= cloudflare_turnstile_script_tag %>
+</head>
+```
+
+In your forms, you can use the `<%= cloudflare_turnstile %>` partial to embed the Turnstile UI element right into your form. For instance, on a signup page:
+
+```erb
+<div>
+  <%= cloudflare_turnstile %>
+  <%= f.submit t("passwordless.sessions.new.submit"), class: "btn" %>
+</div>
+```
+
+**Importantly, you also need to validate on the server-side!** Speaking as a CF employee who has talked to the Turnstile team, there is a lot of people implementing Turnstile... without the server-side validation.
+
+Users are created in my app in `UsersController#create`. Let's validate the Turnstile data before calling that method:
+
+```ruby
+class UsersController < ApplicationController
+  before_action :validate_cloudflare_turnstile, only: [:create] if Rails.env.production?
+  rescue_from RailsCloudflareTurnstile::Forbidden, with: :forbidden_turnstile
+
+  def create
+    # Implementation of creating users
+  end
+
+  private
+  def forbidden_turnstile
+    flash[:error] = "We had a problem creating your account."
+    redirect_to root_path
+  end
+```
+
+If the validation fails, the gem will throw an `RailsCloudflareTurnstile::Forbidden` exception. You need to `rescue_from` that exception in the controller, and do something with that failure. I prefer not to tell users - they're probably spammers - that their validation against Turnstile's rules fail.
+
+Turnstile is great - really easy to configure, and literally saving me money by reducing the strain on my servers and ancillary analytics/marketing products, by reducing the number of junk users being added to my app. It only took ~15 minutes to get this implemented on one of my Rails apps, and I'm already seeing results.
+
+[^1]: Not my gem! But it's great - thanks to Instrumentl for building it.

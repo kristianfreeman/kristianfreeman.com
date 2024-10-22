@@ -1,0 +1,194 @@
+---
+title: An Introduction to Astro's Content System
+pubDate: 'Oct 07 2024'
+tags:
+  - astro
+  - webdev
+---
+
+[Astro](https://astro.build) is excellent for building blogs and documentation sites. 
+
+Over the weekend, I implemented [Gangsheet.app’s blog](https://gangsheet.app/blog) using the built-in [content collection system](https://docs.astro.build/en/guides/content-collections/)[^1], and I was impressed at how easy it was. In this blog post, I’ll lay out how I implemented, with real code samples.
+
+## Astro’s Content Collection system
+
+Astro has a built-in way to import `.md`, `.mdx`, `.yaml`, and `.json` files, and use them to generate pages for your site. These files are parsed and strictly typed using [Zod](https://zod.dev).
+
+I’m not tuned in to Astro’s development cycle, but I can speak as a developer who’s been in the static site/Jamstack space for a long time - Astro’s content layer is _excellent_. In a past life, I completely abused Gatsby’s content generation system to great effect. For instance, generating programatic SEO pages for a frontend development job board by generating massive amounts of combinatorial category pages[^4].
+
+With that history, I’m pretty well-versed in what the space looks like for using local and remote data to generate static-first sites. The example I lay out in this post - generating a blog - is very straightforward. The number of pages generated is N+1, where N is the number of blog posts (plus one index page). But some of the things that Astro does - no doubt due to better tooling, and experience seeing where some Jamstack sites have fallen short - have me very optimistic that this is a good platform to build on.
+
+## Define a content collection
+
+For [Gangsheet](https://gangsheet.app), I wanted a blog. The posts are authored in Markdown, stored in `src/content/blog/*.md`. These posts should be parsed, and then rendered at both `/blog` (the index of _all_ posts), and `/blog/:slug` (the page for each individual post).
+
+First, we’ll create the folder `src/content/blog`, and then fill in `src/content/config.ts`, which configures all content collections for our app:
+
+```typescript
+import { defineCollection, reference, z } from 'astro:content';
+
+const blogCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    excerpt: z.string(),
+    author: z.object({
+      name: z.string(),
+      x: z.string(),
+    }),
+    publishedAt: z.date(),
+    related: z.array(reference('blog')),
+  }),
+});
+
+export const collections = {
+  'blog': blogCollection,
+};
+```
+
+A blog post has:
+
+- A title
+- An excerpt
+- An author, with a name and 𝕏 @username
+- A publishedAt date
+- Related posts
+
+A few interesting things to note here:
+
+1. No slug! The slug is generated automatically for each post, based on the filename (e.g. `src/content/blog/hello-world.mdx` is, of course, `/blog/hello-world`).[^2]
+2. Related posts - woah! You can reference other types, or the _same_ type. We’ll see how easy this is when authoring, in just a second.[^3]
+
+## Add a blog post
+
+We can generate a blog post by creating a new Markdown file in `src/content/blog`. I’ll create `src/content/hello-world.md`, below:
+
+```markdown
+---
+title: Hello world!
+publishedAt: 2024-10-04
+excerpt: My first blog post on my new Astro blog.
+author: 
+  name: Kristian Freeman
+  x: kristianf_
+related:
+  - the-history-of-hello-world
+---
+
+Hello world! This is my new blog post.
+```
+
+Lots of interesting things to dig into here - luckily, it’s all pretty straightforward. `title`, `publishedAt`, and `excerpt` are simple string/date fields. `author` is an object (maybe a dictionary technically?) with nested fields. 
+
+`related` is a collection of other blog posts, based on the `slug` parameter (again, defined by the filename). We’ll look at how to access the related blog posts in the blog post page, later on.
+
+Anything after the frontmatter is, of course, the content itself. Astro supports MDX, so you should be able to do fancy React component stuff here, too. I haven’t found a need for that yet, but if you want to see an example of how it works, check out Astro’s [“Add reading time” recipe](https://docs.astro.build/en/recipes/reading-time/).
+
+## Implement page generation
+
+Now, we have a content collection, living at `src/content/blog` - how do we use it?
+
+First, let’s briefly review Astro’s “page” functionality:
+
+1. Pages live inside `src/pages`
+2. Pages use the `.astro` extension, which executes JavaScript and allows React or other front-end composition
+3. They use file-based routing: `src/pages`
+
+We’ll create two pages:
+
+1. `src/pages/blog.astro` - the blog index.
+2. `src/pages/blog/[slug].astro` - the template for each individual blog post.
+
+### Blog index
+
+Defining the blog index page involves two steps - first, getting the collection using `getCollection` from the `astro:content` import. Then, we can render the blog posts using HTML:
+
+```astro
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("blog");
+const sortedPosts = posts.sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime(),
+);
+---
+
+<div>
+  {sortedPosts.map((post) => (
+    <div>
+      <h2>
+        <a href={`/blog/${post.slug}`}>
+          {post.data.title}
+        </a>
+      </h2>
+      <p>
+        Published at {post.data.publishedAt}
+      </p>
+      <p>{post.data.excerpt}</p>
+    </div>
+  ))}
+</div>
+```
+
+It won’t be indicated in the above code sample, but each `post` here is strongly typed. That means that `post.slug` and `post.data`, as well as everything _inside_ `data`, have the benefit of TypeScript magic in your editor. If `excerpt`, for instance, was optional, we would be encouraged, via our editor and Astro’s build workflow, to handle the null case better.
+
+### Post page
+
+```astro
+import { getEntry, getEntries } from "astro:content";
+
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect("/blog");
+
+const post = await getEntry("blog", slug);
+if (!post) return Astro.redirect("/blog");
+
+const { Content, headings } = await post.render();
+const relatedPosts = await getEntries(post.data.related);
+---
+
+<div>
+  <article>
+    <h1>{post.data.title}</h1>
+
+    <div>
+      <time datetime={post.data.publishedAt.toString()}></time>
+    </div>
+
+    <div>
+      <p>{post.data.author.name}</p>
+    </div>
+
+    <div id="content"><Content /></div>
+  </article>
+
+  <section>
+    <h2>Related Posts</h2>
+
+    {relatedPosts.map((relatedPost) => (
+      <div>
+        <h3><a href={`/blog/${relatedPost.slug}`}>{relatedPost.data.title}</a></h3>
+      </div>
+    ))}
+  </section>
+</div>
+```
+
+First, we grab the `slug` param from `Astro.params`. Then we use it to grab the specific post for this page - `getEntry(‘blog’, slug)`. `post.render()` pushes the Markdown through Astro’s MDX compiler, and returns a `Content` component that can be rendered on the page, as well as an array representing all the `headers` (`h2`, `h3`, etc.) for the content[^5].
+
+The rendering is similar to what we did on the index page. `post.data` contains everything inside of the frontmatter for the post, so you can pull `title`, `excerpt`, `author`, etc. out and reference it wherever you need it in the HTML.
+
+When we need to load related posts, we can call `getEntries` (note _plural_, not singular) to load all of the posts specified in `post.data.related`. We get an array back of related posts - still strictly parsed + typed; basically identical to the `posts` array we had on the index page. This is _super powerful_. I love this implementation!
+
+## Conclusion
+
+I’m really happy I invested time in learning Astro’s content collection system. I haven’t yet had the chance to use Astro’s [new system (in beta)](https://5-0-0-beta.docs.astro.build/en/guides/upgrade-to/v5/), but when Astro v5 is properly released, I’ll do a follow up blog post on what’s changed.
+
+I [wrote last week](https://kristianfreeman.com/deploying-astro-applications-to-cloudflare/) about investing in learning Astro. This continues to pay off. I’ve been able to build a lot of [complex functionality](https://x.com/kristianf_/status/1842344138131288118) in it, and most of the issues I’ve run into have been totally solvable - even the hard stuff, like auth, dynamic data loading, etc.
+
+What I’m excited about most with the content collection system is that it feels like it lives inside of [my app](https://gangsheet.app), which is quite complex, without resorting to hacks. It fits into the rest of the app in a way that makes sense. For instance, if I wanted to pin the most recent blog post as an “announcement” banner on my dashboard page - I wouldn’t have to make a crazy GraphQL query and combine dynamic and static pages in a way that feels bad. I can just call `getCollection(“blog”)` on any Astro page and render it out. No hacks needed!
+
+[^1]: I didn’t use Astro’s new v5 beta, which has apparently rewritten this system. I’m interested to see how it changed - maybe that will be a future post.
+[^2]: You can also manually override the slug in the front-matter of the blog post.
+[^3]: As I’m writing this blog post, I’m realizing that _author_ could be an awesome win here in terms of referencing. Instead of putting the author name/𝕏 username on _every post_, I could set up "src/content/authors/kristian.md" and just pass that reference in every blog post.
+[^4]: Given X number of location categories, Y number of framework/language categories, and Z number of “experience”/skill-level categories, generate `X*Y*Z` number of SEO-optimized pages, like “senior React.js jobs in the United States”. I was generating thousands of pages and running up against the container my site was building in - with Netlify at the time - running out of memory. Fun times!
+[^5]: You can use this to generate a table of contents. See an example on [a blog post](https://gangsheet.app/blog/announcing-gangsheet) from Gangsheet’s blog.

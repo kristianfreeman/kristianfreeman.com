@@ -1,0 +1,34 @@
+---
+title: What comes next after simple chat UIs in AI?
+pubDate: 'Jun 05 2024'
+tags:
+  - ai
+  - webdev
+---
+
+I'm starting to delve into what comes next after chat UIs for AI development. We're at a pretty good spot with the AI models, themselves -- Llama 3 is open-source and great, and GPT-4o is fast and low-priced.
+
+But most devs (including myself) are still just building chat UIs -- essentially ChatGPT clones. What comes next? IMO, it's probably _tool calling_. 
+
+I've been reading and experimenting with the tool calling functionality that [Vercel's AI SDK provides](https://sdk.vercel.ai/docs/ai-sdk-ui/chatbot-with-tool-calling) this week:
+
+```typescript
+streamText({
+  model: openai('gpt-4o'),
+  messages: convertToCoreMessages(messages),
+  tools: {
+    getURL: {
+      description: 'get the URL and return the response',
+      parameters: z.object({ url: z.string() }),
+      execute: async ({ url }: { url: string }) => {
+        const resp = await fetch(url)
+        return await resp.text()
+      }
+    }
+  }
+})
+```
+
+With tool calling, you can intelligently shell out to other functions and APIs you've built in the past, and call them predictably in your LLM. In Vercel's SDK, the tool params are also strongly typed (with Zod!), which is great. I have a few projects I'm trying to integrate this. I think this is one vision of what LLMs fully integrated into our workflows may look like.
+
+(By the way -- we _still_ need great, extensible chat UIs for AI dev. Where is the drop-in template that supports any endpoint, with streaming, and a pluggable/extensible UI for tools?)

@@ -1,0 +1,83 @@
+---
+title: Blog RSS auto-backlinks on a GitHub repo
+pubDate: 'Sep 22 2024'
+tags:
+  - meta
+  - seo
+---
+
+Links to a site in a GitHub URL count as "nofollow" backlinks.
+
+They aren't the most effective, but if you can implement them, they might still be helpful[^1].
+
+I've implemented a solution to link blog posts in a GitHub repo automatically using an RSS feed, as part of my [domain ranking experiment](https://kristianfreeman.com/domain-ranking-experiment/) for this site.
+
+This GitHub Actions workflow can parse an RSS feed, and output a Markdown README.md file with a list of blog posts:
+
+```yml
+name: Update README with Blog Posts
+
+on:
+  schedule:
+    # Run every hour
+    - cron: '0 * * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/*'  # Only run if workflow files change
+
+jobs:
+  update-readme:
+    permissions:
+      contents: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install required packages
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y curl libxml2-utils
+
+    - name: Fetch RSS feed
+      id: fetch_rss
+      run: |
+        # CHANGE THIS TO YOUR FEED URL
+        RSS_URL="https://YOURWEBSITE/feed" 
+        # This xpath definition may need to be changed to fit your feed structure
+        curl -s "$RSS_URL" | xmllint --xpath '//item/title | //item/link' - | \
+        awk 'NR % 2 == 1 { title=$0; gsub(/<[^>]+>/, "", title); } NR % 2 == 0 { gsub(/<[^>]+>/, "", $0); print "- [" title "](" $0 ")" }' > posts.md
+
+    - name: Prepare Markdown content
+      id: prepare_markdown
+      run: |
+        if [ -f posts.md ] && [ -s posts.md ]; then
+          echo "# Latest Blog Posts" > new_content.md
+          cat posts.md >> new_content.md
+        else
+          echo "# Latest Blog Posts" > new_content.md
+          echo "No blog posts found." >> new_content.md
+        fi
+
+    - name: Update README.md
+      run: |
+        if [ -s new_content.md ]; then
+          rm README.md
+          mv new_content.md README.md
+          rm posts.md
+        fi
+
+    - uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "Update README with latest blog posts"
+        branch: main
+```
+
+See [kristianfreeman/blog-posts](https://github.com/kristianfreeman/blog-posts) for how this looks in practice. Right now, it will only show however many blog posts your RSS feed returns. Caching or a better lookup could be implemented.
+
+[^1]: See this ahrefs article on [nofollow links](https://ahrefs.com/blog/nofollow-links). The gist is that although they may not necessarily help page ranking, they can still have some benefits.

@@ -1,0 +1,35 @@
+---
+title: Increasing Lighthouse Score to 100 - How I Did It on My Blog
+pubDate: 'Oct 8 2024'
+tags:
+  - webdev
+---
+
+I know, I know - on a static site, a blog. It's not an incredibly demanding site, by any means. But the same strategy to improving perf applies on larger sites. Here's how I hit 100 on Performance stat for this site.
+
+![Perfect Lighthouse score](https://bear-images.sfo2.cdn.digitaloceanspaces.com/kristian/142x.webp)
+
+If you have direct control over the scripts and CSS you run on your site, you're in a good spot. It's pretty likely that Chrome's ["Eliminate render-blocking resources" guide](https://developer.chrome.com/docs/lighthouse/performance/render-blocking-resources) is going to be your best friend here.
+
+On this blog, I had a few scripts and stylesheets running: particularly, [littlefoot](https://github.com/goblindegook/littlefoot) for footnotes, and [instant.page](https://instant.page/) to allow instant page loads. Adding `async` to these script tags and deferring the CSS load was the bulk of changes I needed to make directly on the site.
+
+The print media trick for CSS works well here:
+
+```html
+<link rel="stylesheet" href="/path/to/my.css" media="print" onload="this.media='all'">
+```
+
+We're setting the `media` property here to "print", meaning that it's only relevant when printing this page. But when `onload` fires, we change the `media` property to all - meaning it's relevant to the page again. The browser will then load the CSS. It's a tricky but effective way of deferring CSS until after page load.
+
+I also did some work on my Cloudflare config for this site to improve time to paint metrics. You can see in the below chart when I turned on caching at the Cloudflare level for my site:
+
+![Cloudflare cache analytics](https://bear-images.sfo2.cdn.digitaloceanspaces.com/kristian/092x.webp)
+
+I created a rule that is literally just "Cache Everything"[^1], with a 60 second time-to-live setting. That means that my site is basically on a rolling sixty second cache, _at the edge server level_, not at the browser. bearblog doesn't seem to have any caching headers included, so instead of trying to lean on it for any sort of knowledge about when and why to cache, this implementation is simple. When a page is hit, it refreshes the cache, then serves out of it for a minute. After a minute, the cache is restarted. I have Cloudflare's "stale while revalidate" param set to true, so it serves stale content while it refreshes the cache.[^2]
+
+---
+
+There's more work to do with SEO, but the site feels _super_ fast. As more traffic comes here from my [SEO experiments](/domain-ranking-experiment), it will be satisfying to know that the site is really fast, no matter where you're accessing it from.
+
+[^1]: Cloudflare, having a massive CDN after all, has a ton of docs around caching. [Available here](https://developers.cloudflare.com/cache/how-to/cache-rules/).
+[^2]: It's a blog! It's not a big deal to serve stale content. YMMV.

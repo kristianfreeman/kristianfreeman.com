@@ -1,0 +1,19 @@
+---
+title: The McMaster-Carrification effect
+pubDate: 'Oct 21 2024'
+tags: 
+  - meta
+  - webdev
+---
+
+[This awesome tweet from Kenneth Cassel went viral last week](https://x.com/KennethCassel/status/1847034096062710087), covering the very cool McMaster-Carr website, [mcmaster.com](https://www.mcmaster.com).
+
+It's super fast. [Wes Bos has a great vid](https://www.youtube.com/watch?v=-Ln-8QM8KhQ) covering some of the specifics of how it works.
+
+I have a strange obsession with perf on this blog. Hence, the McMaster-Carrification effect. I grabbed some implementation details that I particularly liked from the site, focused on reflow and time to contentful paint. Here's a few things I implemented:
+
+1. _Inlined all SVG for the nav icons._ I mentioned using the [Lucide CDN](https://kristianfreeman.com/how-to-use-lucide-icons-via-a-cdn/) for my nav icons - that was a quick, easy way to integrate. But while loading those icons from the CDN, the img tags are blank. Instead, I inlined the SVG tags directly into the nav. No external load needed.
+2. _Set width, height, constraints for images._ I actually quite like the look of McMaster's images - they're hard-coded at certain width/heights, and they have a border wrapping them inside the layout. All images are now constrained to a consistent width, which reduces layout shift as they load.
+3. _Beginning to investigate preloading._ All the external hostnames used on mcmaster.com are preloaded, using [`dns-preload`](https://developer.mozilla.org/en-US/docs/Web/Performance/dns-prefetch). I should be able to implement this for a few of the JS and font dependencies.
+
+Perf chasing is fun! If this was a real product, and not a silly blog, it wouldn't make a ton of sense to invest heavily here. PMF is more important. But when it's a few blog posts a month, chasing an extra 100ms in render time is a fun way to spend the time.

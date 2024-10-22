@@ -1,0 +1,33 @@
+---
+title: Recent developer tool discoveries
+pubDate: 'Jul 17 2024'
+tags:
+  - tip
+  - webdev
+---
+
+Time flies! It's been a month since I last published.
+
+I've been spending a lot of time recently hacking on my configuration setup. 
+
+I've written about [zellij](https://kristianfreeman.com/quick-review-of-zellij/) on this blog in the past, and that was one of the big things that caused me to rethink a lot of my setup. 
+
+The idea is basically "what are the things I take for granted in my setup that have new alternatives?"
+
+Quick list of some of my recent moves:
+
+- Neovim setup: [`nvchad`](https://nvchad.com) => [`kickstart.nvim`](https://github.com/nvim-lua/kickstart.nvim)
+- GitHub Copilot => [Supermaven](https://supermaven.com) (with [`supermaven-nvim`](https://github.com/supermaven-inc/supermaven-nvim))
+- `curl`/`http` => [`xh`](https://github.com/ducaale/xh)
+- File searching: [`fd`](https://github.com/sharkdp/fd) and [`fzf`](https://github.com/junegunn/fzf)
+
+---
+
+`fzf` in particular has been super interesting to me. I suspect if my Unix skills were a bit better, I could pipe all sorts of things into it.
+
+One of my favorite tricks with it is to execute from a series of scripts using `./`, followed by `fzf`'s built-in `<C-t>` command, which is a fuzzy file finder.
+
+Imagine I have a folder `requests`, which contains a collection of scripts. If I type `./`, then press `<C-t>`, I can fuzzy find everything that is a child of the current directory. So I can type `re/` (filter _fuzzily_ down to things inside of `requests/`, and then pick the file I want. The filename is output to the terminal, and since it was prefixed with `./`, I can press enter to execute it. Sweet!
+
+![CleanShot 2024-07-17 at 14](https://bear-images.sfo2.cdn.digitaloceanspaces.com/kristian-1721253379.png)
+

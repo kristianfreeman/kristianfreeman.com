@@ -4,6 +4,6 @@ I'm currently a Senior Developer Advocate at [Cloudflare](https://cloudflare.com
 
 Previously, I was a Senior Software Engineer at [Product Hunt](https://producthunt.com) and Simple (formerly _simple.com_), building full-stack apps using React, TypeScript, GraphQL, lots and lots of databases, and Ruby on Rails.
 
-I try to write here a few times a week about what I'm building and thinking about. I'm really into [web dev](/blog/?q=webdev), [health and fitness](/blog/?q=health), personal finance, and [building side projects](/blog/?q=projects).
+I try to write here a few times a week about what I'm building and thinking about. I'm really into [web dev](/tags/webdev), [health and fitness](/tags/health), personal finance, and [building side projects](/tags/projects).
 
 If you want to chat, [send me a DM on 𝕏](https://twitter.com/messages/compose?recipient_id=353123498).

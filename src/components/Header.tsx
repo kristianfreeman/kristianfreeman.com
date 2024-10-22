@@ -1,39 +1,46 @@
+import type { CollectionEntry } from 'astro:content';
+
 import HeaderLink from './HeaderLink.tsx';
 import { SITE_TITLE } from '../consts';
 import { Github, Home, Lightbulb, Notebook, Twitter, Youtube } from 'lucide-react';
 
-export default ({ url }: { url: string }) => (
+type BlogPost = CollectionEntry<'blog'>['data'];
+
+export default ({ post, url }: { post: BlogPost, url: string }) => (
   <header className="space-y-4">
     <a className="title" href="/">
-      <h1>
-        {SITE_TITLE}
-      </h1>
+      {SITE_TITLE}
     </a>
 
-    <nav className="flex items-center gap-8">
-      <HeaderLink href="/" astroUrl={url} className="flex items-center gap-2">
+    <nav className="flex items-center gap-4">
+      <HeaderLink active={url.pathname === '/'} className="flex items-center gap-2" href="/">
         <Home size={24} />
         Home
       </HeaderLink>
-      <HeaderLink href="/blog" astroUrl={url} className="flex items-center gap-2">
+
+      <HeaderLink active={url.pathname.startsWith("/blog") || post && !post.tags.includes('tip')} className="flex items-center gap-2" href="/blog">
         <Notebook size={24} />
         Blog
       </HeaderLink>
-      <HeaderLink href="/tips" astroUrl={url} className="flex items-center gap-2">
+
+      <HeaderLink active={url.pathname.startsWith("/tags/tip") || post && post.tags.includes('tip')} className="flex items-center gap-2" href="/tags/tip">
         <Lightbulb size={24} />
         Tips
       </HeaderLink>
-      <a href="https://kristianf.dev/youtube" target="_blank" className="flex items-center gap-2">
-        <Youtube size={24} />
-        YouTube
-      </a>
-      <a href="https://twitter.com/kristianf_" target="_blank" className="flex items-center gap-2">
+
+      <a href="https://twitter.com/kristianf_" target="_blank" className="flex items-center gap-2 nav-link">
         <Twitter size={24} />
         @kristianf_
       </a>
-      <a href="https://github.com/kristianfreeman" target="_blank" className="flex items-center gap-2">
+
+      <a href="https://kristianf.dev/youtube" target="_blank" className="flex items-center gap-2 nav-link">
+        <Youtube size={24} />
+        YouTube
+      </a>
+
+      <a href="https://github.com/kristianfreeman" target="_blank" className="flex items-center gap-2 nav-link">
         <Github size={24} />
-        @kristianfreeman
+        GitHub
       </a>
     </nav>
   </header>

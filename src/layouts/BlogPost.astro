@@ -2,12 +2,13 @@
 import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.tsx';
+import Footnotes from '../components/Footnotes.tsx';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tags } = Astro.props;
 ---
 
 <html lang="en">
@@ -16,11 +17,11 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
   </head>
 
   <body class="space-y-8">
-    <Header url={Astro.url} />
+    <Header post={Astro.props} url={Astro.url} />
     <main>
       <article>
         <div class="prose-xl">
-          <div>
+          <div class="space-y-4">
             <h1 class="text-2xl font-bold">{title}</h1>
             <div>
               <FormattedDate date={pubDate} />
@@ -32,11 +33,19 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
                 )
               }
             </div>
+
+            <div class="flex flex-wrap gap-4">
+              {tags.map((tag) => (
+                <a href={`/tags/${tag}`}>#{tag}</a>
+              ))}
+            </div>
           </div>
           <slot />
         </div>
       </article>
     </main>
     <Footer />
+
+    <Footnotes client:only="react" />
   </body>
 </html>

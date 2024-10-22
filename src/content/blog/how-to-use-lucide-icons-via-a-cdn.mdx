@@ -1,0 +1,14 @@
+---
+title: How to use Lucide icons via a CDN
+pubDate: 'Oct 06 2024'
+tags: 
+  - tip
+---
+
+Similar to my standardization [on shadcn](https://kristianfreeman.com/brief-shadcnui-review/), I'm starting to lean on [Lucide](https://lucide.dev) as my icon library of choice. Usage in React is really simple - you install the package, import whatever icon you want, and get an SVG that can be customized via sane props for size, color, etc (and you can pass CSS, too).
+
+If you want to use it in other places, you'll need to use `lucide-static` ([documentation](https://lucide.dev/guide/packages/lucide-static)). I recently shipped icons in my nav on this website, and I was impressed with how easy it was to use. It's just an img tag, with [unpkg.io](https://unpkg.io) as the CDN. Here's how I use it in my nav:
+
+```html
+<img src="https://unpkg.com/lucide-static@latest/icons/house.svg" /> Home
+```

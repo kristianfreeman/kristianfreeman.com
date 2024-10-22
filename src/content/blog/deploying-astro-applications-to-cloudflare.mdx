@@ -1,0 +1,114 @@
+---
+title: Deploying Astro Applications to Cloudflare
+pubDate: 'Sep 29 2024'
+tags:
+  - astro
+  - webdev
+---
+
+I'm in on [Astro](https://astro.build). I haven't quite figured out every little detail of it, but it feels comprehensive enough that I'm ready to invest more time and energy into it being the new way that I deploy full-stack JS apps.
+
+## Overview
+
+Here's how I deploy Astro apps to Cloudflare:
+
+1. Create a new Astro app (`npm create astro`)
+2. Add the Cloudflare config (`npx astro add cloudflare`). This installs the `@astrojs/cloudflare` package.
+3. Ensure `astro.config.mjs` looks like the below code sample. The snippet makes some assumptions that I'll explain shortly.
+4. Create `wrangler.toml` and configure it as seen below.
+5. Install `@cloudflare/workers-types` and reference it in `tsconfig.json`.
+
+## Files
+
+**`astro.config.mjs`:**
+
+```ts
+// @ts-check
+import { defineConfig } from 'astro/config';
+import cloudflare from '@astrojs/cloudflare';
+
+export default defineConfig({
+  output: 'server',
+  adapter: cloudflare({
+    imageService: "passthrough",
+    platformProxy: {
+      enabled: true,
+    },
+  }),
+});
+```
+
+**`src/env.d.ts`**:
+
+```typescript
+/// <reference path="../.astro/types.d.ts" />
+type Runtime = import('@astrojs/cloudflare').Runtime<Env>;
+declare namespace App {
+  interface Locals extends Runtime { }
+}
+```
+
+**`tsconfig.json`** (add this line to your full config):
+
+```json
+{
+  "compilerOptions": {
+    "types": ["@cloudflare/workers-types"],
+  },
+}
+```
+
+**`wrangler.toml`**:
+
+```toml
+name = "appname"
+compatibility_date = "2024-09-25"
+pages_build_output_dir = "dist"
+```
+
+## How your app works
+
+What assumptions/decisions this makes:
+
+1. Full-stack apps
+
+The `output: 'server'` line in the Astro config makes it so that Astro generates server-side rendering code so that Cloudflare runs the app on the edge. This allows you to write functions that have full access to requests. 
+
+If you want a static app – no dynamic code or functions – you can change the `output` line. But it's probably worth it just to keep it as `server` since CF supports it, in case you need a dynamic function/page at some point.
+
+2. Deploy to Cloudflare Pages
+
+Candidly, the CF Pages/Workers story is a bit confusing right now.[^1] The way that Cloudflare handles deploys with wrangler leads to this deployment strategy. Simply put – `astro build` will build to `dist` with this config, and the `pages_build_output_dir` directive in `wrangler.toml` will upload the directory and use it as the Cloudflare Pages deployment.
+
+If the story [continues to change](https://blog.cloudflare.com/builder-day-2024-announcements/) with Cloudflare Pages, it may be that the app technically gets deployed to _Workers_ instead of _Pages_, but for now, this solution is just fine. I'll revisit this if needed.
+
+3. Use `platformProxy` and write platform-specific functions
+
+With the `platformProxy` configuration enabled in `astro.config.mjs`, you can use Astro's built-in commands to do most of your day-to-day development. `astro dev` will wrap around `wrangler pages dev` with full support for Cloudflare bindings, local/remote development, etc. `package.json` scripts looks like:
+
+```json
+{
+  "scripts": {
+    "dev": "wrangler types && astro dev",
+    "deploy": "npm run build && wrangler pages deploy",
+  }
+}
+```
+
+With everything configured correctly, all your JS stuff on the frontend should work as you'd expect. On the "backend", functions are really powerful. File-based routing, you get full access to bindings, and you write full-stack functions to handle requests and return responses:
+
+```ts
+// src/pages/api/example.ts
+export async function PUT({ locals, request }) {
+  // Get access to env bindings
+  const { env } = locals.runtime;
+  // Do stuff
+  return new Response("OK")
+}
+```
+
+## Conclusion
+
+I'll update this as needed, as I continue to build with Astro. But so far, I'm impressed. I invested a lot of time into Gatsby to learn how to build full-stack apps on it. Astro seems like a more robust solution to a lot of the issues that I ran into with more complex applications on Gatsby.
+
+[^1]: Speaking as a Developer Advocate at Cloudflare.

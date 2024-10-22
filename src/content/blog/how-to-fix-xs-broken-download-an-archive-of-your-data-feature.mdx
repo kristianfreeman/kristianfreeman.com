@@ -1,0 +1,16 @@
+---
+title: How to fix 𝕏's broken "Download an archive of your data" feature
+pubDate: 'May 25 2024'
+tags:
+  - tip
+---
+
+I recently exported my Twitter (now 𝕏) data archive to clean up some old tweets. Once I started generating it, it took about 24 hours to create the archive.
+
+The URL I received to download the archive was in the structure `https://ton.twitter.com/i/ton/data/archives/123456789/twitter-2024-05-25-hash.zip`.
+
+Trying to access this URL gave me an error in Safari. I tried to do it in Chrome, but got a `401 Unauthorized` error as I wasn't logged in to 𝕏 on Chrome.
+
+I realized that recently, the app migrated to the URL x.com.
+
+I tried accessing `https://ton.x.com/i/ton/data/archives/123456789/twitter-2024-05-25-hash.zip`, and it worked correctly -- the fix being `ton.x.com`, instead of `ton.twitter.com`. It seems like the URL was hardcoded somewhere and when they moved it over, they didn't update the code.

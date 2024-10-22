@@ -1,0 +1,23 @@
+---
+title: Creating a custom post list page in Bear
+pubDate: 'Sep 22 2024'
+tags:
+  - bear
+  - meta
+---
+
+To link to my "Tips" section of my blog – which is any post tagged "tip" – I first tried to link to the standard post list page, with a filter applied:
+
+`https://kristianfreeman.com/blog/?q=tip`
+
+This works, but Bear actually has a feature for embedding blog post lists in any page[^1].
+
+You can create a new page, and insert the list like this:
+
+`{{ posts|tag:"tip" }}`
+
+This allows more customization, since you can add a description, any wrapper text around the list, etc.
+
+Now, my "Tips" page lives at a proper URL: [/tips](/tips).
+
+[^1]: Full docs [here](https://docs.bearblog.dev/embedding-blog-post-lists/).

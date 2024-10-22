@@ -1,0 +1,122 @@
+---
+title: Just enough Zustand
+pubDate: 'Oct 02 2024'
+tags:
+  - webdev
+---
+
+Here's how to get started with [Zustand](https://github.com/pmndrs/zustand), a great state management library for React.
+
+Zustand is really simple, especially compared to some of the state management libraries we used to use in React. It is certainly a very different approach to state management compared to tools like Redux. But I like it a lot! 
+
+It feels scalable - you can roll with a small, single store setup, or you can easily imagine it scaling well to have a ton of different stores, or one _really large_ store that has all your app state. At the end of the day, it still will feel like writing fairly simple, vanilla JavaScript. 
+
+At the core of the library, Zustand provides a function `create`, which allows you to create a store. A store contains all of your piece of state, including the values themselves, as well as functions for modifying those values. 
+
+Per Zustand's docs, here is a very small store:
+
+```jsx
+import { create } from 'zustand'
+
+const useStore = create((set) => ({
+  bears: 0,
+  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
+  removeAllBears: () => set({ bears: 0 }),
+  updateBears: (newBears) => set({ bears: newBears }),
+}))
+```
+
+That code snippet covers 95% of what you would want to do with Zustand:
+  - `bears` is a pure value
+  - `increasePopulation` shows how to update a state value _based on previous state_[^2]
+  - `removeAllBears` is a straight-forward state clearing
+  - `updateBears` takes an argument and uses it to arbitrarily update state
+
+Each makes use of the `set` parameter which is a slightly magical function for updating your store. It _merges_ on your existing state so you can update whatever you need to, without needing to do fancy `Object.assign` merges or anything like that. 
+
+With that store set up, you can import it into components and use it like a hook:
+
+```jsx
+function BearCounter() {
+  const bears = useStore((state) => state.bears)
+  return <h1>{bears} around here...</h1>
+}
+
+function Controls() {
+  const increasePopulation = useStore((state) => state.increasePopulation)
+  return <button onClick={increasePopulation}>one up</button>
+}
+```
+
+Note that the components import `useStore`, and call it as a function. Here lies one of the few things _you should really know_ about Zustand: when you call this `useStore` function, it will return your state object, like so:
+
+```javascript
+const state = useStore()
+```
+
+That state object has all your stuff in it! **But you should not do this:**
+
+```javascript
+const { bears } = useStore() // Don't do this
+```
+
+Again: don't do this! Each time your state updates – that is, _any_ of your state – this `useStore()` call will cause a re-render. Instead, you should pass a function as the argument to `useStore` that is a _selector_:
+
+```javascript
+const bears = useStore(state => state.bears) // Do this
+```
+
+Now, your components will only update when their little slices of state – `state.bears`, `state.whatever` – updates. This is a big performance boost. In terms of _just enough Zustand_, this is the only slightly tricky thing I can think of that you should know when getting started.
+
+There is certainly more to Zustand, and a lot of that is [in the docs](https://zustand.docs.pmnd.rs/getting-started/introduction). Dealing with state rehydration, persistence, etc etc etc is all covered there. That's for another post :)
+
+## Something more complex
+
+Back in June 2020, [I made a video](https://www.youtube.com/watch?v=BchtCWxs7sA) on my YouTube channel about another state management library, Recoil.js. In that video, I made a sample project which used an API to load the "trending" repos on GitHub. That codebase serves as sufficiently complex enough (top-level state, read and written to from multiple child components) that I wanted to port it over to Zustand. 
+
+Here's the final `useStore` object I built. It's more complex than the above example, but still easy enough to follow:
+
+```typescript
+type Store = {
+  loading: boolean
+  repos: {
+    daily: any[]
+    weekly: any[]
+    monthly: any[]
+  }
+  view: ViewOption
+  setView: (view: ViewOption) => void
+  loadRepos: () => void
+}
+
+export const useStore = create<Store>((set, get) => ({
+  loading: false,
+  repos: {
+    daily: [],
+    weekly: [],
+    monthly: []
+  },
+  view: 'daily',
+  setView: view => set({ view }),
+  loadRepos: async () => {
+    const { view, repos } = get()
+    set({ loading: true })
+    const url = `https://api.gitterapp.com/repositories?since=${view}`;
+    const resp = await fetch(url);
+    const body = await resp.json();
+    set({
+      loading: false,
+      repos: { ...repos, [view]: body }
+    })
+  }
+}))
+```
+
+[Find the source here](https://github.com/kristianfreeman/just-enough-zustand). This state gets imported selectively throughout all the components in this application, using the selector logic I outlined above. This setup efficiently avoids prop drilling, re-renders, and lots of other junk around performance and ergonomics that React devs commonly have to worry about. The components just grab what state they care about. Easy!
+
+---
+
+I like Zustand a lot so far. One of my programming side quests this quarter is to go through and refresh all the tools in my React toolbelt.[^1] Zustand feels like a great way to handle state effectively in applications without introducing a ton of extra complexity for complexity's sake.
+
+[^1]: See [my shadcn/ui review](https://kristianfreeman.com/brief-shadcnui-review/).
+[^2]: There is a different way to do this, using the `get` function provided by Zustand. I'm not sure which one is better 🤷

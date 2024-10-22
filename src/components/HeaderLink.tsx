@@ -1,13 +1,10 @@
-const HeaderLink = ({ href, astroUrl, children, ...props }) => {
-  const pathname = astroUrl.pathname;
-  const subpath = pathname.match(/[^\/]+/g);
-  const isActive = href === pathname || href === '/' + subpath?.[0];
+import clsx from 'clsx';
 
+const HeaderLink = ({ active, children, href, ...props }) => {
   return (
     <a
       href={href}
-      className={`${isActive ? 'active' : ''}`}
-      {...props}
+      className={clsx(props.className, 'nav-link', `${active ? 'active' : ''}`, props.className)}
     >
       {children}
     </a>

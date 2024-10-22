@@ -10,6 +10,19 @@ import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://example.com',
-    integrations: [mdx(), sitemap(), react(), tailwind()],
+  integrations: [mdx(), sitemap(), react(), tailwind()],
+  markdown: {
+    shikiConfig: {
+      theme: 'catppuccin-mocha',
+      transformers: [
+        {
+          pre(node) {
+            // add no-prose to node.properties.class, which is a string
+            node.properties.class += ' not-prose';
+          },
+        }
+      ],
+    },
+  },
+  site: 'https://kristianfreeman.com',
 });

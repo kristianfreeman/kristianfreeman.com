@@ -1,0 +1,15 @@
+---
+title: Defer Loading CSS with One Line of Code
+pubDate: 'Oct 8 2024'
+tags:
+  - webdev
+  - tip
+---
+
+Here's how to defer CSS loading with one line of code, no extra dependencies needed:
+
+```html
+<link rel="stylesheet" href="/path/to/my.css" media="print" onload="this.media='all'">
+```
+
+We're setting the `media` property here to "print", meaning that it's only relevant when _printing_ this page. But when `onload` fires, we change the `media` property to all - meaning it's relevant to the page again. The browser will then load the CSS. It's a tricky but effective way of deferring CSS until after page load.

@@ -1,0 +1,116 @@
+---
+title: A great usage of QR codes in the real world
+pubDate: 'May 26 2024'
+tags:
+  - project
+  - webdev
+---
+
+QR codes are quite nifty. You can store around 3 KB in a single QR code, and you can access it with your iPhone camera, which you almost always have with you.
+
+One recent usage of QR codes I like is for managing storage at my home.
+
+This is a Home Depot box:
+
+![Home Depot box](https://bear-images.sfo2.cdn.digitaloceanspaces.com/kristian-1716754829-0.jpg)
+
+Classic, high-quality boxes that are super popular for storage here in the USA.
+
+It's hard to know what's in these boxes. And when they go up into storage, it's hard to remember which thing is in what box.
+
+My solution is to document the box contents in Obsidian. For any file in Obsidian, there's a URL to access it in app:
+
+`obsidian://open?vault=kristian&file=7%20-%20Home%2FOrganization%2FYC-001`
+
+This file corresponds to `/Home/Organization/YC-001` in my "Kristian" vault - `YC-001` is the label for "Yellow Crate #001" :)
+
+I bought some 4x5 label paper and [made a quick library*](https://github.com/kristianfreeman/qr-label-printer) for generating QR codes and printing them onto label paper.
+
+<small><sup>*</sup> With ChatGPT... I'm not a Python dev!</small>
+
+```python
+import json
+import qrcode
+import os
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from PIL import Image
+
+def create_qr_code(data, filename):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(data)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill='black', back_color='white')
+    img.save(filename)
+
+def create_pdf(config_file, output_file):
+    # Create output directory if it doesn't exist
+    output_dir = os.path.dirname(output_file)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    
+    with open(config_file, 'r') as file:
+        config = json.load(file)
+    
+    # 4x5 inches at 72 DPI
+    c = canvas.Canvas(output_file, pagesize=(4 * 72, 5 * 72))
+    width, height = 4 * 72, 5 * 72
+    
+    # Define positions for the stickers
+    sticker_width = width / 2
+    sticker_height = height / 2
+    positions = [
+        (0, height - sticker_height),
+        (sticker_width, height - sticker_height),
+        (0, height - 2 * sticker_height),
+        (sticker_width, height - 2 * sticker_height)
+    ]
+    
+    # Generate QR codes and place them with subtitles
+    for i, pos in enumerate(positions):
+        qr_filename = os.path.join(output_dir, f"qr_{i}.png")
+        create_qr_code(config[f'sticker_{i+1}']['text'], qr_filename)
+        
+        qr_image = Image.open(qr_filename)
+        qr_width, qr_height = sticker_width - 20, sticker_height - 40
+        c.drawImage(
+          qr_filename, pos[0] + 10, pos[1] + 30, 
+          width=qr_width, height=qr_height
+        )
+        
+        # Center the subtitle text below the QR code
+        subtitle_text = config[f'sticker_{i+1}']['subtitle']
+        text_width = c.stringWidth(subtitle_text, "Helvetica", 10)
+        x_centered = pos[0] + (sticker_width - text_width) / 2
+        c.drawString(x_centered, pos[1] + 25, subtitle_text)
+
+    c.save()
+
+create_pdf("config.json", "out/stickers.pdf")
+```
+
+The corresponding config file:
+
+```json
+{
+  "sticker_1": {"text": "obsidian://open?vault=kristian&file=7%20-%20Home%2FOrganization%2FYC-001", "subtitle": "YC-001"},
+  "sticker_2": {"text": "obsidian://open?vault=kristian&file=7%20-%20Home%2FOrganization%2FYC-002", "subtitle": "YC-002"},
+  "sticker_3": {"text": "obsidian://open?vault=kristian&file=7%20-%20Home%2FOrganization%2FYC-003", "subtitle": "YC-003"},
+  "sticker_4": {"text": "obsidian://open?vault=kristian&file=7%20-%20Home%2FOrganization%2FYC-004", "subtitle": "YC-004"}
+}
+```
+
+Each sheet generates four labels. I can slap them on any box before it goes into storage:
+
+![QR example](https://bear-images.sfo2.cdn.digitaloceanspaces.com/kristian-1716755097-0.png)
+
+Eventually, it would be cool to document everything in my house - where it is, what I have, etc. - using Obsidian and an LLM. That's next on my list of things to do.
+
+BTW: a better solution would be to have less stuff :)

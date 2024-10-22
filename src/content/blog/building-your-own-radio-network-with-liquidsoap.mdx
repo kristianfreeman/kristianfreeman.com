@@ -1,0 +1,60 @@
+---
+title: Building Your Own Radio Network with Liquidsoap
+pubDate: 'Oct 10 2024'
+tags:
+  - projects
+---
+
+With a ton of archived music and podcasts sitting on my NAS, I wanted to do something fun and run my own radio network - a collection of radio stations like "Business Podcasts", "Metal", and whatever else I might want to listen to. Then, I can tune into it at any point of time via my phone or on my Sonos speakers.
+
+You can build this with [Liquidsoap](https://www.liquidsoap.info/) - described as "a powerful and flexible language for describing audio and video streams".[^1] 
+
+I've created an open-source repository [kristianfreeman/radio](https://github.com/kristianfreeman/radio) that will help you do this.
+
+First, you can set up a `config.yaml`:
+
+```yaml
+stations:
+  # Podcasts
+  - name: comedy
+    directories:
+      - "/podcasts/comedy-podcast"
+    shuffle: true
+  - name: business
+    directories:
+      - "/podcasts/business-podcast"
+      - "/podcasts/business-podcast2"
+    shuffle: true
+  - name: business_focus
+    directories:
+      - "/podcasts/business-podcast"
+      - "/podcasts/business-podcast2"
+    music_directories:
+      - "/music/bgm"
+    podcast_volume: 0.7
+    music_volume: 0.3
+    shuffle: true
+  # Music
+  - name: edm
+    directories:
+      - "/music/techno"
+  - name: metal
+    directories:
+      - "/music/metal"
+```
+
+This example shows a few varieties of stations. You can name each station, and pass a directory of audio files to load. Liquidsoap will recursively search the directories and add the files inside to the station (and shuffle them, via the `shuffle` param).
+
+My favorite is the hybrid music/podcast station. It basically muxes music and podcasts together on the fly - so you can build fun mixes. For instance, I have a bunch of chill vaporwave/focus music mixed with business podcasts.
+
+With your `config.yaml` set up, you can run `make` to run the build script. It's a Python script that parses the config and outputs a `.liq` file for Liquidsoap. That file gets executed by Liquidsoap, and your radio stations will begin!
+
+The Liquidsoap server runs a server called "Harbor" that outputs all the stations on a single URL structure:
+
+- `localhost:8000/business`
+- `localhost:8000/comedy`
+- `localhost:8000/metal`
+
+With those URLs, you can plug them into VLC, iTunes, or add them on your Sonos app, and start streaming!
+
+[^1]: Liquidsoap is _really_ funky. This post isn't a tutorial on it. I used ChatGPT to help me write the code.
