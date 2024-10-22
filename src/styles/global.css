@@ -5,8 +5,6 @@
   --font-secondary: "Atkinson Hyperlegible", sans-serif;
   --monospace-font: "JetBrains Mono", monospace;
   --font-scale: 1.25rem;
-  --line-height: 2rem;
-  --line-height-lg: 3rem;
   --background-color: #fff;
   --text-color: #444;
   --heading-color: #222;
@@ -18,9 +16,9 @@
   --nav-link-active-bg: #89b4fa;
   --nav-link-active-color: #fff;
   --nav-link-img-filter: invert(1);
-  --littlefoot-button-bg: #f2f2f2;
+  --littlefoot-button-bg: #444;
   --littlefoot-button-text: #444;
-  --littlefoot-button-active-bg: #ddd;
+  --littlefoot-button-active-bg: #444;
   --littlefoot-button-active-text: #222;
   --littlefoot-popover-bg: #fff;
   --littlefoot-popover-border: 1px solid #ccc;
@@ -64,18 +62,26 @@ body {
   background-color: var(--background-color);
   word-wrap: break-word;
   overflow-wrap: break-word;
-  line-height: var(--line-height);
   color: var(--text-color);
 }
 
-main {
-  line-height: var(--line-height);
+.text-primary {
+  color: var(--text-color);
+}
+
+.text-secondary {
+  color: #6c6f85;
+}
+
+@media (prefers-color-scheme: dark) {
+  .text-secondary {
+    color: #a6adc8;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-main);
   color: var(--heading-color);
-  line-height: var(--line-height-lg);
 }
 
 a {
@@ -142,13 +148,12 @@ footer {
   text-align: left;
 }
 
-.title:hover {
-  text-decoration: none;
-}
-
 .title {
   color: var(--text-color);
-  font-size: 1.5em;
+}
+
+.title:hover {
+  text-decoration: none;
 }
 
 .inline {
@@ -179,17 +184,12 @@ ul.blog-posts {
 
 ul.blog-posts li {
   display: flex;
-  line-height: var(--line-height);
   list-style-type: none;
   flex-direction: column-reverse;
 }
 
 ul.blog-posts li a:visited {
   color: var(--visited-color);
-}
-
-ul.blog-posts li span {
-  line-height: 1rem;
 }
 
 ul.blog-posts li span time {

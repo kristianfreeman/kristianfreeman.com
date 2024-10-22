@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
+import BearPostBanner from '../components/BearPostBanner.astro';
 import Header from '../components/Header.tsx';
 import Footnotes from '../components/Footnotes.tsx';
 import Footer from '../components/Footer.astro';
@@ -9,6 +10,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 type Props = CollectionEntry<'blog'>['data'];
 
 const { title, pubDate, tags } = Astro.props;
+const isBearRelated = tags.includes('bear');
 ---
 
 <html lang="en">
@@ -26,19 +28,22 @@ const { title, pubDate, tags } = Astro.props;
 
             <div class="flex items-center gap-3">
               <img src="https://f.kristianfreeman.com/kf.jpg" alt="Kristian Freeman" class="rounded-full w-8 h-8 m-0 object-cover" />
-              <a style={{ color: "var(--text-color)" }} href="https://twitter.com/@kristianf_">Kristian Freeman</a>
+              <a class="text-primary" href="https://twitter.com/@kristianf_">Kristian Freeman</a>
             </div>
 
-            <div class="flex items-center flex-wrap gap-4">
+            <div class="flex items-center flex-wrap gap-4 text-secondary">
               <div>
                 Published <FormattedDate date={pubDate} /> 
               </div>
-              &middot;
+              <span class="hidden md:block">
+                &middot;
+              </span>
               {tags.map((tag) => (
                 <a href={`/tags/${tag}`}>#{tag}</a>
               ))}
             </div>
           </div>
+          {isBearRelated && <BearPostBanner />}
           <slot />
           <hr />
         </div>
