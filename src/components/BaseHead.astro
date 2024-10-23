@@ -9,7 +9,7 @@ interface Props {
   image?: string;
 }
 
-const { title, description } = Astro.props;
+const { image, title, description } = Astro.props;
 const url = Astro.url;
 
 const canonicalURL = new URL(url.pathname, Astro.site);
@@ -46,12 +46,14 @@ if (url.pathname !== '/') {
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={seoTitle} />
 <meta property="og:description" content={description} />
+{image && <meta property="og:image" content={new URL(image, Astro.url)} />}
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={seoTitle} />
 <meta property="twitter:description" content={description} />
+{image && <meta property="twitter:image" content={new URL(image, Astro.url)} />}
 
 <script is:inline>
   window.addEventListener('load', () => {
