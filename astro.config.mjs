@@ -30,6 +30,5 @@ export default defineConfig({
   experimental: {
     clientPrerender: true,
   },
-  trailingSlash: 'always',
   site: 'https://kristianfreeman.com',
 });
