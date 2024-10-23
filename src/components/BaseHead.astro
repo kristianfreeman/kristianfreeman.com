@@ -1,6 +1,7 @@
 ---
 import 'littlefoot/dist/littlefoot.css'
 import '../styles/global.css';
+import { SITE_TITLE } from '../consts';
 
 interface Props {
   title: string;
@@ -8,9 +9,15 @@ interface Props {
   image?: string;
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const { title, description } = Astro.props;
+const url = Astro.url;
 
-const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
+const canonicalURL = new URL(url.pathname, Astro.site);
+
+let seoTitle = title;
+if (url.pathname !== '/') {
+  seoTitle = `${title} | ${SITE_TITLE}`;
+}
 ---
 
 <!-- Global Metadata -->
@@ -28,23 +35,21 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Primary Meta Tags -->
-<title>{title}</title>
-<meta name="title" content={title} />
+<title>{seoTitle}</title>
+<meta name="title" content={seoTitle} />
 <meta name="description" content={description} />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />
-<meta property="og:title" content={title} />
+<meta property="og:title" content={seoTitle} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.url)} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
-<meta property="twitter:title" content={title} />
+<meta property="twitter:title" content={seoTitle} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, Astro.url)} />
 
 <script is:inline>
   window.addEventListener('load', () => {

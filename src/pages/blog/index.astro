@@ -16,7 +16,7 @@ let tags = [...new Set(posts.map((post) => post.data.tags).flat().filter(Boolean
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead title="Blog" description={SITE_DESCRIPTION} />
   </head>
   <body class="space-y-8">
     <Header url={Astro.url} />

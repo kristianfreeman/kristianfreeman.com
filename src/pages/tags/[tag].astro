@@ -2,6 +2,7 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.tsx';
 import Footer from '../../components/Footer.astro';
+import { titleize } from "inflection";
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
@@ -29,7 +30,7 @@ export async function getStaticPaths() {
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead title={titleize(tag)} description={SITE_DESCRIPTION} />
   </head>
   <body class="space-y-8">
     <Header url={Astro.url} />

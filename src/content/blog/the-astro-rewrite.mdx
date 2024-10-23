@@ -1,0 +1,40 @@
+---
+title: The Astro Rewrite
+pubDate: 'Oct 23 2024'
+tags:
+  - astro
+  - meta
+  - webdev
+---
+
+I migrated my blog from [bearblog.dev](https://bearblog.dev) to Astro!
+
+Over the past month or two, I've been building heavily on Astro. I've been really impressed with some of the design decisions in the framework, particularly the [content layer](/an-introduction-to-astros-content-system/).
+
+After spending all this time looking at Astro, I began to dream about how I could use those features on my own blog. And with a lot of [struggles with some features (or lack of) on bearblog](/the-big-bearblog-syntax-highlighting-hack/), particularly around dev-oriented features like a proper API, and syntax highlighting for newer languages, I decided to tackle the rewrite.
+
+I used the [Astro blog template](https://github.com/withastro/astro/tree/main/examples/blog) to begin my rewrite. It was great! Out of the box, it has good support for rendering content and a few extra pages, like an index and about page.
+
+I was able to take that template and update the styling to fit my needs. My new Astro site looks very similar to my bearblog, but with the added benefit of using Tailwind under the hood, along with any other additional components I want to add.[^1]
+
+I've already started implementing a bunch of new features I'm excited about. The ["Tips" page](/tips/) is a great example - it was built on a pretty [hacky implementation](/creating-a-custom-post-list-page-in-bear/) in bearblog, but in Astro, I was able to build a full tag template/page and link to it directly in the nav (`/tags/tip`):
+
+```astro
+---
+// src/pages/tags/[tag].astro
+let posts = await getCollection('blog');
+const tag = Astro.params.tag;
+posts = posts.filter(post => post.data.tags.includes(tag));
+---
+{posts.map(post => (
+  <div>
+    <a href={`/${post.slug}/`}>
+      {post.data.title}
+    </a>
+  </div>
+))}
+```
+
+Really happy with the results! The code is [fully open-source](https://github.com/kristianfreeman/kristianfreeman-astro), and although it's a bit messy now, I will be cleaning it up over the next few weeks.
+
+[^1]: I'll probably add [shadcn/ui](/brief-shadcnui-review/) soon, and the blog will end up being an interesting mix of bearblog's semantic HTML and shadcn's Tailwind-based, Apple-y design. Fun times!
