@@ -24,5 +24,12 @@ export default defineConfig({
       ],
     },
   },
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'viewport',
+  },
+  experimental: {
+    clientPrerender: true,
+  },
   site: 'https://kristianfreeman.com',
 });
