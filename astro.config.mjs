@@ -17,7 +17,6 @@ export default defineConfig({
       transformers: [
         {
           pre(node) {
-            // add no-prose to node.properties.class, which is a string
             node.properties.class += ' not-prose';
           },
         }
@@ -31,5 +30,6 @@ export default defineConfig({
   experimental: {
     clientPrerender: true,
   },
+  trailingSlash: 'always',
   site: 'https://kristianfreeman.com',
 });
