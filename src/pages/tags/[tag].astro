@@ -43,7 +43,7 @@ export async function getStaticPaths() {
           {posts.map((post) => (
             <div class="flex flex-col gap-2">
               <h2>
-                <a href={`/${post.slug}/`}>
+                <a href={`/${post.slug}`}>
                   {post.data.title}
                 </a>
               </h2>

@@ -10,7 +10,12 @@ import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
+  experimental: {
+    clientPrerender: true,
+  },
+
   integrations: [mdx(), sitemap(), react(), tailwind()],
+
   markdown: {
     shikiConfig: {
       theme: 'catppuccin-mocha',
@@ -23,12 +28,12 @@ export default defineConfig({
       ],
     },
   },
+
+  output: 'static',
   prefetch: {
     prefetchAll: true,
     defaultStrategy: 'viewport',
   },
-  experimental: {
-    clientPrerender: true,
-  },
   site: 'https://kristianfreeman.com',
+  trailingSlash: 'never',
 });
