@@ -10,7 +10,7 @@ let posts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
-const tags = [...new Set(posts.map((post) => post.data.tags).flat().filter(Boolean))];
+let tags = [...new Set(posts.map((post) => post.data.tags).flat().filter(Boolean))].sort()
 ---
 
 <!doctype html>
