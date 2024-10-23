@@ -1,12 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
-
 import sitemap from '@astrojs/sitemap';
-
 import react from '@astrojs/react';
-
 import tailwind from '@astrojs/tailwind';
+
+import {
+  transformerMetaHighlight
+} from '@shikijs/transformers'
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,7 +15,12 @@ export default defineConfig({
     clientPrerender: true,
   },
 
-  integrations: [mdx(), sitemap(), react(), tailwind()],
+  integrations: [
+    mdx(),
+    sitemap(),
+    react(),
+    tailwind()
+  ],
 
   markdown: {
     shikiConfig: {
@@ -24,9 +30,11 @@ export default defineConfig({
           pre(node) {
             node.properties.class += ' not-prose';
           },
-        }
+        },
+        transformerMetaHighlight(),
       ],
-    },
+      wrap: true,
+    }
   },
 
   output: 'static',

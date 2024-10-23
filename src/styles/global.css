@@ -136,6 +136,18 @@ pre, code {
   font-family: var(--monospace-font);
 }
 
+.astro-code {
+  border: 1px solid var(--text-color);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.astro-code .highlighted {
+  background: rgba(137, 180, 250, 0.1);
+  display: inline-block;
+  width: 100%;
+}
+
 blockquote {
   border-left: 1px solid #999;
   color: var(--code-color);

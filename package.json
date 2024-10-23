@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "check": "astro check",
+    "check": "rm -rf dist && astro check",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -32,6 +32,7 @@
     "typescript": "^5.6.3"
   },
   "devDependencies": {
+    "@shikijs/transformers": "^1.22.0",
     "@tailwindcss/typography": "^0.5.15",
     "husky": "^9.1.6"
   }

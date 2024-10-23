@@ -13,8 +13,8 @@ tl;dr - the `rails-cloudflare-turnstile` gem[^1] ([GitHub link](https://github.c
 
 First, install the gem:
 
-```ruby
-bundle add rails-cloudflare-turnstile
+```sh
+$ bundle add rails-cloudflare-turnstile
 ```
 
 If you haven't enabled Turnstile yet in your Cloudflare account, follow the ["Get Started" guide](https://developers.cloudflare.com/turnstile/get-started/). You'll need a sitekey and secret key. Make sure to associate it with your domain too - for instance, `kristianfreeman.com` - in the Turnstile settings.
@@ -67,7 +67,7 @@ In your forms, you can use the `<%= cloudflare_turnstile %>` partial to embed th
 
 Users are created in my app in `UsersController#create`. Let's validate the Turnstile data before calling that method:
 
-```ruby
+```ruby {2-3,9-13}
 class UsersController < ApplicationController
   before_action :validate_cloudflare_turnstile, only: [:create] if Rails.env.production?
   rescue_from RailsCloudflareTurnstile::Forbidden, with: :forbidden_turnstile
