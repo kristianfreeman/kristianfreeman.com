@@ -17,9 +17,9 @@ export default defineConfig({
 
   integrations: [
     mdx(),
-    sitemap(),
     react(),
-    tailwind()
+    sitemap(),
+    tailwind(),
   ],
 
   markdown: {
