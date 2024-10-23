@@ -1,254 +1,372 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>404 - Page Not Found</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #1a1a1a;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .container {
+        text-align: center;
+      }
+      a {
+        color: #fff;
+      }
+      h1 {
+        font-size: 4em;
+        margin-bottom: 10px;
+      }
+      p {
+        font-size: 1.2em;
+        margin-bottom: 20px;
+      }
+      .sequencer {
+        display: grid;
+        grid-template-columns: auto repeat(16, 1fr);
+        gap: 5px;
+        margin-bottom: 20px;
+      }
+      .step {
+        width: 30px;
+        height: 30px;
+        background-color: #333;
+        border: none;
+        cursor: pointer;
+      }
+      .step.active {
+        background-color: #f00;
+      }
+      .step.active.hihat {
+        background-color: #0f0;
+      }
+      .step.active.snare {
+        background-color: #00f;
+      }
+      .step.active.cowbell {
+        background-color: #ff0;
+      }
+      .controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 1em;
+        cursor: pointer;
+      }
+      .instrument-label {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 10px;
+        font-weight: bold;
+      }
+      .tempo-control {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      #tempoSlider {
+        width: 200px;
+      }
+      @media (max-width: 640px) {
+        #hide-on-mobile {
+          display: none;
         }
-        .container {
-            text-align: center;
-        }
-    a { color: #fff; }
-        h1 {
-            font-size: 4em;
-            margin-bottom: 10px;
-        }
-        p {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-        .sequencer {
-            display: grid;
-            grid-template-columns: auto repeat(16, 1fr);
-            gap: 5px;
-            margin-bottom: 20px;
-        }
-        .step {
-            width: 30px;
-            height: 30px;
-            background-color: #333;
-            border: none;
-            cursor: pointer;
-        }
-        .step.active {
-            background-color: #f00;
-        }
-        .step.active.hihat { background-color: #0f0; }
-        .step.active.snare { background-color: #00f; }
-        .step.active.cowbell { background-color: #ff0; }
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-        .instrument-label {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 10px;
-            font-weight: bold;
-        }
-        .tempo-control {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        #tempoSlider {
-            width: 200px;
-        }
-        @media (max-width: 640px) {
-            #hide-on-mobile {
-                display: none;
-            }
-        }
+      }
+      #waveCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <canvas id="waveCanvas"></canvas>
     <div class="container">
-        <h1>404</h1>
-        <p>Page Not Found. <a href="/">Go home</a></p>
-        <div id="hide-on-mobile">
-            <div class="sequencer" id="sequencer"></div>
-            <div class="controls">
-                <button id="playBtn">Play</button>
-                <button id="stopBtn">Stop</button>
-            </div>
-            <div class="tempo-control">
-                <label for="tempoSlider">Tempo:</label>
-                <input type="range" id="tempoSlider" min="60" max="180" value="120">
-                <span id="tempoValue">120 BPM</span>
-            </div>
+      <h1>404</h1>
+      <p>Page Not Found. <a href="/">Go home</a></p>
+      <div id="hide-on-mobile">
+        <div class="sequencer" id="sequencer"></div>
+        <div class="controls">
+          <button id="playBtn">Play</button>
+          <button id="stopBtn">Stop</button>
         </div>
+        <div class="tempo-control">
+          <label for="tempoSlider">Tempo:</label>
+          <input type="range" id="tempoSlider" min="60" max="180" value="120" />
+          <span id="tempoValue">120 BPM</span>
+        </div>
+      </div>
     </div>
 
     <script>
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const instruments = ['kick', 'hihat', 'snare', 'cowbell'];
-        const sequences = {
-            kick: Array(16).fill(false),
-            hihat: Array(16).fill(false),
-            snare: Array(16).fill(false),
-            cowbell: Array(16).fill(false)
-        };
-        let isPlaying = false;
-        let currentStep = 0;
-        let tempo = 120;
+      const audioContext = new (window.AudioContext ||
+        window.webkitAudioContext)();
+      const instruments = ["kick", "hihat", "snare", "cowbell"];
+      const sequences = {
+        kick: Array(16).fill(false),
+        hihat: Array(16).fill(false),
+        snare: Array(16).fill(false),
+        cowbell: Array(16).fill(false),
+      };
+      let isPlaying = false;
+      let currentStep = 0;
+      let tempo = 120;
 
-        function createSound(type) {
-            const gainNode = audioContext.createGain();
-            gainNode.connect(audioContext.destination);
+      function createSound(type) {
+        const gainNode = audioContext.createGain();
+        gainNode.connect(audioContext.destination);
 
-            switch (type) {
-                case 'kick':
-                    const kickOsc = audioContext.createOscillator();
-                    kickOsc.frequency.setValueAtTime(150, audioContext.currentTime);
-                    kickOsc.frequency.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-                    gainNode.gain.setValueAtTime(1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.5);
-                    kickOsc.connect(gainNode);
-                    kickOsc.start(audioContext.currentTime);
-                    kickOsc.stop(audioContext.currentTime + 0.5);
-                    break;
-                case 'hihat':
-                    const hihatBuffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.1, audioContext.sampleRate);
-                    const hihatData = hihatBuffer.getChannelData(0);
-                    for (let i = 0; i < hihatBuffer.length; i++) {
-                        hihatData[i] = Math.random() * 2 - 1;
-                    }
-                    const hihatSource = audioContext.createBufferSource();
-                    hihatSource.buffer = hihatBuffer;
-                    const hihatFilter = audioContext.createBiquadFilter();
-                    hihatFilter.type = 'highpass';
-                    hihatFilter.frequency.value = 7000;
-                    hihatSource.connect(hihatFilter);
-                    hihatFilter.connect(gainNode);
-                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-                    hihatSource.start(audioContext.currentTime);
-                    hihatSource.stop(audioContext.currentTime + 0.1);
-                    break;
-                case 'snare':
-                    const snareNoise = audioContext.createBufferSource();
-                    const snareBuffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.1, audioContext.sampleRate);
-                    const snareData = snareBuffer.getChannelData(0);
-                    for (let i = 0; i < snareBuffer.length; i++) {
-                        snareData[i] = Math.random() * 2 - 1;
-                    }
-                    snareNoise.buffer = snareBuffer;
-                    const snareFilter = audioContext.createBiquadFilter();
-                    snareFilter.type = 'lowpass';
-                    snareFilter.frequency.value = 4000;
-                    snareNoise.connect(snareFilter);
-                    snareFilter.connect(gainNode);
-                    gainNode.gain.setValueAtTime(0.6, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-                    snareNoise.start(audioContext.currentTime);
-                    
-                    const snareOsc = audioContext.createOscillator();
-                    snareOsc.type = 'triangle';
-                    snareOsc.frequency.setValueAtTime(100, audioContext.currentTime);
-                    snareOsc.frequency.exponentialRampToValueAtTime(40, audioContext.currentTime + 0.1);
-                    snareOsc.connect(gainNode);
-                    snareOsc.start(audioContext.currentTime);
-                    snareOsc.stop(audioContext.currentTime + 0.2);
-                    break;
-                case 'cowbell':
-                    const cowbellOsc1 = audioContext.createOscillator();
-                    const cowbellOsc2 = audioContext.createOscillator();
-                    cowbellOsc1.type = 'square';
-                    cowbellOsc2.type = 'square';
-                    cowbellOsc1.frequency.setValueAtTime(560, audioContext.currentTime);
-                    cowbellOsc2.frequency.setValueAtTime(845, audioContext.currentTime);
-                    cowbellOsc1.connect(gainNode);
-                    cowbellOsc2.connect(gainNode);
-                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
-                    cowbellOsc1.start(audioContext.currentTime);
-                    cowbellOsc2.start(audioContext.currentTime);
-                    cowbellOsc1.stop(audioContext.currentTime + 0.4);
-                    cowbellOsc2.stop(audioContext.currentTime + 0.4);
-                    break;
+        if (type === "kick") {
+          const currentTime = audioContext.currentTime;
+          if (currentTime - lastKickTime > 0.1) {
+            kickPulse = Math.PI;
+            lastKickTime = currentTime;
+          }
+        }
+
+        switch (type) {
+          case "kick":
+            const kickOsc = audioContext.createOscillator();
+            kickOsc.frequency.setValueAtTime(150, audioContext.currentTime);
+            kickOsc.frequency.exponentialRampToValueAtTime(
+              0.01,
+              audioContext.currentTime + 0.5
+            );
+            gainNode.gain.setValueAtTime(1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(
+              0.001,
+              audioContext.currentTime + 0.5
+            );
+            kickOsc.connect(gainNode);
+            kickOsc.start(audioContext.currentTime);
+            kickOsc.stop(audioContext.currentTime + 0.5);
+            break;
+          case "hihat":
+            const hihatBuffer = audioContext.createBuffer(
+              1,
+              audioContext.sampleRate * 0.1,
+              audioContext.sampleRate
+            );
+            const hihatData = hihatBuffer.getChannelData(0);
+            for (let i = 0; i < hihatBuffer.length; i++) {
+              hihatData[i] = Math.random() * 2 - 1;
             }
-        }
-
-        function createSequencer() {
-            const sequencerEl = document.getElementById('sequencer');
-            instruments.forEach(instrument => {
-                const label = document.createElement('div');
-                label.textContent = instrument.charAt(0).toUpperCase() + instrument.slice(1);
-                label.classList.add('instrument-label');
-                sequencerEl.appendChild(label);
-
-                for (let i = 0; i < 16; i++) {
-                    const step = document.createElement('button');
-                    step.classList.add('step', instrument);
-                    step.addEventListener('click', () => toggleStep(instrument, i));
-                    sequencerEl.appendChild(step);
-                }
-            });
-        }
-
-        function toggleStep(instrument, index) {
-            sequences[instrument][index] = !sequences[instrument][index];
-            document.querySelectorAll(`.step.${instrument}`)[index].classList.toggle('active');
-        }
-
-        function playSequence() {
-            if (!isPlaying) return;
-
-            instruments.forEach(instrument => {
-                if (sequences[instrument][currentStep]) {
-                    createSound(instrument);
-                }
-            });
-
-            document.querySelectorAll('.step').forEach((step, index) => {
-                step.style.opacity = index % 16 === currentStep ? '0.5' : '1';
-            });
-
-            currentStep = (currentStep + 1) % 16;
-            setTimeout(playSequence, 60000 / (tempo * 4)); // 16th notes
-        }
-
-        document.getElementById('playBtn').addEventListener('click', () => {
-            if (!isPlaying) {
-                isPlaying = true;
-                currentStep = 0;
-                playSequence();
+            const hihatSource = audioContext.createBufferSource();
+            hihatSource.buffer = hihatBuffer;
+            const hihatFilter = audioContext.createBiquadFilter();
+            hihatFilter.type = "highpass";
+            hihatFilter.frequency.value = 7000;
+            hihatSource.connect(hihatFilter);
+            hihatFilter.connect(gainNode);
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(
+              0.01,
+              audioContext.currentTime + 0.1
+            );
+            hihatSource.start(audioContext.currentTime);
+            hihatSource.stop(audioContext.currentTime + 0.1);
+            break;
+          case "snare":
+            const snareNoise = audioContext.createBufferSource();
+            const snareBuffer = audioContext.createBuffer(
+              1,
+              audioContext.sampleRate * 0.1,
+              audioContext.sampleRate
+            );
+            const snareData = snareBuffer.getChannelData(0);
+            for (let i = 0; i < snareBuffer.length; i++) {
+              snareData[i] = Math.random() * 2 - 1;
             }
+            snareNoise.buffer = snareBuffer;
+            const snareFilter = audioContext.createBiquadFilter();
+            snareFilter.type = "lowpass";
+            snareFilter.frequency.value = 4000;
+            snareNoise.connect(snareFilter);
+            snareFilter.connect(gainNode);
+            gainNode.gain.setValueAtTime(0.6, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(
+              0.01,
+              audioContext.currentTime + 0.2
+            );
+            snareNoise.start(audioContext.currentTime);
+
+            const snareOsc = audioContext.createOscillator();
+            snareOsc.type = "triangle";
+            snareOsc.frequency.setValueAtTime(100, audioContext.currentTime);
+            snareOsc.frequency.exponentialRampToValueAtTime(
+              40,
+              audioContext.currentTime + 0.1
+            );
+            snareOsc.connect(gainNode);
+            snareOsc.start(audioContext.currentTime);
+            snareOsc.stop(audioContext.currentTime + 0.2);
+            break;
+          case "cowbell":
+            const cowbellOsc1 = audioContext.createOscillator();
+            const cowbellOsc2 = audioContext.createOscillator();
+            cowbellOsc1.type = "square";
+            cowbellOsc2.type = "square";
+            cowbellOsc1.frequency.setValueAtTime(560, audioContext.currentTime);
+            cowbellOsc2.frequency.setValueAtTime(845, audioContext.currentTime);
+            cowbellOsc1.connect(gainNode);
+            cowbellOsc2.connect(gainNode);
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(
+              0.01,
+              audioContext.currentTime + 0.4
+            );
+            cowbellOsc1.start(audioContext.currentTime);
+            cowbellOsc2.start(audioContext.currentTime);
+            cowbellOsc1.stop(audioContext.currentTime + 0.4);
+            cowbellOsc2.stop(audioContext.currentTime + 0.4);
+            break;
+        }
+      }
+
+      function createSequencer() {
+        const sequencerEl = document.getElementById("sequencer");
+        instruments.forEach((instrument) => {
+          const label = document.createElement("div");
+          label.textContent =
+            instrument.charAt(0).toUpperCase() + instrument.slice(1);
+          label.classList.add("instrument-label");
+          sequencerEl.appendChild(label);
+
+          for (let i = 0; i < 16; i++) {
+            const step = document.createElement("button");
+            step.classList.add("step", instrument);
+            step.addEventListener("click", () => toggleStep(instrument, i));
+            sequencerEl.appendChild(step);
+          }
+        });
+      }
+
+      function toggleStep(instrument, index) {
+        sequences[instrument][index] = !sequences[instrument][index];
+        document
+          .querySelectorAll(`.step.${instrument}`)
+          [index].classList.toggle("active");
+      }
+
+      function playSequence() {
+        if (!isPlaying) return;
+
+        instruments.forEach((instrument) => {
+          if (sequences[instrument][currentStep]) {
+            createSound(instrument);
+          }
         });
 
-        document.getElementById('stopBtn').addEventListener('click', () => {
-            isPlaying = false;
+        document.querySelectorAll(".step").forEach((step, index) => {
+          step.style.opacity = index % 16 === currentStep ? "0.5" : "1";
         });
 
-        const tempoSlider = document.getElementById('tempoSlider');
-        const tempoValue = document.getElementById('tempoValue');
+        currentStep = (currentStep + 1) % 16;
+        setTimeout(playSequence, 60000 / (tempo * 4)); // 16th notes
+      }
 
-        tempoSlider.addEventListener('input', () => {
-            tempo = parseInt(tempoSlider.value);
-            tempoValue.textContent = `${tempo} BPM`;
-        });
+      document.getElementById("playBtn").addEventListener("click", () => {
+        if (!isPlaying) {
+          isPlaying = true;
+          currentStep = 0;
+          playSequence();
+          startWaveAnimation();
+        }
+      });
 
-        createSequencer();
+      document.getElementById("stopBtn").addEventListener("click", () => {
+        isPlaying = false;
+        stopWaveAnimation();
+      });
+
+      const tempoSlider = document.getElementById("tempoSlider");
+      const tempoValue = document.getElementById("tempoValue");
+
+      tempoSlider.addEventListener("input", () => {
+        tempo = parseInt(tempoSlider.value);
+        tempoValue.textContent = `${tempo} BPM`;
+      });
+
+      createSequencer();
+
+      const canvas = document.getElementById("waveCanvas");
+      const ctx = canvas.getContext("2d");
+      let gradient;
+      let animationFrameId;
+      let waveOffset = 0;
+      let lastKickTime = 0;
+      let kickPulse = 0;
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        createGradient();
+      }
+
+      function createGradient() {
+        const hue1 = Math.random() * 360;
+        const hue2 = (hue1 + 180) % 360;
+        gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, `hsl(${hue1}, 70%, 60%)`);
+        gradient.addColorStop(1, `hsl(${hue2}, 70%, 60%)`);
+      }
+
+      function drawWave() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = gradient;
+
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height);
+
+        for (let x = 0; x <= canvas.width; x += 10) {
+          const y = Math.sin((x + waveOffset) / 200) * 50 + canvas.height / 2;
+          ctx.lineTo(x, y + Math.sin(kickPulse) * 20);
+        }
+
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.closePath();
+        ctx.fill();
+
+        waveOffset -= 2;
+        if (kickPulse > 0) {
+          kickPulse -= 0.2;
+        }
+
+        animationFrameId = requestAnimationFrame(drawWave);
+      }
+
+      function startWaveAnimation() {
+        if (!animationFrameId) {
+          drawWave();
+        }
+      }
+
+      function stopWaveAnimation() {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+      }
+
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
     </script>
-</body>
+  </body>
 </html>
-
