@@ -1,45 +1,12 @@
-:root {
-  --width: 980px;
-  --font-main: "Atkinson Hyperlegible", sans-serif;
-  --popover-font-family: "Atkinson Hyperlegible", sans-serif;
-  --font-secondary: "Atkinson Hyperlegible", sans-serif;
-  --monospace-font: "JetBrains Mono", monospace;
-  --font-scale: 1.25rem;
-  --background-color: #fff;
-  --text-color: #444;
-  --heading-color: #222;
-  --link-color: #1e66f5;
-  --visited-color: #8b6fcb;
-  --blockquote-color: #222;
-  --nav-link-color: #444;
-  --nav-link-hover-bg: #f2f2f2;
-  --nav-link-active-bg: #89b4fa;
-  --nav-link-active-color: #fff;
-  --nav-link-img-filter: invert(1);
-  --littlefoot-button-bg: #444;
-  --littlefoot-button-text: #444;
-  --littlefoot-button-active-bg: #444;
-  --littlefoot-button-active-text: #222;
-  --littlefoot-popover-bg: #fff;
-  --littlefoot-popover-border: 1px solid #ccc;
-  --littlefoot-popover-text: #444;
-  --littlefoot-popover-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-  --littlefoot-popover-scroll-indicator: #3273dc;
-}
+@tailwind base;
 
-@media (prefers-color-scheme: dark) {
+@layer base {
+  * {
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+  }
+
   :root {
-    --background-color: #01242e;
-    --heading-color: #eee;
-    --text-color: #ddd;
-    --link-color: #89b4fa;
-    --visited-color: #8b6fcb;
-    --blockquote-color: #ccc;
-    --nav-link-color: #fff;
-    --nav-link-hover-bg: #313244;
-    --nav-link-active-bg: #89b4fa;
-    --nav-link-active-color: #1e1e2e;
-    --nav-link-img-filter: invert();
     --littlefoot-button-bg: #313244;
     --littlefoot-button-text: #cdd6f4;
     --littlefoot-button-active-bg: #45475a;
@@ -50,57 +17,29 @@
     --littlefoot-popover-shadow: 0 0 8px rgba(24, 24, 37, 0.3);
     --littlefoot-popover-scroll-indicator: #74c7ec;
   }
-}
 
-body {
-  font-family: var(--font-secondary);
-  font-size: var(--font-scale);
-  margin: auto;
-  padding: 2rem;
-  max-width: var(--width);
-  text-align: left;
-  background-color: var(--background-color);
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  color: var(--text-color);
-}
-
-.text-primary {
-  color: var(--text-color);
-}
-
-.text-secondary {
-  color: #6c6f85;
-}
-
-@media (prefers-color-scheme: dark) {
-  .text-secondary {
-    color: #a6adc8;
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --littlefoot-button-bg: #444;
+      --littlefoot-button-text: #444;
+      --littlefoot-button-active-bg: #444;
+      --littlefoot-button-active-text: #222;
+      --littlefoot-popover-bg: #fff;
+      --littlefoot-popover-border: 1px solid #ccc;
+      --littlefoot-popover-text: #444;
+      --littlefoot-popover-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+      --littlefoot-popover-scroll-indicator: #3273dc;
+    }
   }
+
+  a { @apply text-blue-500 no-underline; }
+  a:hover { @apply underline; }
+  ul, ol { @apply list-disc list-inside; }
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-main);
-  color: var(--heading-color);
-}
 
-a {
-  color: var(--link-color);
-  cursor: pointer;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline; 
-}
-
-strong, b {
-  color: var(--heading-color);
-}
-
-ul, ol {
-  list-style-type: inherit;
-}
+@tailwind components;
+@tailwind utilities;
 
 button {
   margin: 0;
@@ -120,10 +59,6 @@ hr {
   border: none;
   max-width: inherit;
   height: auto;
-}
-
-pre, code {
-  font-family: var(--monospace-font);
 }
 
 .astro-code {
@@ -196,7 +131,6 @@ ul.blog-posts li a:visited {
 
 ul.blog-posts li span time {
   font-family: var(--font-main);
-  font-size: 1rem;
   font-style: normal;
 }
 
@@ -297,26 +231,6 @@ header nav {
   margin-bottom: 2rem;
 }
 
-a.nav-link {
-  align-items: center;
-  gap: 1rem;
-  color: var(--nav-link-color);
-  background: none;
-  padding: .25rem .75rem;
-  border-radius: .25rem;
-  transition: background 0.1s ease-in-out;
-}
-
-a.nav-link:hover {
-  background: var(--nav-link-hover-bg);
-  text-decoration: none;
-}
-
-a.nav-link.active {
-  background: var(--nav-link-active-bg);
-  color: var(--nav-link-active-color);
-}
-
 /* Notice styles */
 .notice {
   padding: 1.5rem;
@@ -332,7 +246,6 @@ a.nav-link.active {
 }
 
 .notice h4 {
-  font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
   margin-top: 0;
@@ -407,3 +320,66 @@ a.nav-link.active {
 /* fun stuff */
 .cursor-8bit { cursor: url('data:image/x-icon;base64,AAACAAEAICACAAAAAAAwAQAAFgAAACgAAAAgAAAAQAAAAAEAAQAAAAAAgAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8AAAAPAAAADAAAAAwAAAA8AAAAPAAAADAAAAAwAAAM8AAADPAAAA/wAAAP8AAAD/wAAA/8AAAP8AAAD/AAAA/AAAAPwAAADwAAAA8AAAAMAAAADAAAAAAAAAAAAAAAAAAAAAAAAAA///////////////////////D////w////wD///8A////A////wP//zwD//88A///DA///wwP//8AD///AA///wAA//8AAP//AAP//wAD//8AD///AA///wA///8AP///AP///wD///8D////A////w////8P////P////z////8='), auto; }
 .cursor-halloween { cursor: url('data:image/x-icon;base64,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AP8AAAAIAAAABgAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/////////////////8AH//8AAf/+AAD//AAAf/gAAD/wAAAf8AAAH+AAAA/gAAAP4AAAD+AAAA/gAAAP4AAAD+AAAA/wAAAP8AAAH/gAAB/8AAA//gAAf/8AAP//gAH///4H////A////4P////H//////////////////////8='), auto; }
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

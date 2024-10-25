@@ -2,37 +2,34 @@ import type { CollectionEntry } from 'astro:content';
 import clsx from 'clsx';
 import HeaderLink from './HeaderLink.tsx';
 import { SITE_TITLE } from '../consts';
+import { Newspaper, Paperclip, Search } from 'lucide-react';
 
 type BlogPost = CollectionEntry<'blog'>['data'];
 
-export default ({ post, url }: { post?: BlogPost, url: URL }) => (
-  <header className="space-y-4 mb-12">
-    <nav className="flex items-center gap-4">
-      <a className={clsx(url.pathname == "/" ? "underline decoration-dashed" : "", "font-bold flex-1 text-primary")} href="/">
-        {SITE_TITLE}
-      </a>
-
-      <div className="hidden md:flex items-center gap-4">
-        <HeaderLink active={url.pathname.startsWith("/blog") || post && !post.tags.includes('tip')} href="/blog">
-          Blog
-        </HeaderLink>
-
-        <HeaderLink active={url.pathname.startsWith("/tags/tip") || post && post.tags.includes('tip')} className="hidden md:block" href="/tags/tip">
-          Tips
-        </HeaderLink>
-
-        <a href="https://twitter.com/kristianf_" target="_blank" className="nav-link">
-          @kristianf_
+export default ({ post, url }: { post?: BlogPost, url: URL }) => {
+  return (
+    <header className="h-16 pt-8 space-y-4 mb-12">
+      <nav className="flex items-center gap-4">
+        <a className={clsx("text-foreground font-bold flex-1 hover:no-underline")} href="/">
+          {SITE_TITLE}
         </a>
 
-        <a href="https://kristianf.dev/youtube" target="_blank" className="nav-link">
-          YouTube
-        </a>
+        <div className="hidden md:flex items-center gap-8">
+          <HeaderLink active={url.pathname.startsWith("/blog") || post && !post.tags.includes('tip')} href="/blog">
+            <Newspaper size={14} />
+            Blog
+          </HeaderLink>
 
-        <a href="https://github.com/kristianfreeman" target="_blank" className="nav-link">
-          GitHub
-        </a>
-      </div>
-    </nav>
-  </header>
-)
+          <HeaderLink active={url.pathname.startsWith("/links")} href="/links">
+            <Paperclip size={14} />
+            Links
+          </HeaderLink>
+
+          <span className="hidden md:flex items-center gap-1 text-foreground/60">
+            <Search size={16} /> ⌘+K
+          </span>
+        </div>
+      </nav>
+    </header>
+  )
+}

@@ -1,0 +1,29 @@
+---
+import BaseHead from "@/components/BaseHead.astro";
+import Header from "@/components/Header.tsx";
+import Footer from "@/components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
+import CommandMenu from "@/components/CommandMenu.tsx";
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html class="dark" lang="en">
+  <head>
+    <BaseHead
+      title={title || SITE_TITLE}
+      description={description || SITE_DESCRIPTION}
+    />
+  </head>
+
+  <body class="bg-base">
+    <CommandMenu client:only="react" />
+    <div class="container mx-auto space-y-8">
+      <Header url={Astro.url} />
+      <main class="prose">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

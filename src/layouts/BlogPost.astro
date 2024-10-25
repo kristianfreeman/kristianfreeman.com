@@ -1,48 +1,56 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import BearPostBanner from '../components/BearPostBanner.astro';
-import Header from '../components/Header.tsx';
-import Footnotes from '../components/Footnotes.tsx';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
+import BaseHead from '@/components/BaseHead.astro';
+import BearPostBanner from '@/components/BearPostBanner.astro';
+import Header from '@/components/Header.tsx';
+import Footnotes from '@/components/Footnotes.tsx';
+import Footer from '@/components/Footer.astro';
+import FormattedDate from '@/components/FormattedDate.astro';
+import { Calendar, Tag } from 'lucide-react';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, pubDate, tags } = Astro.props;
+const { title, description, pubDate, tags } = Astro.props;
 const isBearRelated = tags.includes('bear');
 ---
 
-<html lang="en">
+<html class="dark" lang="en">
   <head>
     <BaseHead title={title} />
   </head>
 
-  <body class="space-y-8">
+  <body class="bg-base container mx-auto space-y-8">
     <Header post={Astro.props} url={Astro.url} />
     <main>
       <article>
-        <div class="prose-xl">
+        <div class="prose">
           <div class="space-y-4">
-            <h1 class="text-2xl font-bold tracking-wider">
+            <h1 class="tracking-wider">
               {title}
             </h1>
+
+            {description && <h2>{description}</h2>}
 
             <div class="flex items-center gap-3">
               <img src="https://f.kristianfreeman.com/kf.jpg" alt="Kristian Freeman" class="rounded-full w-8 h-8 m-0 object-cover" />
               <a class="text-primary" href="https://twitter.com/@kristianf_">Kristian Freeman</a>
             </div>
 
-            <div class="flex items-center flex-wrap gap-4 text-secondary">
-              <div>
-                Published <FormattedDate date={pubDate} /> 
+            <div class="flex items-center flex-wrap gap-4">
+              <div class="flex items-center gap-2">
+                <Calendar size={16} />
+                <FormattedDate date={pubDate} /> 
               </div>
-              <span class="hidden md:block">
-                &middot;
-              </span>
-              {tags.map((tag) => (
-                <a href={`/tags/${tag}`}>#{tag}</a>
-              ))}
+              {tags.length > 0 && (
+                <span class="flex items-center gap-2">
+                  <Tag size={16} />
+                  <span class="space-x-2">
+                    {tags.map((tag) => (
+                      <a href={`/tags/${tag}`}>#{tag}</a>
+                    ))}
+                  </span>
+                </span>
+              )}
             </div>
           </div>
           {isBearRelated && <BearPostBanner />}

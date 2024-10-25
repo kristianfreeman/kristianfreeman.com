@@ -19,7 +19,9 @@ export default defineConfig({
     mdx(),
     react(),
     sitemap(),
-    tailwind(),
+    tailwind({
+      applyBaseStyles: false,
+    }),
   ],
 
   markdown: {
