@@ -12,7 +12,7 @@ import {
   CommandShortcut,
 } from "@/components/ui/command"
 
-import { Home, Lightbulb, Newspaper } from "lucide-react"
+import { Home, Lightbulb, Newspaper, Paperclip } from "lucide-react"
 import { SiGithub, SiX, SiYoutube } from "@icons-pack/react-simple-icons"
 
 const LinkItem = ({ href, children }: { href: string, children: React.ReactNode }) => (
@@ -49,6 +49,9 @@ export default function CommandMenu() {
           </LinkItem>
           <LinkItem href="/tags/tip">
             <Lightbulb /> Tips
+          </LinkItem>
+          <LinkItem href="/links">
+            <Paperclip /> Links
           </LinkItem>
         </CommandGroup>
         <CommandGroup heading="Social">
