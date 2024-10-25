@@ -76,20 +76,20 @@ export default function CommandMenu({ posts, tags }: { posts: Post[], tags: stri
             @kristianfreeman on GitHub
           </LinkItem>
         </CommandGroup>
-        {sortedPosts && (
-          <CommandGroup heading="Posts">
-            {sortedPosts.map((post) => (
-              <LinkItem key={post.slug} href={`/${post.slug}`} keywords={post.data.tags}>
-                {post.data.title}
-              </LinkItem>
-            ))}
-          </CommandGroup>
-        )}
         {sortedTags && (
           <CommandGroup heading="Tags">
             {sortedTags.map((tag) => (
               <LinkItem key={tag} href={`/tags/${tag}`} keywords={[tag]}>
                 #{tag}
+              </LinkItem>
+            ))}
+          </CommandGroup>
+        )}
+        {sortedPosts && (
+          <CommandGroup heading="Posts">
+            {sortedPosts.map((post) => (
+              <LinkItem key={post.slug} href={`/${post.slug}`} keywords={post.data.tags}>
+                {post.data.title}
               </LinkItem>
             ))}
           </CommandGroup>
