@@ -30,55 +30,57 @@ const isBearRelated = tags.includes("bear");
     <BaseHead title={title} />
   </head>
 
-  <body class="bg-base container mx-auto space-y-8">
+  <body class="bg-base">
     <CommandMenu client:only="react" posts={posts} tags={allTags} />
-    <Header post={Astro.props} url={Astro.url} />
-    <main>
-      <article>
-        <div class="prose">
-          <div class="space-y-4">
-            <h1 class="tracking-wider">
-              {title}
-            </h1>
+    <div class="container mx-auto space-y-8">
+      <Header post={Astro.props} url={Astro.url} />
+      <main>
+        <article>
+          <div class="prose">
+            <div class="space-y-4">
+              <h1 class="tracking-wider">
+                {title}
+              </h1>
 
-            {description && <h2>{description}</h2>}
+              {description && <h2>{description}</h2>}
 
-            <div class="flex items-center gap-3">
-              <img
-                src="https://f.kristianfreeman.com/kf.jpg"
-                alt="Kristian Freeman"
-                class="rounded-full w-8 h-8 m-0 object-cover"
-              />
-              <a class="text-primary" href="https://twitter.com/@kristianf_"
-                >Kristian Freeman</a
-              >
-            </div>
-
-            <div class="flex items-center flex-wrap gap-4">
-              <div class="flex items-center gap-2">
-                <Calendar size={16} />
-                <FormattedDate date={pubDate} />
+              <div class="flex items-center gap-3">
+                <img
+                  src="https://f.kristianfreeman.com/kf.jpg"
+                  alt="Kristian Freeman"
+                  class="rounded-full w-8 h-8 m-0 object-cover"
+                />
+                <a class="text-primary" href="https://twitter.com/@kristianf_"
+                  >Kristian Freeman</a
+                >
               </div>
-              {
-                tags.length > 0 && (
-                  <span class="flex items-center gap-2">
-                    <Tag size={16} />
-                    <span class="space-x-2">
-                      {tags.map((tag) => (
-                        <a href={`/tags/${tag}`}>#{tag}</a>
-                      ))}
+
+              <div class="flex items-center flex-wrap gap-4">
+                <div class="flex items-center gap-2">
+                  <Calendar size={16} />
+                  <FormattedDate date={pubDate} />
+                </div>
+                {
+                  tags.length > 0 && (
+                    <span class="flex items-center gap-2">
+                      <Tag size={16} />
+                      <span class="space-x-2">
+                        {tags.map((tag) => (
+                          <a href={`/tags/${tag}`}>#{tag}</a>
+                        ))}
+                      </span>
                     </span>
-                  </span>
-                )
-              }
+                  )
+                }
+              </div>
             </div>
+            {isBearRelated && <BearPostBanner />}
+            <slot />
+            <hr />
           </div>
-          {isBearRelated && <BearPostBanner />}
-          <slot />
-          <hr />
-        </div>
-      </article>
-    </main>
+        </article>
+      </main>
+    </div>
     <Footer />
     <Footnotes client:only="react" />
   </body>
