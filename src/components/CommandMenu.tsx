@@ -22,13 +22,15 @@ const LinkItem = ({ href, children, keywords }: { href: string, children: React.
   </CommandItem>
 )
 
-export default function CommandMenu({ posts }: { posts: Post[] }) {
+export default function CommandMenu({ posts, tags }: { posts: Post[], tags: string[] }) {
   const [open, setOpen] = useState(false)
 
   const sortedPosts = useMemo(() => 
     posts.sort(
       (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
     ), [posts])
+
+  const sortedTags = useMemo(() => tags.sort(), [tags])
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -79,6 +81,15 @@ export default function CommandMenu({ posts }: { posts: Post[] }) {
             {sortedPosts.map((post) => (
               <LinkItem key={post.slug} href={`/${post.slug}`} keywords={post.data.tags}>
                 {post.data.title}
+              </LinkItem>
+            ))}
+          </CommandGroup>
+        )}
+        {sortedTags && (
+          <CommandGroup heading="Tags">
+            {sortedTags.map((tag) => (
+              <LinkItem key={tag} href={`/tags/${tag}`} keywords={[tag]}>
+                #{tag}
               </LinkItem>
             ))}
           </CommandGroup>

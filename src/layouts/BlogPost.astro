@@ -1,17 +1,28 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '@/components/BaseHead.astro';
-import BearPostBanner from '@/components/BearPostBanner.astro';
-import Header from '@/components/Header.tsx';
-import Footnotes from '@/components/Footnotes.tsx';
-import Footer from '@/components/Footer.astro';
-import FormattedDate from '@/components/FormattedDate.astro';
-import { Calendar, Tag } from 'lucide-react';
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import { Calendar, Tag } from "lucide-react";
 
-type Props = CollectionEntry<'blog'>['data'];
+import BaseHead from "@/components/BaseHead.astro";
+import CommandMenu from "@/components/CommandMenu.tsx";
+import BearPostBanner from "@/components/BearPostBanner.astro";
+import Header from "@/components/Header.tsx";
+import Footnotes from "@/components/Footnotes.tsx";
+import Footer from "@/components/Footer.astro";
+import FormattedDate from "@/components/FormattedDate.astro";
 
+type Props = CollectionEntry<"blog">["data"];
+const posts = await getCollection("blog");
+const allTags = [
+  ...new Set(
+    posts
+      .map((post) => post.data.tags)
+      .flat()
+      .filter(Boolean)
+  ),
+].sort();
 const { title, description, pubDate, tags } = Astro.props;
-const isBearRelated = tags.includes('bear');
+const isBearRelated = tags.includes("bear");
 ---
 
 <html class="dark" lang="en">
@@ -20,6 +31,7 @@ const isBearRelated = tags.includes('bear');
   </head>
 
   <body class="bg-base container mx-auto space-y-8">
+    <CommandMenu client:only="react" posts={posts} tags={allTags} />
     <Header post={Astro.props} url={Astro.url} />
     <main>
       <article>
@@ -32,25 +44,33 @@ const isBearRelated = tags.includes('bear');
             {description && <h2>{description}</h2>}
 
             <div class="flex items-center gap-3">
-              <img src="https://f.kristianfreeman.com/kf.jpg" alt="Kristian Freeman" class="rounded-full w-8 h-8 m-0 object-cover" />
-              <a class="text-primary" href="https://twitter.com/@kristianf_">Kristian Freeman</a>
+              <img
+                src="https://f.kristianfreeman.com/kf.jpg"
+                alt="Kristian Freeman"
+                class="rounded-full w-8 h-8 m-0 object-cover"
+              />
+              <a class="text-primary" href="https://twitter.com/@kristianf_"
+                >Kristian Freeman</a
+              >
             </div>
 
             <div class="flex items-center flex-wrap gap-4">
               <div class="flex items-center gap-2">
                 <Calendar size={16} />
-                <FormattedDate date={pubDate} /> 
+                <FormattedDate date={pubDate} />
               </div>
-              {tags.length > 0 && (
-                <span class="flex items-center gap-2">
-                  <Tag size={16} />
-                  <span class="space-x-2">
-                    {tags.map((tag) => (
-                      <a href={`/tags/${tag}`}>#{tag}</a>
-                    ))}
+              {
+                tags.length > 0 && (
+                  <span class="flex items-center gap-2">
+                    <Tag size={16} />
+                    <span class="space-x-2">
+                      {tags.map((tag) => (
+                        <a href={`/tags/${tag}`}>#{tag}</a>
+                      ))}
+                    </span>
                   </span>
-                </span>
-              )}
+                )
+              }
             </div>
           </div>
           {isBearRelated && <BearPostBanner />}
@@ -60,7 +80,6 @@ const isBearRelated = tags.includes('bear');
       </article>
     </main>
     <Footer />
-
     <Footnotes client:only="react" />
   </body>
 </html>
