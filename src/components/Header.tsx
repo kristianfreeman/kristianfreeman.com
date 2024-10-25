@@ -10,9 +10,11 @@ export default ({ post, url }: { post?: BlogPost, url: URL }) => {
   return (
     <header className="h-16 pt-8 space-y-4 mb-12">
       <nav className="flex items-center gap-4">
-        <a className={clsx("text-foreground font-bold flex-1 hover:no-underline")} href="/">
-          {SITE_TITLE}
-        </a>
+        <div className="flex-1">
+          <a className={clsx("text-foreground font-bold flex-1 hover:no-underline")} href="/">
+            {SITE_TITLE}
+          </a>
+        </div>
 
         <div className="hidden md:flex items-center gap-8">
           <HeaderLink active={url.pathname.startsWith("/blog") || post && !post.tags.includes('tip')} href="/blog">
