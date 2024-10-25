@@ -116,16 +116,6 @@ hr {
   border-top: 1px dashed;
 }
 
-main img {
-  height: 400px;
-  width: auto;
-  border: 1px solid;
-}
-
-img {
-  max-width: 100%;
-}
-
 .not-prose img {
   border: none;
   max-width: inherit;
