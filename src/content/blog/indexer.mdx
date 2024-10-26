@@ -1,0 +1,34 @@
+---
+title: Building an indexer
+description: An open-source solution for indexing your site.
+pubDate: 'Oct 26 2024'
+tags:
+  - project
+  - seo
+  - webdev
+---
+import { Tweet } from 'astro-embed';
+
+Yesterday, I wrote about [improving my blog's indexing](/effective-indexing). After writing that post, I wanted to take the opportunity to build a new version that improves on the `simpleindex` project I mentioned in that post.
+
+I built it in a few hours, and it's a great way (with a caveat!) to index your site. It's open-source, so you can see how it works, and you can use it to build your own indexer. 
+
+[Check it out on GitHub](https://github.com/kristianfreeman/indexer).
+
+## Caveat
+
+After [sharing this tool on 𝕏](https://x.com/kristianf_/status/1849874054041485517), I learned that Google is starting to crack down on using tools like this for indexing. Unfortunately, this project was essentially dead on arrival:
+
+<Tweet id="https://x.com/joninsley/status/1849915207235052019" theme="dark" />
+
+It may be safe to use it for a while, but I don't recommend it for production use. It probably isn't worth the risk of having your domain or URLs penalized by Google.
+
+## But it uses Workflows!
+
+We just announced [Cloudflare Workflows](https://blog.cloudflare.com/building-workflows-durable-execution-on-workers/):
+
+> Workflows, Cloudflare’s durable execution engine that allows you to build reliable, repeatable multi-step applications that scale for you, is now in open beta. Any developer with a free or paid Workers plan can build and deploy a Workflow right now: no waitlist, no sign-up form, no fake line around-the-block.
+
+This was a great opportunity to build on Workflows, so even if the project isn't recommended for production use, I learned a lot about how to use Workflows.
+
+More on Workflows soon!

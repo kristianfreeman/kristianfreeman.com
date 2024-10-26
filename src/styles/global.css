@@ -35,6 +35,10 @@
   a { @apply text-blue-500 no-underline; }
   a:hover { @apply underline; }
   ul, ol { @apply list-disc list-inside; }
+
+  .prose .astro-tweet-theme img {
+    @apply mt-0 mb-0;
+  }
 }
 
 

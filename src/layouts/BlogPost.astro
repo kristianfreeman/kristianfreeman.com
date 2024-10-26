@@ -28,6 +28,7 @@ const isBearRelated = tags.includes("bear");
 <html class="dark" lang="en">
   <head>
     <BaseHead title={title} />
+    <script src="https://platform.twitter.com/widgets.js"></script>
   </head>
 
   <body class="bg-base">
@@ -80,8 +81,8 @@ const isBearRelated = tags.includes("bear");
           </div>
         </article>
       </main>
+      <Footer />
     </div>
-    <Footer />
     <Footnotes client:only="react" />
   </body>
 </html>
