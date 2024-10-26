@@ -4,11 +4,12 @@ description: ""
 pubDate: "Jan 19 2021"
 tags:
   - archive
+  - bytesized
 ---
 
 **[Emacs](https://www.gnu.org/software/emacs/) is an incredibly customizable text editor built on top of Lisp.** It has an infamous reputation among programmers and writers as being one of the most daunting tools you can pick up in the programming world, and for good reason: from top to bottom, every single piece of the editor is customizable and extensible to your liking.
 
-<figure class="kg-card kg-image-card">![](/content/images/2021/01/emacs_splashscreen.png)</figure>It’s not just for programmers, either – here’s the science-fiction author [Neal Stephenson on Emacs](https://www.hackneys.com/docs/in-the-beginning-was-the-command-line.pdf):
+It’s not just for programmers, either – here’s the science-fiction author [Neal Stephenson on Emacs](https://www.hackneys.com/docs/in-the-beginning-was-the-command-line.pdf):
 
 > In the GNU/Linux world there are two major text editing programs: the minimalist vi (known in some implementations as elvis) and the maximalist emacs. I use emacs, which might be thought of as a thermonuclear word processor. It was created by Richard Stallman; enough said. It is written in Lisp, which is the only computer language that is beautiful. It is colossal, and yet it only edits straight ASCII text files, which is to say, no fonts, no boldface, no underlining. In other words, the engineer-hours that, in the case of Microsoft Word, were devoted to features like mail merge, and the ability to embed feature-length motion pictures in corporate memoranda, were, in the case of emacs, focused with maniacal intensity on the deceptively simple-seeming problem of editing text. If you are a professional writer – i.e., if someone else is getting paid to worry about how your words are formatted and printed – emacs outshines all other editing software in approximately the same way that the noonday sun does the stars. It is not just bigger and brighter; it simply makes everything else vanish.
 
@@ -20,13 +21,13 @@ That being said – it’s daunting! While it isn’t as hard to figure out how 
 
 In this issue of Bytesized, I’ll unpack _how_ to learn Emacs, some great setups that make it easy to get started with Emacs, and, if you’re interested in _why_ Emacs, deep dives on what it means to build and use text editors, especially ones that give you complete control over your editing experience. Enjoy!
 
-<figure class="kg-card kg-image-card kg-card-hascaption">![](/content/images/2021/01/7Cu9Z.jpg)<figcaption>[Source](https://stackoverflow.com/questions/10942008/what-does-emacs-learning-curve-actually-look-like)</figcaption></figure>## How to learn Emacs
+## How to learn Emacs
 
 ### [A Hand-drawn One-pager for Beginners / A visual tutorial](https://sachachua.com/blog/2013/05/how-to-learn-emacs-a-hand-drawn-one-pager-for-beginners/)
 
 Sacha Chua’s hand-drawn Emacs guide covers the basics of Emacs, and what to explore next. Perfect for printing out at your desk!
 
-![](https://sachachua.com/blog/wp-content/uploads/2013/05/How-to-Learn-Emacs-v2-Large-640x416.png)
+![Emacs guide](https://sachachua.com/blog/wp-content/uploads/2013/05/How-to-Learn-Emacs-v2-Large-640x416.png)
 
 <span style="color: var(--contrast); background-color: var(--base-3);">via </span>[How to Learn Emacs: A Hand-drawn One-pager for Beginners, from Sacha Chua](https://sachachua.com/blog/2013/05/how-to-learn-emacs-a-hand-drawn-one-pager-for-beginners/)
 
@@ -40,7 +41,7 @@ Despite the kind-of ridiculous name, emacs.sexy is a great intro to Emacs, both 
 
 ## Setups that work
 
-### [Doom Emacs](https://github.com/hlissner/doom-emacs)![](/content/images/2021/01/doom.png)
+### [Doom Emacs](https://github.com/hlissner/doom-emacs)
 
 Doom Emacs is an extremely popular Emacs distribution (a term used in the community for a pre-configured Emacs environment) that has a ton of extensibility for different languages, tools, and workflows.
 
@@ -48,7 +49,7 @@ Doom falls into the distro category of “everything set up for you” – it gi
 
 If you’re looking for a quick set up and have some experience with Emacs, Doom might be a good fit. If you’re new to Emacs and OK with a bit of a learning curve, you’ll get a great set of defaults for working with most languages and tooling, without having to work too hard to find it.
 
-### [Spacemacs](https://www.spacemacs.org/)![](/content/images/2021/01/spacemacs.png)
+### [Spacemacs](https://www.spacemacs.org/)
 
 Spacemacs is the original all-in-one Emacs configuration, with a focus on combining Vim shortcuts and Emacs sensibilities into a single editor. If you’re coming from a Vim background, Spacemacs works almost identically to Vim on first launch (though, to be fair, so does Doom!) and provides a great UI for discovering new functionality through the `<leader>` (set to `space` by default) hotkey system.
 
@@ -70,6 +71,8 @@ Bozhidar Batsov (author of the Prelude distro above) covers why he uses Emacs, a
 >
 > While I wouldn’t dare to claim that Emacs is better than all the IDEs and competing editors I’ll share here the things that I think are making it great.
 
-<figure class="kg-card kg-bookmark-card"><div class="kg-bookmark-thumbnail">![](http://imgs.xkcd.com/comics/real_programmers.png)</div></figure>### [How to open a file in Emacs](https://www.murilopereira.com/how-to-open-a-file-in-emacs/)
+![](http://imgs.xkcd.com/comics/real_programmers.png)
+
+### [How to open a file in Emacs](https://www.murilopereira.com/how-to-open-a-file-in-emacs/)
 
 Murilo Pereira’s recent article about Lisp and Emacs is a deep dive into why Lisp and extensibility in an editor matters, and how Emacs’ _values_ are different than most editors on the market. It’s a pretty epic read (estimated at 74 minutes on his blog), but if you’re interested in the _why_ and the deeper _how_ of text editors as a tool that we all use for thousands of hours in our lives, it’s worth checking out!

@@ -12,7 +12,7 @@ Recently, I moved the Bytesized newsletter ([subscribe by clicking this link!](/
 
 To know when someone new has subscribed to the site, I wanted to set up a notification bot in the [Bytesized Discord server](https://bytesized.xyz/discord) (in a private channel). Discord bots are pretty lightweight, and as long as you can make an HTTP POST request, it’s a really simple way to build out notifications for your service (think Slack a few years ago, but free!).
 
-<figure class="kg-card kg-image-card">![Example Discord notifications using channel webhooks](/content/images/2021/01/tempsnip.png)</figure>**Here’s how I built my Ghost to Discord notification bot, using [Cloudflare Workers](https://workers.dev/) as a webhook platform!**
+**Here’s how I built my Ghost to Discord notification bot, using [Cloudflare Workers](https://workers.dev/) as a webhook platform!**
 
 ## Setting up the Discord bot
 
@@ -30,7 +30,7 @@ Now we’ll set up the Ghost webhook that will send data from your Ghost instanc
 
 Webhooks in Ghost are part of _integrations_. To create an integration, navigate to the “Integrations” tab in your Ghost admin sidebar, and then select the (quite small) “Add custom integration” button.
 
-<figure class="kg-card kg-image-card">![Ghost's integrations page](/content/images/2021/01/integrations.PNG)</figure>Give your integration a name, and then in your new integration page, select “Add webhook”. Call your webhook something like “New member’, and then for the *Event* (the thing happening in your Ghost blog that this webhook should fire after), select “Member added”.
+Give your integration a name, and then in your new integration page, select “Add webhook”. Call your webhook something like “New member’, and then for the *Event* (the thing happening in your Ghost blog that this webhook should fire after), select “Member added”.
 
 You might think that your _Target URL_ – where Ghost sends the data _to_ – would be your Discord webhook URL. Instead of using that value, we’ll deploy a serverless function using [Cloudflare Workers](https://workers.dev/). This function will take the data from Ghost, and format it into a Discord message fit for posting to your channel.
 
@@ -58,17 +58,17 @@ Here’s how to deploy it yourself:
 
 Once you’ve published your Workers project, you’ll see the URL of your serverless function in Wrangler’s output.
 
-<figure class="kg-card kg-image-card">![](/content/images/2021/01/publish.PNG)</figure>Once you have that URL available, we can use it to build the final URL that we’ll pass to Ghost’s webhook configuration. Note that the serverless function I’ve pushed onto GitHub uses the path `/member_added` (just in case I want to handle more webhook types in the future), and that you’ll also need to pass the `key` query parameter to authenticate with the Workers function. That means that the final URL will look like this (see the screenshot below for a live example, too):
+Once you have that URL available, we can use it to build the final URL that we’ll pass to Ghost’s webhook configuration. Note that the serverless function I’ve pushed onto GitHub uses the path `/member_added` (just in case I want to handle more webhook types in the future), and that you’ll also need to pass the `key` query parameter to authenticate with the Workers function. That means that the final URL will look like this (see the screenshot below for a live example, too):
 
 `https://<project>.<subdomain>.workers.dev/member_added?key=<password>`
 
 Back in Ghost’s integration page, you can select your existing webhook and fill in the correct URL for your Workers function.
 
-<figure class="kg-card kg-image-card">![A custom webhook created in Ghost's admin UI](/content/images/2021/01/webhook-in-ghost.png)</figure>Now, to test your new function, just go to your blog’s homepage and sign up with a new test email. [You can also make sure that it’s working on my end by joining the Bytesized newsletter, too](/how-to-build-a-discord-notification-bot-for-new-ghost-members/#/portal) 😁
+Now, to test your new function, just go to your blog’s homepage and sign up with a new test email. [You can also make sure that it’s working on my end by joining the Bytesized newsletter, too](/how-to-build-a-discord-notification-bot-for-new-ghost-members/#/portal) 😁
 
 When a new member subscribes, you should see a new message posted in your Discord channel – neat!
 
-<figure class="kg-card kg-image-card">![An example message posted in a Discord channel using the codebase in this tutorial](/content/images/2021/01/Capture.PNG)</figure>## Discord message configuration
+## Discord message configuration
 
 There’s a lot of configuration you can do with Discord notifications that are out of scope for this article – like Slack, you can do things like _embeds_ – more dynamic information presented as an attachment to a message, or simple things like customizing the name or image for the message as they get sent to Discord’s API.
 
@@ -94,4 +94,4 @@ createBody: ({
   });
 ```
 
-[Discohook](https://discohook.org/) is a great interactive playground for testing your message content before sending it to Discord, including testing embeds, custom content and avatars, and more. Of course, [Discord’s API documentation](https://discord.com/developers/docs/intro) is a good reference as well – if you want to customize the output of this serverless function to your use-case, [check out D](https://discord.com/developers/docs/resources/webhook#execute-webhook)iscord’s [`execute-webhook` endpoint documentation](https://discord.com/developers/docs/resources/webhook#execute-webhook) to learn more about the available options.
+[Discohook](https://discohook.org/) is a great interactive playground for testing your message content before sending it to Discord, including testing embeds, custom content and avatars, and more. Of course, [Discord’s API documentation](https://discord.com/developers/docs/intro) is a good reference as well – if you want to customize the output of this serverless function to your use-case, [check out Discord's `execute-webhook` endpoint documentation](https://discord.com/developers/docs/resources/webhook#execute-webhook) to learn more about the available options.

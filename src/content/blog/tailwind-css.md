@@ -4,6 +4,7 @@ description: ""
 pubDate: 'Feb 02 2021'
 tags:
   - archive
+  - bytesized
 ---
 
 
@@ -19,11 +20,15 @@ Let’s look at Tailwind from a few angles – first, a few video introductions 
 
 Chris on Code’s 15 minute intro to Tailwind covers why it matters, how it works, and how to build your first few components with it. Check out Chris’ [Beginner Tailwind course](https://beginnertailwind.com/) if you dig his teaching style and want to go more in depth with Tailwind, too!
 
-<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="113" loading="lazy" src="https://www.youtube.com/embed/6zIuAyLZPH0?feature=oembed" width="200"></iframe></figure>### [Building interfaces with Tailwind CSS](https://www.youtube.com/watch?v=_JhTaENzfZQ)
+<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="113" loading="lazy" src="https://www.youtube.com/embed/6zIuAyLZPH0?feature=oembed" width="200"></iframe></figure>
+
+### [Building interfaces with Tailwind CSS](https://www.youtube.com/watch?v=_JhTaENzfZQ)
 
 [Adam Wathan](https://twitter.com/adamwathan), creator of Tailwind CSS, shows off the framework by recreating Netlify using 100% Tailwind classes. It’s a really great lesson in breaking down existing designs and building them back up with simple CSS primitives, and the entire series (linked as part of the video) covers rebuilds of drastically different layouts and page styles using just Tailwind. Must-watch!
 
-<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="113" loading="lazy" src="https://www.youtube.com/embed/_JhTaENzfZQ?feature=oembed" width="200"></iframe></figure>## Templates and starter kits
+<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="113" loading="lazy" src="https://www.youtube.com/embed/_JhTaENzfZQ?feature=oembed" width="200"></iframe></figure>
+
+## Templates and starter kits
 
 ### [Tailwind UI](https://tailwindui.com)
 
@@ -73,4 +78,3 @@ For a contrary point of view, check out Jared White’s blog post about his expe
 
 > I’ve gotten into more than one heated argument on the interwebs lately over Tailwind CSS. I’m not proud of this. I don’t like being at odds with anybody. I think the folks building Tailwind are talented and nice people. But at a pure technical level, I simply don’t like Tailwind. Whoever it was built for, **it was not built for me**.
 
-<figure class="kg-card kg-bookmark-card"><div class="kg-bookmark-content"><div class="kg-bookmark-title"></div></div></figure>

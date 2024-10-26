@@ -4,6 +4,7 @@ description: ""
 pubDate: 'Nov 03 2020'
 tags:
   - archive
+  - bytesized
 ---
 
 
@@ -32,7 +33,9 @@ Human-computer interface research is closely intertwined with the evolution of c
 
 At that time, probably the most advanced method of interactivity was the light gun (think Duck Hunt), pictured below in use at SAGE—the Semi-Automatic Ground Environment computer.
 
-<figure class="kg-card kg-image-card">![](https://firebasestorage.googleapis.com/v0/b/firescript-577a2.appspot.com/o/imgs%2Fapp%2Fsignalnerve%2FMp7ztoEsLJ.jpg?alt=media&token=1443577c-87e0-49e6-99a5-2fe342b2613f)</figure>Side note: SAGE was the brainchild of ****Jay Forrester****, who would later found the field of ****system dynamics****, which explores how to use simulations to model and understand the behavior of complex systems. More on him in a future newsletter 😊
+![](https://firebasestorage.googleapis.com/v0/b/firescript-577a2.appspot.com/o/imgs%2Fapp%2Fsignalnerve%2FMp7ztoEsLJ.jpg?alt=media&token=1443577c-87e0-49e6-99a5-2fe342b2613f)
+
+Side note: SAGE was the brainchild of ****Jay Forrester****, who would later found the field of ****system dynamics****, which explores how to use simulations to model and understand the behavior of complex systems. More on him in a future newsletter 😊
 
 ****Douglas Engelbart**** presented [“The Mother of All Demos”](https://www.dougengelbart.org/content/view/209/448/) in December 1968. Computer graphics, word processing (including real-time collaboration), and the first computer mouse were all in display during the demo, but in a way that was genuinely transformative: as Bret Victor puts it in [his tribute to Douglas Englebart](http://worrydream.com/Engelbart/), things like multiple cursors and screen sharing were radically different in inspiration than what we have today:
 
@@ -69,7 +72,9 @@ There’s still a great landscape of work to be done in ****collaborative**** co
 
 ****[Dynamicland](https://dynamicland.org/)**** is ****Bret Victor’s**** research group in the spirit of Douglas Englebart and Xerox PARC, exploring a physical and collaborative model of research and information processing.
 
-<figure class="kg-card kg-image-card">![](https://firebasestorage.googleapis.com/v0/b/firescript-577a2.appspot.com/o/imgs%2Fapp%2Fsignalnerve%2F0PV-A4sb5i.gif?alt=media&token=eb7fdd80-280b-433f-afa2-a7a70b4f1c5a)</figure>## **🤔 Why it matters**
+![](https://firebasestorage.googleapis.com/v0/b/firescript-577a2.appspot.com/o/imgs%2Fapp%2Fsignalnerve%2F0PV-A4sb5i.gif?alt=media&token=eb7fdd80-280b-433f-afa2-a7a70b4f1c5a)
+
+## **🤔 Why it matters**
 
 ****The work that we do as technologists is constrained by the tools that we have for building and working with computers.****
 

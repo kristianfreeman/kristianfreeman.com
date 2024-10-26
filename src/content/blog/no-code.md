@@ -4,13 +4,16 @@ description: ""
 pubDate: "Dec 15 2020"
 tags:
   - archive
+  - bytesized
 ---
 
 ## **🎓 What is it?**
 
 Software and services that enable you to build projects (or parts of projects) without writing code.
 
-<figure class="kg-card kg-image-card">![](https://embed.filekitcdn.com/e/bTEzu2a6kz1G63EmmMsKxH/3kB8JwbtkCuj1V5nzk9LXK?w=800&fit=max)</figure>## **🤔 Why it matters**
+![](https://embed.filekitcdn.com/e/bTEzu2a6kz1G63EmmMsKxH/3kB8JwbtkCuj1V5nzk9LXK?w=800&fit=max)
+
+## **🤔 Why it matters**
 
 No-code tooling allows you to do more with less (or, as you might guess, none — in some cases) code.
 

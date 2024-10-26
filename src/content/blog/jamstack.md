@@ -4,6 +4,7 @@ description: ""
 pubDate: 'Dec 08 2020'
 tags:
   - archive
+  - bytesized
 ---
 
 
@@ -17,7 +18,9 @@ Per Colby Fayock, who wrote the [Jamstack Handbook](https://jamstackhandbook.com
 
 > *The Jamstack is a modern architecture that revolves around the age-old idea of providing end users a website or application from static storage, while supplementing it with modern technologies like APIs and front end tooling to bring a more dynamic user experience.*
 
-<figure class="kg-card kg-image-card">![The infinite jam of space and time](https://f000.backblazeb2.com/file/bytesized-assets/images/jam.gif)</figure>## **⌛ The past**
+<figure class="kg-card kg-image-card">![The infinite jam of space and time](https://f000.backblazeb2.com/file/bytesized-assets/images/jam.gif)</figure>
+
+## **⌛ The past**
 
 The 2010s was the era of single page applications.
 

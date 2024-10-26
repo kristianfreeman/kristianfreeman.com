@@ -4,6 +4,7 @@ description: ""
 pubDate: 'Dec 01 2020'
 tags:
   - archive
+  - bytesized
 ---
 
 
@@ -11,15 +12,23 @@ tags:
 
 [A query language for your API](https://graphql.org/). GraphQL allows you to query any of your application’s data from a single endpoint, using a typed query language.
 
-<figure class="kg-card kg-image-card">![GIF](https://f000.backblazeb2.com/file/bytesized-assets/images/graphql.gif)</figure>GraphQL ****queries****, which allow you to ****request**** data, kind of look like JSON. You can query anything and everything with a single query — things like a single field or object:
+![GIF](https://f000.backblazeb2.com/file/bytesized-assets/images/graphql.gif)
 
-<figure class="kg-card kg-image-card">![GraphQL Query](https://f000.backblazeb2.com/file/bytesized-assets/images/graphql-query.png)</figure>You can build more complicated queries, like an object and all of the associated records it has for subfields:
+GraphQL ****queries****, which allow you to ****request**** data, kind of look like JSON. You can query anything and everything with a single query — things like a single field or object:
 
-<figure class="kg-card kg-image-card">![GraphQL Types](https://f000.backblazeb2.com/file/bytesized-assets/images/graphql-types.png)</figure>*GraphQL is typed.* Everything you query in GraphQL has a definite type, like `String`, or for more complex values, you can define custom types, as seen above.
+![GraphQL Query](https://f000.backblazeb2.com/file/bytesized-assets/images/graphql-query.png)
+
+You can build more complicated queries, like an object and all of the associated records it has for subfields:
+
+![GraphQL Types](https://f000.backblazeb2.com/file/bytesized-assets/images/graphql-types.png)
+
+*GraphQL is typed.* Everything you query in GraphQL has a definite type, like `String`, or for more complex values, you can define custom types, as seen above.
 
 ****Mutations**** describe how and what to ****change**** data in your application. They look just like queries, but with the addition of data:
 
-<figure class="kg-card kg-image-card">![GraphQL Mutations](https://f000.backblazeb2.com/file/bytesized-assets/images/graphql-mutations.png)</figure>GraphQL queries and mutations are handled by ****resolvers****. These are functions that are handled by your [GraphQL server](https://graphql.org/code/) and look up the corresponding data that you’re requesting.
+![GraphQL Mutations](https://f000.backblazeb2.com/file/bytesized-assets/images/graphql-mutations.png)
+
+GraphQL queries and mutations are handled by ****resolvers****. These are functions that are handled by your [GraphQL server](https://graphql.org/code/) and look up the corresponding data that you’re requesting.
 
 ## **⌛ The past**
 
@@ -94,4 +103,4 @@ The Players section above reveals something interesting about GraphQL: it’s a 
 
 And a funny tweet to sign off this week:
 
-<figure class="kg-card kg-image-card">![GraphQL Tweet](https://f000.backblazeb2.com/file/bytesized-assets/images/graphql-tweet.png)</figure>
+![GraphQL Tweet](https://f000.backblazeb2.com/file/bytesized-assets/images/graphql-tweet.png)

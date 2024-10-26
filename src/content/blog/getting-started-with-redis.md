@@ -4,6 +4,7 @@ description: ""
 pubDate: "Feb 09 2021"
 tags:
   - archive
+  - bytesized
 ---
 
 **Redis is a powerful key-value database, perfect for caching and in-memory (ephemeral) storage of data.**
@@ -14,7 +15,7 @@ Redis is highly performant: written entirely in C (and [open-source on GitHub](h
 
 Let’s start with a quick introduction to Redis — how to set up your first Redis instance, and issuing commands — before looking at best practices, stories of Redis saving the day in production, and what to check out next as you master Redis and use it in your workflows.
 
-<figure class="kg-card kg-image-card">![](/content/images/2021/02/anykey.gif)</figure>## A brief guide to Redis
+## A brief guide to Redis
 
 **Installation**
 
@@ -147,7 +148,9 @@ This tutorial from Redis’ creator, Salvatore Sanfilippo, shows how to build a 
 
 In this video from Traversy Media, Brad Traversy dives into the fundamentals of Redis, including understanding the Redis CLI, the data types available in the tool, and how to persist your Redis data using snapshots.
 
-<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="113" loading="lazy" src="https://www.youtube.com/embed/Hbt56gFj998?feature=oembed" width="200"></iframe></figure>### [Redis Data Structures](https://www.redisgreen.com/blog/redis-data-structures/)
+<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="113" loading="lazy" src="https://www.youtube.com/embed/Hbt56gFj998?feature=oembed" width="200"></iframe></figure>
+
+### [Redis Data Structures](https://www.redisgreen.com/blog/redis-data-structures/)
 
 On the topic of data types and structures in Redis, this blog post from RedisGreen covers the data structures in Redis, which serve different use-cases and have different performance characteristics to be aware of.
 
@@ -171,7 +174,9 @@ ObjectRocket writes about the top five use-cases for Redis, using the data struc
 
 This article from High Scability, published in 2014, outlines the details of a technical talk from a member of Twitter’s cache team. In it, she covers how Redis is used throughout Twitter to handle extreme amounts of traffic (~30 million queries per second). If you want to watch the video itself, you can find it on YouTube below:
 
-<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="113" loading="lazy" src="https://www.youtube.com/embed/rP9EKvWt0zo?feature=oembed" width="200"></iframe></figure>### [Redis clients](https://github.com/JamzyWang/awesome-redis#redis-client)
+<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="113" loading="lazy" src="https://www.youtube.com/embed/rP9EKvWt0zo?feature=oembed" width="200"></iframe></figure>
+
+### [Redis clients](https://github.com/JamzyWang/awesome-redis#redis-client)
 
 Redis works with basically _any_ programming language. Because of the simple primitives it provides for interfacing with the Redis server, there’s clients for basically every language and situation. The `awesome-redis` repo has a great list of Redis clients in a variety of languages, like JavaScript, Ruby, Python, Go, and more.
 

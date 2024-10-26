@@ -4,13 +4,16 @@ description: ""
 pubDate: "Nov 24 2020"
 tags:
   - archive
+  - bytesized
 ---
 
 ## **🎓 What is it?**
 
 [Native applications for mobile, web and desktop, from a single codebase.](https://flutter.dev/)
 
-<figure class="kg-card kg-image-card">![Flutter](https://f000.backblazeb2.com/file/bytesized-assets/images/flutter.gif)</figure>## **📌 Right now**
+![Flutter](https://f000.backblazeb2.com/file/bytesized-assets/images/flutter.gif)
+
+## **📌 Right now**
 
 - Flutter is written in a language called [Dart](https://dart.dev/). It’s a bit like a strongly-typed JavaScript, and like Flutter, it’s managed by Google.
 - A lot of the improvements made to Flutter happen via improvements to Dart, like the recent [null safety](https://medium.com/flutter/announcing-dart-null-safety-beta-4491da22077a) feature.

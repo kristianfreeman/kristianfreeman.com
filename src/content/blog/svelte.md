@@ -4,6 +4,7 @@ description: ""
 pubDate: 'Nov 10 2020'
 tags:
   - archive
+  - bytesized
 ---
 
 
@@ -13,7 +14,9 @@ tags:
 
 Svelte is a JavaScript framework for building declarative user interfaces.
 
-<figure class="kg-card kg-image-card">![Svelte demo](https://f000.backblazeb2.com/file/bytesized-assets/images/002-svelte-demo.png)</figure>## **⌛ The past**
+![Svelte demo](https://f000.backblazeb2.com/file/bytesized-assets/images/002-svelte-demo.png)
+
+## **⌛ The past**
 
 The frontend development world is dominated right now by frameworks. React is the most popular, but a number of “single-page” frameworks exist—where the tool is responsible for reading and writing to the DOM in order to compose a user interface.
 
@@ -35,7 +38,9 @@ Compilers are in right now—TypeScript developers work with another powerful co
 
 The `.svelte` file used by Svelte applications allows you to mix modern JavaScript, scoped CSS, and HTML into a single template.
 
-<figure class="kg-card kg-image-card">![Svelte GIF](https://f000.backblazeb2.com/file/bytesized-assets/images/002-svelte-optim.gif)</figure>[Ryan Atkinson](https://twitter.com/ryanatkn) summarizes this approach and how Svelte feels different in [“Why Svelte”](https://github.com/feltcoop/why-svelte):
+![Svelte GIF](https://f000.backblazeb2.com/file/bytesized-assets/images/002-svelte-optim.gif)
+
+[Ryan Atkinson](https://twitter.com/ryanatkn) summarizes this approach and how Svelte feels different in [“Why Svelte”](https://github.com/feltcoop/why-svelte):
 
 > *Svelte components are a thin layer over the DOM and naturally expose the web platform. Coding in Svelte feels like I’m moving with the grain of the web. React abstracts the DOM with functionally pure declarative rendering and provides escape hatches back to mutable imperative DOM land.*
 
@@ -47,7 +52,9 @@ That being said, compilers aren’t necessarily a magic bullet. Compilers are th
 
 Earlier this year, Svelte landed [first-class TypeScript support](https://svelte.dev/blog/svelte-and-typescript). It was contributed via a TypeScript maintainer and a number of Svelte community members.
 
-<figure class="kg-card kg-image-card">![Svelte + TypeScript](https://svelte.dev/media/svelte-ts.png)</figure>Svelte continues to grow in mindshare and popularity. [In 2019’s “State of JS” survey](https://2019.stateofjs.com/front-end-frameworks/svelte/), almost 75% of surveyed developers had heard of Svelte, 45% had heard of Svelte and wanted to use it, and 7% had used it.
+![Svelte + TypeScript](https://svelte.dev/media/svelte-ts.png)
+
+Svelte continues to grow in mindshare and popularity. [In 2019’s “State of JS” survey](https://2019.stateofjs.com/front-end-frameworks/svelte/), almost 75% of surveyed developers had heard of Svelte, 45% had heard of Svelte and wanted to use it, and 7% had used it.
 
 ## **🤔 Why it matters**
 

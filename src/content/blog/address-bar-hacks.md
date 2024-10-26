@@ -4,10 +4,13 @@ description: ""
 pubDate: 'Feb 23 2021'
 tags:
   - archive
+  - bytesized
 ---
 
 
-<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="113" loading="lazy" src="https://www.youtube.com/embed/gqt8UFaIa5Q?feature=oembed" width="200"></iframe></figure>## DDG Bangs
+<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" loading="lazy" src="https://www.youtube.com/embed/gqt8UFaIa5Q?feature=oembed"></iframe></figure>
+
+## DDG Bangs
 
 [DuckDuckGo](https://duckduckgo.com/) (DDG) is an alternative to Google, the biggest search engine in the world. **DDG’s Bangs feature is probably one of my favorite secret weapons in my day-to-day browsing.**
 
@@ -107,4 +110,6 @@ Since jsDelivr is already a CDN, adding support for hotlinking your GitHub files
 https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/dist/jquery.min.js
 ```
 
-<figure class="kg-card kg-bookmark-card"><span style="font-size: inherit; color: var(--contrast); background-color: var(--base-3);">Another great feature of jsDelivr is the directory UI. By simply going to </span>`/gh/user/repo/`<span style="font-size: inherit; color: var(--contrast); background-color: var(--base-3);"> (omitting the </span>`tag`<span style="font-size: inherit; color: var(--contrast); background-color: var(--base-3);"> and </span>`file-path`<span style="font-size: inherit; color: var(--contrast); background-color: var(--base-3);">), you can see a complete directory structure for the project, allowing you to click around, and ultimately select a file for inclusion in your project. For an example of this, check out my lilredirector repo </span>[inside of jsDelivr](https://cdn.jsdelivr.net/gh/signalnerve/lilredirector/)<span style="font-size: inherit; color: var(--contrast); background-color: var(--base-3);"> — clicking any of the files will give you a versioned and ready-to-use link that you could import into your project.</span></figure>
+<figure class="kg-card kg-bookmark-card"><span style="font-size: inherit; color: var(--contrast); background-color: var(--base-3);">
+
+Another great feature of jsDelivr is the directory UI. By simply going to </span>`/gh/user/repo/`<span style="font-size: inherit; color: var(--contrast); background-color: var(--base-3);"> (omitting the </span>`tag`<span style="font-size: inherit; color: var(--contrast); background-color: var(--base-3);"> and </span>`file-path`<span style="font-size: inherit; color: var(--contrast); background-color: var(--base-3);">), you can see a complete directory structure for the project, allowing you to click around, and ultimately select a file for inclusion in your project. For an example of this, check out my lilredirector repo </span>[inside of jsDelivr](https://cdn.jsdelivr.net/gh/signalnerve/lilredirector/)<span style="font-size: inherit; color: var(--contrast); background-color: var(--base-3);"> — clicking any of the files will give you a versioned and ready-to-use link that you could import into your project.</span></figure>

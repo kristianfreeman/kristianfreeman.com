@@ -4,13 +4,14 @@ description: ""
 pubDate: "Mar 16 2021"
 tags:
   - archive
+  - bytesized
 ---
 
-<div class="sponsored">## <span style="color: var(--contrast); font-family: inherit; font-style: inherit; background-color: var(--base-3);">🎓 What is it?</span>
+## 🎓 What is it?
 
-</div>[React Native](https://reactnative.dev/) is a tool for building desktop and mobile apps using React, the world’s most popular JavaScript framework. In a super competitive space versus tools like [Flutter](/004-flutter/), [Ionic](https://ionicframework.com/), and [Cordova](https://cordova.apache.org/), React Native differentiates itself by building on top of React’s incredible community and developer tooling.
+[React Native](https://reactnative.dev/) is a tool for building desktop and mobile apps using React, the world’s most popular JavaScript framework. In a super competitive space versus tools like [Flutter](/004-flutter/), [Ionic](https://ionicframework.com/), and [Cordova](https://cordova.apache.org/), React Native differentiates itself by building on top of React’s incredible community and developer tooling.
 
-<figure class="kg-card kg-image-card kg-width-full">![](/content/images/2021/03/atom.gif)</figure>## ⌛ The past
+## ⌛ The past
 
 Developing non-web applications is tough. In particular, mobile apps have a steep learning curve and a lack of developer ergonomics. Here’s [Matthew Mombrea on why developing for mobile applications is tougher than you think](https://www.computerworld.com/article/2701225/mobile-development-is-tougher-than-people-think.html):
 

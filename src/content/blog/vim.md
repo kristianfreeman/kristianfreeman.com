@@ -4,6 +4,7 @@ description: ""
 pubDate: "Jan 12 2021"
 tags:
   - archive
+  - bytesized
 ---
 
 **Vim** (Vi IMproved) was first released in 1991 by [Bram Moolenaar](https://www.moolenaar.net/). It started as a clone of `vi`, a Unix text editor initially released in 1976.
@@ -14,7 +15,7 @@ Vim (and Vi) are _modal_ text editors: they have contextual “modes” that all
 
 > A [modal text editor](https://wincent.com/wiki/modal_text_editor) is a, nowadays rare, text editor that offers multiple interaction modes which are optimized for specific types of action and interaction. The rationale is that each mode is a finely-tuned tool which allows the user to realize their objectives in an efficient and powerful manner. This does require more learning than you might be accustomed to as a user of a non-modal editor, but the reward is hopefully increased efficiency and power.
 
-<figure class="kg-card kg-image-card">![](/content/images/2021/01/vim.png)</figure>[Last week, we looked at the most popular editor in the world, VSCode.](/8-vscode/)
+[Last week, we looked at the most popular editor in the world, VSCode.](/8-vscode/)
 
 Our focus was on _productivity_ – most readers of Bytesized probably know of VSCode, and are probably using it.
 
@@ -61,19 +62,27 @@ A huge part of Vim’s culture is _sharing your configuration_. The rise of GitH
 
 Ben Awad covers his configuration to setup Vim like VSCode, including a file explorer, type-ahead suggestions, and more.
 
-<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="200" loading="lazy" src="https://www.youtube.com/embed/gnupOrSEikQ?feature=oembed" width="356"></iframe></figure>### [THE PERFECT VIM CONFIGURATION](https://www.youtube.com/watch?v=zF9EcpYb1KE)
+<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="200" loading="lazy" src="https://www.youtube.com/embed/gnupOrSEikQ?feature=oembed" width="356"></iframe></figure>
+
+### [THE PERFECT VIM CONFIGURATION](https://www.youtube.com/watch?v=zF9EcpYb1KE)
 
 Sebastian Karlsson dives into his `vimrc` (the Vim configuration file), how it works, and how to install it for yourself.
 
-<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="200" loading="lazy" src="https://www.youtube.com/embed/zF9EcpYb1KE?feature=oembed" width="356"></iframe></figure>### [Mastering the Vim Language](https://www.youtube.com/watch?v=wlR5gYd6um0)
+<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="200" loading="lazy" src="https://www.youtube.com/embed/zF9EcpYb1KE?feature=oembed" width="356"></iframe></figure>
+
+### [Mastering the Vim Language](https://www.youtube.com/watch?v=wlR5gYd6um0)
 
 Chris Toomey covers Vim’s editor language – a dense mapping of text objects, nouns, and verbs – that allow you to think about inserting and editing text in a way that many other editors simply can’t do.
 
-<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="200" loading="lazy" src="https://www.youtube.com/embed/wlR5gYd6um0?feature=oembed" width="356"></iframe></figure>### [What is Neovim, and why should you care?](https://www.youtube.com/watch?v=PoHLO-b_TxA)
+<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="200" loading="lazy" src="https://www.youtube.com/embed/wlR5gYd6um0?feature=oembed" width="356"></iframe></figure>
+
+### [What is Neovim, and why should you care?](https://www.youtube.com/watch?v=PoHLO-b_TxA)
 
 [Neovim ](https://neovim.io/)is an open-source project to modernize Vim and Vim’s modal editing for a new generation of programmers. In this video, the MinuteVimTricks YouTube channel covers why Neovim matters for Vim developers, and why it may be worth switching to.
 
-<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="200" loading="lazy" src="https://www.youtube.com/embed/PoHLO-b_TxA?feature=oembed" width="267"></iframe></figure>## My favorite plugins
+<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="200" loading="lazy" src="https://www.youtube.com/embed/PoHLO-b_TxA?feature=oembed" width="267"></iframe></figure>
+
+## My favorite plugins
 
 Like I said at the beginning of the email, I’ve been using Vim for almost a decade. Since this newsletter is getting a bit long, I narrowed down my choice picks to just three – the plugins I can’t live without when I’m in Vim.
 

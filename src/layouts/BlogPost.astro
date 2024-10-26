@@ -6,6 +6,7 @@ import { Calendar, Tag } from "lucide-react";
 import BaseHead from "@/components/BaseHead.astro";
 import CommandMenu from "@/components/CommandMenu.tsx";
 import BearPostBanner from "@/components/BearPostBanner.astro";
+import OldNewsletterBanner from "@/components/OldNewsletterBanner.astro";
 import OldPostBanner from "@/components/OldPostBanner.astro";
 import Header from "@/components/Header.tsx";
 import Footnotes from "@/components/Footnotes.tsx";
@@ -24,6 +25,7 @@ const allTags = [
 ].sort();
 const { title, description, pubDate, tags } = Astro.props;
 const isOld = tags.includes("archive");
+const isOldNewsletter = tags.includes("bytesized");
 const isBearRelated = tags.includes("bear");
 ---
 
@@ -77,8 +79,9 @@ const isBearRelated = tags.includes("bear");
                 }
               </div>
             </div>
+            {isOldNewsletter && <OldNewsletterBanner />}
             {isBearRelated && <BearPostBanner />}
-            {isOld && <OldPostBanner />}
+            {isOld && !isOldNewsletter && <OldPostBanner />}
             <slot />
             <hr />
           </div>

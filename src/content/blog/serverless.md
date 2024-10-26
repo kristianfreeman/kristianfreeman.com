@@ -4,6 +4,7 @@ description: ""
 pubDate: 'Nov 17 2020'
 tags:
   - archive
+  - bytesized
 ---
 
 
@@ -11,7 +12,9 @@ tags:
 
 Serverless computing is a new architecture pattern allowing developers to deploy highly-scalable code to be run on demand, often as functions.
 
-<figure class="kg-card kg-image-card">![Cloud GIF](https://f000.backblazeb2.com/file/bytesized-assets/images/serverless-cloud.gif)</figure>## **⌛ The past**
+![Cloud GIF](https://f000.backblazeb2.com/file/bytesized-assets/images/serverless-cloud.gif)
+
+## **⌛ The past**
 
 Software is written to run on a computer. That much is obvious. The question of *where that computer is*, or *who owns that computer* is not as immediately obvious.
 
@@ -31,13 +34,17 @@ Serverless takes that extra computing power and makes it available at the functi
 
 Serverless often is talked about in terms of functions. In that way, it corresponds neatly with many of the architectural ideas around functional programming: that programs should be composed of smaller (often immutable) functions.
 
-<figure class="kg-card kg-image-card">![Serverless architecture](https://f000.backblazeb2.com/file/bytesized-assets/images/serverless.png)</figure>Image courtesy of [“Serverless Architectures”](https://martinfowler.com/articles/serverless.html) by Martin Fowler.
+![Serverless architecture](https://f000.backblazeb2.com/file/bytesized-assets/images/serverless.png)
+
+Image courtesy of [“Serverless Architectures”](https://martinfowler.com/articles/serverless.html) by Martin Fowler.
 
 Because serverless functions are tightly bound, often just [a single JavaScript function or file](https://www.serverless.com/blog/serverless-architecture-code-patterns), they’re cheap to run. Instead of needing to keep an entire (virtualized or physical) active 24/7 for the purposes of one application, serverless functions can essentially run on any server in AWS or [Azure’s](https://azure.microsoft.com/en-us/) computing farm that has available computing power.
 
 This means that serverless function executions are quite cheap, and for certain kind of applications, such as APIs (especially highly cacheable ones), it’s an incredible way to save money. By building on serverless, Troy Hunt’s [Have I Been Pwned](https://haveibeenpwned.com/) API cost $7.40 in June 2018 to serve 54 million searches.
 
-<figure class="kg-card kg-image-card">![Troy Hunt Tweet](https://f000.backblazeb2.com/file/bytesized-assets/images/troy-hunt-serverless.png)</figure>## **👶 Where to start**
+![Troy Hunt Tweet](https://f000.backblazeb2.com/file/bytesized-assets/images/troy-hunt-serverless.png)
+
+## **👶 Where to start**
 
 [AWS Lambda](https://aws.amazon.com/lambda/) is the most popular platform for deploying serverless functions. It supports a number of languages, like JavaScript, Ruby and Python.
 

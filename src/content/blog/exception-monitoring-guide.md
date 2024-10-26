@@ -4,17 +4,18 @@ description: ""
 pubDate: "Mar 09 2021"
 tags:
   - archive
+  - bytesized
 ---
 
-<div class="sponsored"><span style="color: var(--contrast); font-family: inherit; font-size: 35px; font-style: inherit; background-color: var(--base-3);">🎓 What is it?</span>
+## 🎓 What is it?
 
-</div>Exception monitoring provides insight into why your application is failing. Unlike normal metrics, *exception monitoring* worries about error states—often including support for line-by-line code errors, user information and context, and integrations with the tools you’re already using.
+Exception monitoring provides insight into why your application is failing. Unlike normal metrics, *exception monitoring* worries about error states—often including support for line-by-line code errors, user information and context, and integrations with the tools you’re already using.
 
 Here’s Stackify on [why exception monitoring is important](https://stackify.com/exception-tracking-important/):
 
 > Exception monitoring offers another better way of gaining early insight into production problems. By monitoring exceptions, you can trace a performance issue to its root case, thereby gaining the time and means to spot the problem before it reaches a tipping point and impacts your users or company.
 
-<figure class="kg-card kg-image-card kg-width-full">![](/content/images/2021/03/giphy.gif-cid-ecf05e47odnafqyjpm1az6wk8d240zeo2xjqseqqyym1ma76-rid-giphy.gif)</figure>## ⌛ The past
+## ⌛ The past
 
 Most small applications track _happy path_ traffic. A request comes in, a long-running task executes, and if you’re interested in monitoring how your application is doing, you might check your logs occasionally, or even send them to a logging service.
 
@@ -31,7 +32,7 @@ In a single instance, this log isn’t immediately helpful—you can see what me
 
 **Exception monitoring fills in the gaps in this error log.** It helps you see _data_, _user context_, and _performance characteristics_ about the error you’re seeing.
 
-<figure class="kg-card kg-image-card kg-card-hascaption">![](/content/images/2021/03/hb-bread.PNG)<figcaption>Error context in Honeybadger’s “Breadcrumbs” view</figcaption></figure>## 📌 Right now
+## 📌 Right now
 
 Exception monitoring tools often are integrated via an SDK into your applications. Instead of just letting your app fail and output into your logs, tools like Honeybadger, Sentry, and Rollbar give line-by-line details about how your code went wrong, and in some cases, even the full context (Honeybadger calls this _breadcrumbs_) of how your code came to fail.
 
@@ -45,7 +46,7 @@ GitHub’s 2016 blog post [“Exception Monitoring and Response”](https://gith
 
 > Areas of Responsibility help us in a couple of ways. They define instantly recognizable high-level areas of the site, and within each of those, a set of teams generally responsible for their well being and upkeep. Beyond that, we track exception rates for AORs in Graphite, so we can see any degradation over time.
 
-<figure class="kg-card kg-image-card kg-card-hascaption">![](/content/images/2021/03/github-exceptions.png)<figcaption>GitHub’s exceptions on their application, categorized by areas of responsibilities</figcaption></figure>## 👶 Where to start
+## 👶 Where to start
 
 Even if you don’t have a high-traffic production application, learning how to integrate an exception monitoring tool is a great exercise. For newer developers, it also reflects well on your resume or skillset to care about exception monitoring, as practically you’ll _always_ work with applications that are generating exceptions.
 
