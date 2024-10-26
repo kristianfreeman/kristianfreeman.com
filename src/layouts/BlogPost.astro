@@ -6,6 +6,7 @@ import { Calendar, Tag } from "lucide-react";
 import BaseHead from "@/components/BaseHead.astro";
 import CommandMenu from "@/components/CommandMenu.tsx";
 import BearPostBanner from "@/components/BearPostBanner.astro";
+import OldPostBanner from "@/components/OldPostBanner.astro";
 import Header from "@/components/Header.tsx";
 import Footnotes from "@/components/Footnotes.tsx";
 import Footer from "@/components/Footer.astro";
@@ -22,16 +23,17 @@ const allTags = [
   ),
 ].sort();
 const { title, description, pubDate, tags } = Astro.props;
+const isOld = tags.includes("archive");
 const isBearRelated = tags.includes("bear");
 ---
 
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <BaseHead title={title} />
     <script src="https://platform.twitter.com/widgets.js"></script>
   </head>
 
-  <body class="bg-base">
+  <body>
     <CommandMenu client:only="react" posts={posts} tags={allTags} />
     <div class="container mx-auto space-y-8">
       <Header post={Astro.props} url={Astro.url} />
@@ -76,6 +78,7 @@ const isBearRelated = tags.includes("bear");
               </div>
             </div>
             {isBearRelated && <BearPostBanner />}
+            {isOld && <OldPostBanner />}
             <slot />
             <hr />
           </div>

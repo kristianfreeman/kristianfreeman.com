@@ -1,45 +1,86 @@
 ---
-import Default from '@/layouts/default.astro';
-import { getCollection } from 'astro:content';
-import FormattedDate from '@/components/FormattedDate.astro';
+import Default from "@/layouts/default.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+type Post = CollectionEntry<"blog">;
+import FormattedDate from "@/components/FormattedDate.astro";
 
-let posts = (await getCollection('blog')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+const currentYear = new Date().getFullYear();
+
+let posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
-let firstPostYear = posts[0].data.pubDate.getFullYear();
+let firstPostYear = posts[posts.length - 1].data.pubDate.getFullYear();
+let tags = [
+  ...new Set(
+    posts
+      .map((post) => post.data.tags)
+      .flat()
+      .filter(Boolean)
+  ),
+].sort();
 
-let tags = [...new Set(posts.map((post) => post.data.tags).flat().filter(Boolean))].sort()
+const postsGroupedByYear = posts.reduce(
+  (acc: Record<string, Post[]>, post: Post) => {
+    const year = post.data.pubDate.getFullYear();
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(post);
+    return acc;
+  },
+  {}
+);
 ---
 
 <Default title="Blog">
-  <h1 class="font-bold">
-    Blog
-  </h1>
+  <h1 class="font-bold">Blog</h1>
 
   <h2>{posts.length} posts that I've written since {firstPostYear}.</h2>
 
   <section class="mt-16">
     <div class="flex flex-col gap-12">
-      {posts.map((post) => (
-        <div class="flex flex-col gap-2">
-          <h2 class="leading-6 m-0">
-            <a href={`/${post.slug}`}>
-              {post.data.title}
-            </a>
-          </h2>
-          <p class="m-0">{post.data.description}</p>
-          <p class="m-0 text-foreground/80"><FormattedDate date={post.data.pubDate} /></p>
-        </div>
-      ))}
+      {
+        postsGroupedByYear[currentYear].map((post) => (
+          <div class="flex flex-col gap-2">
+            <h2 class="leading-6 m-0">
+              <a href={`/${post.slug}`}>{post.data.title}</a>
+            </h2>
+            <p class="m-0">{post.data.description}</p>
+            <p class="m-0 text-foreground/80">
+              <FormattedDate date={post.data.pubDate} />
+            </p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="flex flex-col gap-6 mt-6">
+      {
+        Object.keys(postsGroupedByYear)
+          .sort((a, b) => Number(b) - Number(a))
+          .slice(1)
+          .map((year) =>
+            postsGroupedByYear[year].map((post) => (
+              <div class="flex flex-col gap-2">
+                <h2 class="leading-6 text-lg m-0 flex items-center gap-2">
+                  <a href={`/${post.slug}`}>{post.data.title}</a>
+                  <span class="m-0 font-normal text-foreground/80">
+                    {" "}
+                    - <FormattedDate date={post.data.pubDate} />
+                  </span>
+                </h2>
+              </div>
+            ))
+          )
+      }
     </div>
   </section>
 
   <section class="mt-12">
     <div class="flex flex-wrap gap-4">
-      {tags.map((tag) => (
-        <a href={`/tags/${tag}`}>#{tag}</a>
-      ))}
+      {tags.map((tag) => <a href={`/tags/${tag}`}>#{tag}</a>)}
     </div>
   </section>
 </Default>
