@@ -4,7 +4,6 @@ import type { CollectionEntry } from "astro:content";
 type Post = CollectionEntry<'blog'>;
 
 import {
-  Command,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
