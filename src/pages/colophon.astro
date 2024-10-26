@@ -1,0 +1,10 @@
+---
+import Default from '@/layouts/default.astro';
+import Footnotes from "@/components/Footnotes.tsx";
+import { Content } from "@/content/pages/colophon.mdx";
+---
+
+<Default title="Colophon">
+  <Content />
+  <Footnotes client:only="react" />
+</Default>
