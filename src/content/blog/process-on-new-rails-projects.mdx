@@ -1,0 +1,18 @@
+---
+title: Process on new Rails apps
+description: ""
+pubDate: 'Apr 28 2014'
+tags:
+  - archive
+---
+
+
+Thought I'd quickly share a comment I posted on [/r/rails](http://www.reddit.com/r/rails) in the post ["What are the first steps you take when starting a new project?"](http://www.reddit.com/r/rails/comments/244oj3/what_are_the_first_steps_you_take_when_starting_a/):
+
+> First things first – new tmux instance! Crucial. Then...
+
+> Thorough README, including project goals and if it's a full Rails app, models/controller relationships.
+
+> For the technical side – establish some things up front. HAML v. ERB, SASS v. LESS; JS assets manually or via Bower, etc. Testing and development workflow up-front for less work later: Rspec and sometimes Cucumber, Guard with guard-rspec, guard-bundler. Then `echo 3000 >> ~/.pow/<appname>` to serve it on a `.dev` domain, while still being able to run `rails server`. Finally, `pry-rails` and `pry-byebug` to be able to drop a `binding.pry` and intelligently debug.
+
+I've been using a process similar to this for the last couple months as I've been starting up some new projects. Most notably is the addition at the end of [`pry-byebug`](https://github.com/deivid-rodriguez/pry-byebug), a really killer debugger tool for Ruby 2.0+ projects. Check out the README - it has some really great step debugging tools similar to Chrome Debugging Tools.

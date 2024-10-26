@@ -1,0 +1,48 @@
+---
+title: "Array.unwrap"
+description: ""
+pubDate: 'Aug 30 2013'
+tags:
+  - archive
+---
+
+
+I often have situations in Rails where I'm calling a method that either returns
+a single object or an array of many objects. Take, for example, an ActiveRecord
+query that will return a User based on certain specifications:
+
+```
+{% gist 6396286 %}
+```
+
+In this instance, you'd expect it to return a single User. Because it's an AR
+query, however, it returns an instance of `ActiveRecord::Relation`. For our
+purposes, this is an array.
+
+In this situation, my solution has often been to just call `user.first`. I'm
+not a huge fan of this because it's an array with only one object inside of it
+- calling `first` seems to be an inaccurate way of basically saying "get the
+  object out of the array".
+
+I discussed this with [Amiel Martin][Amiel], my coworker at [Carnes
+Media][carnes], and we determined that this is a pretty standard thing to run
+into, and the kind of thing that might be a good Rails pull request.
+
+We came up with this [implementation][commit]:
+
+```
+{% gist 6396310 %}
+```
+
+The method `unwrap` makes more sense than calling `first` on an array that only
+has one object.
+
+We're in the process of preparing this functionality for submission as a Rails
+PR - there's so many pull requests at any given time that we've sought out some
+thoughts from other Rails programmers on the implementation. If you have any
+thoughts on it, feel free to contact [me](http://twitter.com/imkmf) or
+[Amiel].
+
+[Amiel]: http://twitter.com/amielmartin
+[carnes]: http://carnesmedia.com
+[commit]: https://github.com/carnesmedia/rails/commit/d6fcfe9ddc646849c8f5a70325c82d20f7f85259

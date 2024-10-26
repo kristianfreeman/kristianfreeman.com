@@ -1,0 +1,20 @@
+---
+title: "Live Updating in Development"
+description: ""
+pubDate: 'Apr 23 2014'
+tags:
+  - archive
+---
+
+
+I spent some time over the last couple days pushing a new redesign of my site, and one of the things I've been meaning to do is set up a better live development process. By that, I mean that when you're writing code, there's a tool for pretty much every programming language to assist you in reloading, running test suites, re-building, etc.
+
+These tools exist not because they're a quirky thing some people use; they exist because they *make better code*.
+
+The most prevalent of these in my toolchain is [Guard](https://github.com/guard/guard), a Ruby tool for "easily handling events on file system modifications". In short, this means that using a fairly simple regular expression syntax, you can piece together systems for dealing with file changes: for example, if `lib/my_class.rb` changes, run `spec/my_class_spec.rb`. Guard has a crazy amount of plugins, including tools for testing (Rspec, Cucumber, MiniTest, etc.), building (SASS, static sites like Jekyll), and miscellaneous Ruby-specific tools (running a Rails server, installing gems on Gemfile changes). I've had good luck just sifting through [GitHub search for "Guard", specifically for Ruby](https://github.com/search?l=Ruby&nwo=guard%2Fguard&q=guard&ref=cmdform&search_target=global&type=Repositories).
+
+At work, we've had some good luck with [Gruntjs](http://gruntjs.com/) in our Ember projects. Though Grunt is a bit more open-ended in its goals compared to Guard, the basic file system modification idea is identical. Check out Ember App Kit's [Gruntfile](https://github.com/stefanpenner/ember-app-kit/blob/master/Gruntfile.js) for some examples of this.
+
+More generally, [LiveReload](http://livereload.com/) is a killer tool that I use for developing this site. LiveReload connects through the browser and will refresh the page intelligently on changes. Check out the (simple) implementation I have for this website in my [Guardfile](https://github.com/imkmf/website/blob/master/Guardfile), using [guard-livereload](https://github.com/guard/guard-livereload).
+
+I'm sure I'm missing a ton of these - my knowledge is pretty based in Ruby and JS so I'm sure there's a whole slew of tools in different languages. The point is, **use these**! As I said, these tools exist because they have nothing but net-gain on your development process: you'll save time by being able to rapidly run tests, re-build your code, etc. Especially if you're writing in Ruby or a Rails app, you're going to see huge gains pretty quickly after implementing the default Guardfile for an Rspec configuration. Go go go!

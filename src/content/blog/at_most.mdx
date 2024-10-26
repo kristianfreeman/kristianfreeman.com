@@ -1,0 +1,57 @@
+---
+title: "at_most: ActiveRecord limiting in Rails"
+description: ""
+pubDate: 'Aug 04 2013'
+tags:
+  - archive
+---
+
+
+*tl;dr: `at_most` is a Ruby gem for limiting the number of AR model instances in your Rails apps*
+
+I've found that if I'm repeating a use-case or functionality over multiple apps, it's probably worth extracting into a reusable gem. So in that vein, I've released [at_most](https://github.com/imkmf/at_most), an easy way to limit your ActiveRecord model instances.
+
+The primary function I've been using this for is limiting the number of users for an app. If you're using something like [ActiveAdmin](https://github.com/gregbell/active_admin) for managing your models, it's nice to limit the number of `AdminUsers` for safety's sake.
+
+```ruby
+class User < ActiveRecord::Base
+  at_most(5)
+end
+```
+
+It's really that simple. We can test this functionality by creating five users, and then attempting to create a sixth:
+
+```ruby
+>> 5.times do User.create!; end
+```
+
+```ruby
+>> User.create!
+=> ActiveRecord::RecordInvalid: Validation failed: The maximum number of users has been reached.
+```
+
+It's important to note that this is a validation error -- we can override this with our own custom error message fairly easily.
+
+```ruby
+class User < ActiveRecord::Base
+  at_most(5, { message: "Sorry, all our spots are full!" })
+end
+```
+
+We can also use i18n to set an error message at a *per model* and *global* level:
+
+```yaml
+en:
+  activerecord:
+    errors:
+      models:
+        users:
+          at_most: "All of our spots are full :(:("
+        books:
+          at_most: "I can't read all of these!"
+  at_most: "Something went terribly wrong."
+```
+
+This was a good chance for me to dig into how validations work a bit, and understand the proper way to add to them. As always, PRs and tickets are appreciated.
+
+You can find `at_most` on Github [here](https://github.com/imkmf/at_most).

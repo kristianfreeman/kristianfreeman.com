@@ -1,0 +1,121 @@
+---
+title: A thirty-one line test framework
+description: ""
+pubDate: 'Nov 24 2013'
+tags:
+  - archive
+---
+
+
+I've been reading ["Metaprogramming Ruby"](http://pragprog.com/book/ppmetr/metaprogramming-ruby) the last couple days, and realizing that a lot of what makes [Rspec](http://rspec.info) amazing is its usage of metaprogramming. I thought it would be interesting to try and write my own test framework.
+
+Surprisingly, it only took a couple minutes to write something quite powerful. [`freeman`](https://github.com/imkmf/freeman) is the gem that I produced.
+
+It's very simple - it extends the `Object` class to add methods for `#is` and `isnt`, and the `Kernel` class for a `test` method.
+
+```ruby
+test "one plus one is two" do
+  (1 + 1).is 2
+end
+
+test "one plus two isnt one" do
+  (1 + 2).isnt 1
+end
+```
+
+Each test creates a `Struct`, which takes the name of the test and the `do..end` block (the code itself), and evaluates it as `true` or `false`. This is what is a test is, after all!
+
+Here's the definition of `should` in Rspec:
+
+```ruby
+def should(matcher=nil, message=nil)
+  RSpec::Expectations::PositiveExpectationHandler.handle_matcher(subject, matcher, message)
+end
+```
+
+And the definition of `RSpec::Expectations::PositiveExpectationHandler`:
+
+```ruby
+class PositiveExpectationHandler < ExpectationHandler
+
+  def self.handle_matcher(actual, matcher, message=nil, &block)
+    check_message(message)
+    ::RSpec::Matchers.last_should = :should
+    ::RSpec::Matchers.last_matcher = matcher
+    return ::RSpec::Matchers::BuiltIn::PositiveOperatorMatcher.new(actual) if matcher.nil?
+
+    **match = matcher.matches?(actual, &block)**
+    return match if match
+
+    message = message.call if message.respond_to?(:call)
+
+    message ||= matcher.respond_to?(:failure_message_for_should) ?
+                matcher.failure_message_for_should :
+                matcher.failure_message
+
+    if matcher.respond_to?(:diffable?) && matcher.diffable?
+      ::RSpec::Expectations.fail_with message, matcher.expected, matcher.actual
+    else
+      ::RSpec::Expectations.fail_with message
+    end
+  end
+end
+```
+
+The simplest version? It compares the "actual" with the provided block, checking for equality. Here's the `freeman` version:
+
+```ruby
+module Kernel
+  def test(description, &block)
+    KFTest.new(description, block).run
+  end
+end
+
+KFTest = Struct.new(:description, :block) do
+  def run
+    status = block.call ? true : false
+    puts '#{ description }: #{ status }'
+    if status.is false
+      line = block.source_location.join(': ')
+      puts '  from #{ line }'
+    end
+    return status
+  end
+end
+```
+
+Some of the things are extra: the `puts` statement is just to have some sense of output - I considered taking it out and just returning true or false but that's not super helpful when you're writing a separate test file.
+
+I love `Rspec`. I wrote `freeman` because I want to understand how `Rspec` works in a more well-rounded route. In the meantime, I've begun integrating `freeman` in some personal scripts that don't require full testing frameworks, and I'm impressed with how fast it is.
+
+A simple test with `freeman.rb` required outside of the gem:
+
+```ruby
+# test.rb
+require './freeman'
+
+test 'A string is indeed a string' do
+  'This is a string'.class.is String
+end
+
+# time ruby test.rb
+A string is indeed a string: true
+ruby test.rb  0.05s user 0.04s system 96% cpu 0.092 total
+```
+
+With the gem:
+
+```ruby
+# test.rb
+require 'freeman'
+
+test 'A string is indeed a string' do
+  'This is a string'.class.is String
+end
+
+# time ruby test.rb
+A string is indeed a string: true
+ruby test.rb  0.23s user 0.05s system 98% cpu 0.284 total
+```
+
+It's surprising the amount of time using Bundler can add to the script. Either way, it's quite quick!

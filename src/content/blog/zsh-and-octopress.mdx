@@ -1,0 +1,21 @@
+---
+title: "ZSH and Octopress"
+description: ""
+pubDate: 'Jan 26 2013'
+tags:
+  - archive
+---
+
+
+Octopress has a number of handy rake tasks, which can be easily found with `rake -T`. My favorite is `rake new_post`, which bootstraps a Markdown file (much like the one I am currently writing) with the metadata needed to make it click.
+
+If you're a ZSH user, you might have noticed that titling the post (`rake new_post['My Title Here']`) doesn't want to work. This is because ZSH performs [globbing](http://en.wikipedia.org/wiki/Glob_(programming)) on commands, causing this particular one to choke. There's a couple solutions:
+
+- Simply do `rake new_post`. The command will ask for a follow-up with the title, which is easy enough.
+- Run `noglob rake ...` each time, or alias it as `rake="noglob rake"` in your `.zshrc`.
+
+I prefer the first, as I'm not too fond of aliasing over a command I use so often. Some additional options can be found on the appropriate Octopress issue [on Github](https://github.com/imathis/octopress/issues/117)
+
+**Edit: I have stopped using Octopress in favor of [Jekyll][]. This post is kept for posterity.**
+
+[Jekyll]: http://jekyllrb.com

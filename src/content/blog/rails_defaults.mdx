@@ -1,0 +1,33 @@
+---
+title: Using new Rails defaults
+description: ""
+pubDate: 'Nov 27 2012'
+tags:
+  - archive
+---
+
+After a short time with Rails, I'm beginning to find that my tastes in testing frameworks and databases don't exactly match "The Rails Way". While in my beginning studies, I don't plan to make a habit of breaking from tradition without having a good reason why, some specifics have come up that I change on a regular basis in `rails new` commands that I was sure would be easily modifiable in some way. Luckily, the Rails 3.2 [Release Notes][release-notes] offer some tasty information on what may be the best option:
+
+> Default options to rails new can be set in ~/.railsrc. You can specify extra command-line arguments to be used every time `rails new` runs in the .railsrc configuration file in your home directory.
+
+Nice. So implementing a `.railsrc` file should work great.
+
+```bash
+# ~/.railsrc
+
+-T # Don't use Test::Unit
+--database=postgresql # Use postgresql
+```
+
+We'll see that creating a new Rails app will implement these rather nicely:
+
+```bash
+$ rails new app
+Using -T # Don't use Test::Unit --database=postgresql
+# Use postgresql from /Users/kristian/.railsrc
+```
+
+Obviously there's a wealth of possibilities here -- any command-line option available to Rails is configurable in the `.railsrc`. Try `rails -h` to get the full wealth of options.
+
+[release-notes]: http://guides.rubyonrails.org/3_2_release_notes.html
+

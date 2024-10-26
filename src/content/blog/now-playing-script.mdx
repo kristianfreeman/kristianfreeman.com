@@ -1,0 +1,35 @@
+---
+title: "Now Playing Script"
+description: ""
+pubDate: 'Sep 01 2013'
+tags:
+  - archive
+---
+
+
+I use a 'now playing' script for seeing my last played artist in tmux. Here's
+what it looks like:
+
+```
+{% gist 6406054 %}
+```
+
+It's in a `loop` because I use the [daemons] gem to run it in the background.
+The documentation is quite good and it has come in handy for many little
+scripts I've written to run in the background of my computer.
+
+If the connection fails (i.e. if there's no internet), the script will use an
+Applescript script to get the artist from iTunes:
+
+```
+{% gist 6406069 %}
+```
+
+This isn't a foolproof system because if I'm in a situation where I don't have
+internet, it's pretty likely I'm listening to music on my phone. My phone is
+scrobbling to Last.fm, so I'm losing information because one of my devices
+isn't connected. I can't really think of an alternate solution here, besides
+tethering my laptop. My data plan would not cooperate with that kind of thing,
+so I'm left with a bit of an edgecase bug.
+
+[daemons]: http://daemons.rubyforge.org/

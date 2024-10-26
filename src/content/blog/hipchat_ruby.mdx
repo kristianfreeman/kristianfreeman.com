@@ -1,0 +1,45 @@
+---
+title: Hipchat + Ruby
+description: ""
+pubDate: 'Aug 06 2013'
+tags:
+  - archive
+---
+
+
+I've started to dig into [Hipchat](http://hipchat.com) because of its killer [free plan](http://blog.hipchat.com/2013/03/21/hipchat-now-free-for-teams-of-5-users-or-fewer/) and I discovered pretty quickly that it has an awesome API, along with an awesome [Ruby gem](https://github.com/hipchat/hipchat-rb).
+
+The really cool part about Hipchat's API is that it has the option to create "notification" tokens, which allow you to post to Hipchat channels *without* creating a full account. It's a super simple process - label the key and generate it.
+
+I wrote a little script today that I'm using to send messages to myself remotely from my computer:
+
+```ruby
+#!/usr/bin/env ruby
+require 'hipchat'
+
+def token
+  ENV['HIPCHAT_TOKEN']
+end
+
+def room
+  ENV['HIPCHAT_ROOM']
+end
+
+def name
+  ENV['HIPCHAT_NAME']
+end
+
+def message
+  "@user #{ ARGV.first }"
+end
+
+def client
+  HipChat::Client.new(token)
+end
+
+client[room].send(name, message, message_format: "text")
+```
+
+I dropped that into a `$PATH` accessible directory and now I can call `notify "message"` and get a 'mentioning' message (this sets off notifications on your desktop/iOS, which is useful) within ten seconds.
+
+Side note: I've found that it's important to set the `message_format` to `"text"`: the normal format (HTML) doesn't support things like `@mentions`, pasted text and URLs. See the [documentation](https://www.hipchat.com/docs/api/method/rooms/message) for more on this.

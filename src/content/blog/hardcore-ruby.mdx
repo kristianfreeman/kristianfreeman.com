@@ -1,0 +1,27 @@
+---
+title: Hardcore Ruby
+description: ""
+pubDate: 'Dec 23 2013'
+tags:
+  - archive
+---
+
+
+<blockquote class="twitter-tweet" lang="en"><p>ruby on rails, hardcore mode:&#10;&#10;class ActiveRecord::Base&#10; def method_missing(name, *args, &amp;block)&#10; self.class.destroy_all&#10; end&#10;end</p>&mdash; Jake Boxer (@jakeboxer) <a href="https://twitter.com/jakeboxer/statuses/415207206599278593">December 23, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+I saw this tweet today, and it made me think about some ways in which to destroy Ruby.
+
+If you're not familiar with Ruby, it has a great feature in that any class, method, or object can be altered. For instance, if you want to add a new function for doubling a number:
+
+<script src="https://gist.github.com/imkmf/8109139.js"></script>
+
+This comes in handy, a lot. In fact, a lot of what powers Ruby on Rails is this idea of mutability.
+
+Unfortunately, this can also be quite destructive, as seen in the tweet above. I thought it'd be a fun experiment to come up some weird and potentially dangerous pieces of Ruby code.
+
+<script src="https://gist.github.com/imkmf/51a0112e94f35aec6155.js"></script>
+
+<script src="https://gist.github.com/imkmf/fe5d073242c225b98a64.js"></script>
+
+*More to come here...*

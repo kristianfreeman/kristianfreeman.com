@@ -1,0 +1,105 @@
+---
+title: Dotfiles
+description: ""
+pubDate: 'Sep 01 2013'
+tags:
+  - archive
+---
+
+
+The usage of dotfiles is quite common with programmers. For a long time, I used
+other people's dotfiles - [Zach Holman][holman] from Github, [Ryan Bates][bates]
+from Railscasts, and a couple others.
+
+These worked pretty well, and my only complaint with them was my relative lack
+of understanding how they worked. Everyone's setup is different, and although
+other people's dotfiles (which are quite popular - both Zach and Ryan's average
+1500+ stars and 500+ forks on Github) can help me get to a better workflow,
+I began to feel like setting up my own workflow might be a better solution.
+
+Partially this was because when I originally forked their dotfiles, I didn't
+feel experienced enough to have an opinion on things. My choice of a shell, for
+instance, would be dictated by whichever the dotfiles I was using preferred.
+
+So I rolled [my own dotfiles][myown]. I thought I would take some time to
+document my dotfiles, though anything deeper than a high-level overview could
+become woefully out of date, so I'll keep it brief:
+
+My software choices are pretty simple and standard for a Mac user.
+[Homebrew](http://brew.sh) for compiling and installing most software. After
+that, [ZSH], [Vim], and [tmux].
+
+I wrote about tmux in a [post][tmuxpost] at the beginning of the year, though that
+setup relied a bit on extraneous features using [tmux-powerline][powerline] - did I
+really need to see the weather in my tmux bar if I could just look out the damn
+window? I decided to roll my own [tmux.conf] and have it be refreshingly minimal.
+
+Of note in the tmux.conf is a single 'powerline'-esque feature: the output of a now
+playing script and the date/time. Date and time is obvious, and my now playing script
+is important as I often listen to internet radio and would like to know what song is
+playing. I wrote about the implementation of this script in "[Now Playing Script]".
+
+I use ZSH, as I'm quite fond of the tab completion and I think [oh-my-zsh] is
+a pretty great tool for tricking your command-line prompt. I use the
+'kennethreitz' theme.
+
+<a href="http://i.imgur.com/YXIZZIt.png">
+  <img src="http://i.imgur.com/YXIZZIt.png" />
+</a>
+
+My vim setup requires a bit more writing, though I plan to expand that into
+a later post. For now, my [vimrc] explains my usage patterns and by using
+[Vundle] and `:BundleInstall`, you can get a setup fairly similar to mine.
+
+Other miscellaneous things worth mentioning:
+
+I alias `less` as `vim -u ~/.vimrc.more`, which is a read-only vim
+configuration with keys similar to `less`. It supports syntax highlighting,
+which was the primary reason for my switch.
+
+I'm a huge fan of aliases - anything over three characters should be aliased,
+in my opinion. You can see my continually growing list of aliases in [this
+file](https://github.com/imkmf/dotfiles/blob/master/zsh/aliases).
+
+I've begun writing more shell functions, which has been a lot of fun to learn.
+The file is [here](https://github.com/imkmf/dotfiles/blob/master/zsh/functions).
+Here's a couple I've been writing recently:
+
+- `c`: `cd` and `ls` so I can keep track of where I am.
+- `f`: I always forget how to use `ack`, so this function simply searches with
+  ack using specified arguments. This should really be replaced by me just
+  knowing ack syntax.
+- `t`: A function for running Rails tests - if `script/test` exists, run
+  the standard Rails tests, otherwise, run `rspec`.
+- `mux`: This one is pretty interesting and I use it all the time: it searches
+  for an existing tmux session and asks if you'd like to join it; if not, it
+  starts a new one for you. This isn't really that big of a deal, but it's
+  handy to keep tabs on all the tmux sessions I have open, as I often
+  unintentionally duplicate.
+- `post` and `fpost`: these two are for my work on this site! `post` creates
+  a new time-formatted markdown post with my argument as the name (I'm lazy),
+  and `fpost` searches through existing posts, opening the correct one based on
+  the keyword provided. After fifteen posts or so, navigating a directory of
+  markdown files titled "2012-01-01..., 2012-01-02... etc." gets pretty
+  tedious.
+
+As for the dotfiles itself, I use a custom ruby script called `[go-time]` to
+symlink my dotfiles over, skipping them if they already exist. It's a small
+thing, but not writing the dotfiles as hidden files makes things a lot easier.
+It's pretty simple to work with invisible files in vim, but for Sublime Text
+and other GUI text editors, it can get a little tedious.
+
+[holman]: https://github.com/holman/dotfiles
+[bates]: https://github.com/ryanb/dotfiles
+[myown]: https://github.com/imkmf/dotfiles
+[ZSH]: http://zsh.org
+[Vim]: http://vim.org
+[tmux]: http://tmux.sourceforge.net/
+[tmuxpost]: http://kristianfreeman.com/tmux-powerline-and-info-overload/
+[powerline]: https://github.com/erikw/tmux-powerline
+[tmux.conf]: https://github.com/imkmf/dotfiles/blob/master/tmux.conf
+[Now Playing Script]: http://kristianfreeman.com/now-playing-script
+[oh-my-zsh]: https://github.com/robbyrussell/oh-my-zsh
+[vimrc]: https://github.com/imkmf/dotfiles/blob/master/vimrc
+[Vundle]: https://github.com/gmarik/vundle
+[go-time]: https://github.com/imkmf/dotfiles/blob/master/go-time

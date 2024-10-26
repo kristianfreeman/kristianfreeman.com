@@ -1,0 +1,28 @@
+---
+title: Diff on Commit Idea
+description: ""
+pubDate: 'Nov 25 2013'
+tags:
+  - archive
+---
+
+
+I've been thinking of ways to improve as a programmer recently. One of my weak points is testing - while I think I test pretty well (my normal stack is RSpec and Cucumber; I use Jenkins and Simplecov), I would love to be at a point where I could 100% test everything.
+
+In my experience writing websites, it seems like the front-end of a site doesn't get as much testing love as it should. I'm still not sure what the right way to solve this is - I should start looking into Javascript-based testing like [PhantomJS](http://phantomjs.org).
+
+In the meantime, I had an idea for something I think would be pretty cool:
+
+- When a commit is pushed to a GitHub repo, my Jenkins instance begins testing it and will let me know via HipChat (FlowDock at work) that it's passed.
+- *Before* that, however, I want to add something new. Using Selenium, take a screenshot of any views that are changed in the commit on a test server (maybe Jenkins).
+- Save that screenshot and continue to run the tests.
+- When (if) the tests pass, deploy the new version of the site to the test server.
+- Take *another* screenshot of the new view.
+- Using `imagemagick`, [make a diff image](http://askubuntu.com/questions/209517/does-diff-exist-for-images) of the before/after view.
+- Using GitHub's [Comment API](http://developer.github.com/v3/repos/comments/), comment on the commit with the diff'ed image.
+
+This isn't an example of testing, but it is a nice way to be able to see differences given that your tests pass.
+
+This idea was inspired by BBC's [Wraith](https://github.com/BBC-News/wraith) tool. I'm still evaluating whether this will be a workable solution for my idea - it seems to only work on existing (living) sites, meaning I'd have to run two before/after instances of the site for each commit. I'm not super fond of that, and I think that the `imagemagick compare` tool is exactly what they're using as well.
+
+

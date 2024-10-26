@@ -1,0 +1,23 @@
+---
+title: Sending books to the Kindle
+description: ""
+pubDate: 'Apr 15 2014'
+tags:
+  - archive
+---
+
+
+The Kindle is one of those understated devices that has a bunch of cool features underneath. [HowToGeek has a couple here](http://www.howtogeek.com/121811/your-kindle-is-more-than-an-ereader-5-hidden-kindle-features/), but they're out of scope.
+
+So quickly, my favorite feature as a gift, but mostly as future reference for myself:
+
+The Kindle will take your books that you've mysteriously found on the internet and accept them with open arms. Well, mostly.
+
+Every Kindle has a email address, which can be used to send documents to it. On the Kindle Keyboard (sorry, literally anyone else who has a Kindle because yours is newer than mine), you can find it under "Settings -> (page 2) Send-To-Kindle E-mail". You'll see an email that looks like "(blah)@kindle.com".
+
+Now here's where things get interesting. If you have a 3G Kindle, this email will work, but it'll also attempt to download the books when you're out on the go. This causes a $0.15 per megabyte charge to your account (most books average 1-3mb, given a couple images throughout the book). Something that isn't well-documented is the *free* email - "(blah)@**free**.kindle.com". Using the free email, the document will only be delivered to your Kindle over WiFi, thus avoiding the network cost. Official documentation for the Kindle email feature can be found [here](http://www.amazon.com/gp/sendtokindle/email).
+
+A heads-up: you'll likely try and send it something that isn't correct: take, for example, ePub files. Amazon's custom formats, `.mobi` and `.azw`, are fairly uncommon compared to ePub, the standard for eBooks. To fix this, use [Calibre](http://calibre-ebook.com/). Calibre is an open-source application that serves as a library for your eBooks, as well as a manager/bridge to the Kindle. On first run of the app, you can configure an email address to send to (and where to send from), so make sure to configure that to your free Kindle email. When you import a book and choose to email it, Calibre will *convert* it into the right format. Hooray!
+
+If sending the email fails, it's likely that you missed a step. Did you read the documentation I linked above? If not, you probably forgot to add your email to the ["Approved Personal Document E-Mail List"](http://www.amazon.com/gp/help/customer/display.html/?nodeId=200767340#approvefrom).
+

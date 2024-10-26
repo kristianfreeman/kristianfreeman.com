@@ -1,0 +1,54 @@
+---
+title: You Should Learn Vim
+description: ""
+pubDate: 'Nov 09 2013'
+tags:
+  - archive
+---
+
+
+Vi IMproved, or **Vim**, is my favorite text editor. It has a big learning curve, and it's certainly not beautiful, but it is tough as nails and is installed on almost every \*nix system by default.
+
+I want you to learn Vim because I think it's the best tool for programming. I'm not an expert at Vim - I've been using it since February 2013, but I know enough to love it and recommend it to any programmer looking for a new, powerful editor.
+
+### vimtutor
+
+If you have Vim installed, you most likely have vimtutor installed as well. Type `vimtutor` at your command-line and follow the ~30min tutorial built into Vim. It's quite helpful and teaches you a great deal of Vim up front. You might not remember it all the first time, because there is a lot of stuff to learn. Try doing it once a day for three or four days, and it'll begin to stick. Once you finish that, we can begin to actually use Vim.
+
+### Freedom
+
+Here's my set of commands you should know in Vim (case-sensitive!):
+
+- `i`: Insert mode. This is the mode most editors are in by default. When you type, those letters actually appear in the document.- `Escape`: Escape exits whatever mode you are in back to `normal` mode. If you start messing things up, press escape.
+- `u`: Undo. Bonus points if you set a [persistent undo folder](https://github.com/imkmf/dotfiles/blob/master/vimrc#L60).
+- `CTRL-r`: Redo.
+- `V`: Visual block mode. You can select multiple lines in this mode and yank, delete, etc.
+- `y`: Yank. Adds your selected text to a buffer and makes it pastable somewhere else.
+- `p`: Paste. Pretty self-explanatory.
+- `x`: Delete a single character.
+- `d`: Beginning of delete motion. `dw`, for instance, deletes to the end of a word.
+- `dd`: Deletes an entire line.
+- `ciw`: The `c` motion removes and enters into insert mode. `ciw` deletes a word and goes into insert mode. I use this *a ton*.
+- `gg`: Go to the beginning of the document.
+- `G`: Go to the end of the document.
+- `99k`, `99j` - All commands in Vim allow you to prefix with a number. For instance, typing `9k` or `99k` will go up nine lines, or ninety-nine lines.
+- `/` - The forward-slash enters search mode, which will move your cursor to your search query if it exists on the page. Press enter to stop searching and stay at that result.
+
+There's a lot more commands than that, but you can be very effective in Vim just by knowing these short few. How about some customization?
+
+### Customization
+
+Keep a `.vimrc`. Vim is incredibly customizable and you'll benefit from spending some time tweaking it. Some of my favorites:
+
+- [vim-update-bundles](https://github.com/bronson/vim-update-bundles) is the best way I've seen for managing Vim plugins. Run `vim-update-bundles` after editing your `.vimrc` to install new plugins.
+- Remap Caps Lock on your keyboard to Control. The EmacsWiki has a [good guide](http://www.emacswiki.org/emacs/MovingTheCtrlKey#toc14) to doing this on various systems.
+- Steve Losh has a [great blog post](http://stevelosh.com/blog/2010/09/coming-home-to-vim/) on setting some sane Vim defaults. It's served as a good template for my own `.vimrc`. Definitely read through that.
+- If you're a Rails programmer, [vim-rails](https://github.com/tpope/vim-rails) is your new best friend. Commands like `gf` and `:Rmodel user` are incredibly powerful. If you ask me, it's worth switching to Vim just for this plugin.
+
+You can see my `.vimrc` on [GitHub](https://github.com/imkmf/dotfiles/blob/master/vimrc).
+
+Vim has a reputation for being incredibly difficult, but with things like `vimtutor`, it becomes very demystified. I love Vim for its speed, portability, and power. Since I switched to Vim, I rarely leave the command-line during coding sessions, and in general my focus has increased. If you're a beginning programmer looking to take the next step in your code, consider getting out of the GUI, and into Vim.
+
+Finally, regarding other text editors. Some people like Emacs, others like Vim. I've used Vim, but I am interested in Emacs. Arguing about text editors is stupid - you don't call someone out on what car they drive to work because that just makes you an asshole. That being said, I'd be remiss if I didn't include this hilarious XKCD on editors:
+
+![XKCD #378](http://imgs.xkcd.com/comics/real_programmers.png)

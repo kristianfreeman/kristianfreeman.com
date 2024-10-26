@@ -1,0 +1,33 @@
+---
+title: "Nginx and Subdomains - My Configuration"
+description: ""
+pubDate: 'Aug 12 2013'
+tags:
+  - archive
+---
+
+
+I recently set up a [Jenkins](http://jenkins-ci.org/) instance for my own personal projects under a subdomain of this website. This involved a little tweaking with some Nginx configs to get it to work. I decided to document this because while it might be useful for someone else, the fact is that I have the tendency to forget my previous work and leave things undocumented.
+
+## DNS:
+
+The DNS configuration is pretty simple:
+
+- My "bare" domain has an A record pointing at the server's IP address.
+- My subdomain for my Jenkins instance has a CNAME pointing at the bare domain.
+
+## Nginx Configuration
+
+<script src="https://gist.github.com/imkmf/6216906.js"></script>
+
+A couple things worth noting:
+
+- The proxy pass is the only really "complicated" thing here -- it forwards back to localhost with a specified port. By default on Jenkins, this is *8080*.
+- The order matters. Having the subdomain specification first is necessary for it to function. I spent a huge amount of time debugging this before guessing this might fix things.
+- My site is static. The root and index directives will be different if you're running Rails or something along those lines.
+
+Restart Nginx and your subdomain should be up and running. I'll keep this post updated if any configuration changes, but I've been using this setup for about two weeks with great success.
+
+**Update 2013-11-23**: I've switched this site over to [HTTPS](/https). I've updated the above Gist for HTTPS support below: 
+
+<script src="https://gist.github.com/imkmf/7619959.js"></script>

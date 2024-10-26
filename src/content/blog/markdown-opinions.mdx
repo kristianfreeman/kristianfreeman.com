@@ -1,0 +1,47 @@
+---
+title: "Markdown Opinions"
+description: ""
+pubDate: 'Sep 11 2013'
+tags:
+  - archive
+---
+
+
+Like most [Jekyll] sites, this site is written in [Markdown].
+
+There's a lot of differing opinions on the "right" way to write Markdown,
+because some portions of it have multiple syntax options. I thought I'd write
+down my personal Markdown opinions, as a "style guide" and a log in case this
+ideas change.
+
+- Bold and italics: astericks. I use \*'s for emphasis in non-Markdown formats
+  (email and IM), so this is a natural one. I don't love underlines, but I'm
+  not unopposed to them. To be honest, both asterisks and underlines are hard
+  to type because of their shift-key requirement. I'd love for there to be
+  a third option, but I can't think of one that looks natural and is easy to
+  type (commas maybe?).
+- Images: this is one of those instances where HTML is *almost* just as easy,
+  but not quite. I prefer the URL syntax: `![alt text](imageurl)`. I have
+  a bad habit of not including alt-text, and using that syntax forces me to.
+- URLs: I've been using the normal method of Markdown URLs for a couple years
+  (`[text](url)`), but I'm beginning to see (especially in large posts) the
+  advantage of defining URLs at the bottom of the post. Looking at posts from
+  years ago, it's difficult to get back to speed when URLs interrupt the post.
+- Headers: I use the single line #/pound syntax, such as `# My Header` and `##
+  My Subtitle`. I like this as it visually indents the text for that line
+  enough to see that it's a separation of sections, and the new-line `-`/`=`
+  syntax offers no kind of indentation.
+
+I'm very used to plain Markdown, but I'd really like to try something like
+[MultiMarkdown][mmd] -- it seems to have a lot of cool features, and hopefully
+solves some of the above complaints. Maybe it's available for Jekyll? Time to
+go researching...
+
+Note: my posts are all available (as is the rest of the site) on Github, so you
+can see how they look as the original source text:
+[https://github.com/imkmf/website][source]
+
+[Jekyll]: http://jekyllrb.org
+[Markdown]: http://daringfireball.net/projects/markdown/
+[mmd]: http://fletcherpenney.net/multimarkdown/
+[source]: https://github.com/imkmf/website

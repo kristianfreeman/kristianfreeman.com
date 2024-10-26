@@ -1,0 +1,37 @@
+---
+title: Deploying a static Jekyll site
+description: ""
+pubDate: 'Aug 05 2013'
+tags:
+  - archive
+---
+
+
+I recently switched my Jekyll site from a Github pages repo to self-hosted on my [DigitalOcean server](https://www.digitalocean.com/?refcode=6b52c76d9ac5) (warning: referral link). The deployment process is not as easy, but I thought it would be a good learning experience.
+
+I started with Capistrano, but found that I was writing too much script for something that really is quite simple:
+
+- Accept a git push
+- Build the new Jekyll site with changes
+
+Two steps. It shouldn't be too hard, right?
+
+After fiddling around for an hour or so, I found a system that I like -- a post-receive hook. Luckily, the Jekyll site has a [template hook](http://jekyllrb.com/docs/deployment-methods/) that works quite well:
+
+```
+{% gist 7282881 %}
+```
+
+Make sure it's executable, and set up the right git remote:
+
+```
+git remote add production ssh://user@server.com/home/user/bare_repo
+```
+
+Once that's setup, commit your changes and push to production (`git push production master`). If you're seeing the echo lines, it's working! Luckily it'll also echo any error messages, so it should be fairly easy to debug.
+
+One problem I ran into was the `jekyll` command not being available. This is because RVM isn't loaded. My fix was to add a shebang to the post-receive:
+
+```
+#!/home/user/.rvm/bin/rvm-shell 2.0.0-p247
+```

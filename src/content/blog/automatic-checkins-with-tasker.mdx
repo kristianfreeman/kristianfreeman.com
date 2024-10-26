@@ -1,0 +1,54 @@
+---
+title: "Automatic Check-Ins with Tasker"
+description: ""
+pubDate: 'Aug 21 2013'
+tags:
+  - archive
+---
+
+
+As I mentioned in my [previous post](/making-the-switch), I switched to Android at the end of last week. I'm still working on a fairly lengthy post about my thoughts on the Android OS, but I thought I'd post quickly about a tool I'm really enjoying called [Tasker](http://tasker.dinglisch.net/).
+
+Tasker automates your phone. That's a simple way to describe it - a better description is that it's a true implementation of a *smart* phone. There's a great community over at [/r/tasker](http://www.reddit.com/r/tasker) that'll give you an idea of what kind of things you can do with it, but I thought I'd write about a custom solution for automatic checkins with Foursquare that I've found really useful.
+
+Back in 2011, Suffian Siddiqi [wrote](http://sufian.org/2011/04/20/auto-checkin-on-foursquare-with-tasker/) about his implementation, but it's become out of date with Foursquare's v2 API. So here's my steps for setting up something similar: checking into Foursquare locations based on Wifi Connections.
+
+## Foursquare Setup
+
+First, you need to setup a Foursquare app. You can do that on the [Developer](https://foursquare.com/developers/apps) page. What's important here is the client key: the redirect and secret won't be used because we're not even going to set up a server component.
+
+Once you have these, you're going to simulate a server flow for using the Foursquare API:
+
+    https://foursquare.com/oauth2/authenticate
+    ?client_id=CLIENT_ID
+    &response_type=token
+    &redirect_uri=YOUR_REGISTERED_REDIRECT_URI
+    &v=20140315
+
+**Note that as of January 28, 2014, the above `v` parameter is required to version the API. Thanks to Tim Hall and Hargita Nandor for the heads-up via email.**
+
+It's worth noting again that the redirect is unimportant -- the url will work, but once you "authorize" the app, the failed URL will contain your Oauth token. Save this!
+
+*A disclaimer: According to Foursquare, this token [does not expire](https://developer.foursquare.com/overview/auth.html#notes). This could change! If things stop working, it might not be a bad idea to make a new app/new key.*
+
+Now that you have this, we can set up the actual Tasker system.
+
+## Tasker Setup
+
+- Add a new task with a single action: "HTTP Post".
+- For the "Server:Port", use **https://api.foursquare.com**.
+- For the "Path", use **/v2/checkins/add**.
+- For the "Data/File", make two lines: a `venueId=%par1` and `oauth_token=TOKEN` (TOKEN, of course, being our previously saved token)
+
+<img src="/images/tasker_api.png" />
+<small>Notice the `%par1`? We're going to keep this modular by allowing parameters to be passed in on a network-by-network basis, so that different places can initiate different checkins.</small>
+
+Make a profile for your location, and use the "State" of "Wifi Connected", specifying your SSID for your specific network.
+
+Make another task for that profile, and use the action "Perform Task", with your general checkin task selected. Specify your venue ID as the parameter (`%par1`) - you can find this usually on the URL for the venue on Foursquare's website.
+
+<img src="/images/tasker_checkin.png" />
+
+Now when you connect to that wifi network, you'll automatically check in to the specified venue on Foursquare. Add as many of these for different profiles, specifying a new venue ID for each. You may want to set an alert or some sort of notification as a sign of completion: I'm quite fond of the "Notify LED" action.
+
+I'll go a bit more in-depth into Tasker in my write-up, but I thought this was handy enough that I should get it up beforehand. Viva la Tasker!

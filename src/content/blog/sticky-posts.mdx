@@ -1,0 +1,80 @@
+---
+title: "Sticky Posts"
+description: ""
+pubDate: 'Aug 30 2013'
+tags:
+  - archive
+---
+
+
+With certain posts on my site, I wanted to be able to 'stick' them at
+the top of their categories. An expansive post on ["Anime"](/anime), for instance,
+should sit higher than a [single movie review](/the-worlds-end). While the
+posts currently sort by published date, this could become a problem as
+a category grows in size.
+
+My solution was a crude implemtation of 'sticky posts'. A sticky, in forum
+parlance, is a thread that is important enough that it stays on the top of the
+thread list. Often, these are things like forum rules, announcements, etc.
+
+My implementation of sticky posts is centered around my current sorting system:
+published date. You might see where I'm going with this already...
+
+By setting the published date on a post to a crazy distant date (`2060-01-02`,
+for example, where I will be the ripe age of sixty-seven), it will appear as
+a 'sticky' post.
+
+This implementation looks great until you visit the post. The published date
+now displays 2060.
+
+Admittedly, this is the part of my implementation that I'm not terribly fond
+of. My solution was a bit of Liquid template code:
+
+```
+{% gist 6396249 %}
+```
+
+I'm not super fond of this, and I can think of a couple bugs already just from
+looking at it:
+
+  1. If I format a post date as `01-01-2060`, Liquid may not be able to parse it
+    as equivalent or comparable to `2060-01-01`.
+  2. If multiple sticky posts exist in a category, they will sort alphabetically
+    on each other, since they will have the same published date. This might not
+    be my intended order
+  3. Liquid doesn't seem to have documentation for its date comparison
+    abilities. I'm not even really sure how this current implementation works -
+    it may coerce it into a string and then compare like that. This would be
+    problematic given my concern in #1.
+
+I'll continue to look for a better implementation of this, but as it stands,
+this works with the small number of posts on this site.
+
+---
+
+## Implementation Two
+
+I realized after looking at my `_layouts/post.html` that the equivalence check
+I was doing wasn't really working. Because of some weird glitch, doing a liquid
+inequality check (`!=`) on the `"
+Because of this, the logic of hiding the "published" date was never failing at
+all - this became apparent when I looked at my ["Anime"](/anime) post and saw
+a date of *2060-01-01)*. Whoops.
+
+I came back to this and my second solution is marginally better:
+
+- Use a YAML front matter variable of `sticky` with the value of `true`.
+- Continue to use the crazy dates in 2060.
+- Check for the existence of a `sticky` variable and hide the published date in
+  that instance.
+
+The implementation is still pretty shitty -- I'd like to show the published
+dates on the sticky posts, but the fact is that unless you can define custom
+sorts in Liquid/Jekyll (sort by sticky, *then* published date), there isn't
+really a better solution than the crazy future date. That's a shame.
+
+---
+
+## Moving On
+
+This implementation has become more or less defunct. In the process of moving to a new theme, I abandoned stickies. I've removed the few sticky tags in YAML front matter for posts to save precious bytes!

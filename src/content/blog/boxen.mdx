@@ -1,0 +1,112 @@
+---
+title: Boxen
+description: ""
+pubDate: 'Oct 09 2013'
+tags:
+  - archive
+---
+
+
+I've been eagerly awaiting [OS X Mavericks][mavericks][^1] as it promises
+[better battery
+life](http://www.apple.com/osx/preview/advanced-technologies.html) - especially
+for the newest MacBook Air.
+
+The problem with upgrading, however, is cruft. As with most developers'
+laptops, my computer is fast, but full of old versions of libraries and
+programming junk (RubyGems is the main culprit). I thought Mavericks would be
+a good time to start from scratch, and do a fresh build of my computer.
+
+My current machine is really an extension of my last MacBook Pro, which has
+been with me since when I first began programming (only a couple years ago).
+That means that when I picked up my Air, my development setup was hastily
+put together so that I could be up and running like I was with my MacBook Pro
+as quickly as possible.
+
+My normal process for setting up a development was as follows:
+
+1. Install Xcode
+2. Install Command Line Tools
+3. Install [Homebrew](http://brew.sh)
+4. Install Ruby (using [RVM](http://rvm.io/), later [rbenv](http://rbenv.org/),
+later [chruby](https://github.com/postmodern/chruby))
+5. Start cloning projects and `bundle install`-ing them all.
+
+There's nothing wrong with this setup - in fact, I'd say it's fairly sane
+thanks to Homebrew, which makes installing pretty much any developer tool
+insanely easy. The problem with it is that it requires me to basically sit and
+babysit it. For instance, Mavericks' command-line tool install is a bit
+different than Mountain Lion's, and I had to copy a bunch of files around a bit
+haphazardly to get Homebrew and rbenv to work (I imagine this has been fixed
+by Homebrew since then). This sort of thing isn't great, and can lead to some
+frustration especially if you're not familiar with a toolchain that you have to
+adopt.
+
+Thanks to my job's "10% Time", where I get the
+opportunity to either work on or learn open-source technologies, I thought
+I would give [Boxen](http://boxen.github.com/) a try.
+
+![Boxen](http://boxen.github.com/images/hero.png)
+
+Boxen is Github's dev-ops tool for quickly setting up new development machines.
+It's currently Mac-only, but Github uses it in-house to allow new hires to work
+on the site the day they come in the office. It uses [Puppet][puppet], which
+has a pretty simple (Ruby-esque) DSL for writing scripts.
+
+Even better, Boxen has amazing support for organizations. Using Heroku,
+I deployed Github's small Rails app, [boxen-web][bw], which pulls a Github repo
+(using an API key, so it can be private) and installs Boxen locally. This means
+that our setup process removes a few steps.
+
+1. Install Xcode
+2. Install Command Line Tools
+3. Install Boxen
+
+Boxen has an amazing number of [repos](https://github.com/boxen/) for all kinds
+of things - a large number of developer tools but also normal Mac apps like
+Dropbox and [CloudApp](http://getcloudapp.com/).
+
+Boxen also has support for personal manifest files. If you have dotfiles or
+even certain applications that you use that the entire team doesn't (ZSH here,
+for instance), you can install these on your personal manifest file. By naming
+it after your Github account, Boxen will automatically use it when you
+authenticate to your boxen-web server using your Github account.
+
+I've been getting closer to having a completely ready Boxen setup for our team,
+but there are a couple issues that I've ran into. The first is that
+documentation is a little sparse. I'm not terribly familiar with Puppet, and
+I imagine I can't be the only one. I'm going to read some more
+documentation[^2], but a lot of customization past installing the plain modules
+is a little sparse.
+
+The Mac App Store is a bit of a wrench as well. There is
+a [1Password](https://github.com/boxen/puppet-onepassword) module, for example,
+on the Boxen organization, but my 1Password is installed from the App Store.
+There doesn't seem to be any official documentation or even
+issues/pull-requests for this, so if it continues to be a problem past one or
+two apps, I may open one myself.
+
+Finally, I'm a little concerned about the install process with Mavericks. This
+isn't a problem with Boxen, but it certainly is a problem since Mavericks will
+likely come out this year, and our team will begin upgrading when it does. It's
+the perfect time to use something like Boxen, and if the process blows up on
+someone not prepared to dig into the local Boxen repo and troubleshoot, it
+could get really complicated. A [page on the Homebrew
+wiki](https://github.com/mxcl/homebrew/wiki/C---standard-libraries) confirms
+a lot of the Mavericks errors I've been seeing - the default standard library
+for C++ is now `libc++`, causing things to break. I think this will be resolved
+by Homebrew in some fashion before the official release of Mavericks, so maybe
+this just comes with the territory of using pre-release software.
+
+Otherwise, it's been a nice install. I think that if your team's ops guy or
+Boxen maintainer irons out some of the kinks found in the `our-boxen` example
+provided, it can be a great resource for fresh computers for both developers
+and designers alike.
+
+[mavericks]: http://www.apple.com/osx/preview/
+[puppet]: http://puppetlabs.com/
+[bw]: https://github.com/boxen/boxen-web
+
+[^1]: This link currently points to the 10.9 OS X Mavericks preview page. I've linked a screenshot of the page [here](/images/mavericks.png), and also wrote a [short piece about Mavericks](/mavericks) as well.
+
+[^2]: I'm starting with Puppet Lab's official [Learning Puppet guide](http://docs.puppetlabs.com/learning/index.html) and the [our-boxen README](https://github.com/boxen/our-boxen/blob/master/README.md).

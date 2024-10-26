@@ -1,0 +1,60 @@
+---
+title: "Solo DevOps"
+description: ""
+pubDate: 'Apr 15 2014'
+tags:
+  - archive
+---
+
+
+I've written on the site before about [Boxen](/boxen), GitHub's deployment tool for Macs. While I used it successfully on my personal computer, when it came time for a new work laptop, I threw Boxen out the window as fast as I could (along with everyone else). It was a shame, because I spent a good deal of time configuring scripts and committing (pun intended) to script what I thought my entire dev setup was.
+
+In that post, I griped about the pre-Boxen steps for setup:
+
+1. Install Xcode
+2. Install Command Line Tools
+3. Install Homebrew
+4. Install Ruby (using RVM, later rbenv, later chruby)
+5. Start cloning projects and bundle install-ing them all.
+
+And then extolled the benefits of the post-Boxen setup:
+
+1. Install Xcode
+2. Install Command Line Tools
+3. Install Boxen
+
+But there were problems.
+
+Boxen relies on Homebrew to do most of its installation. It should - Homebrew is the best damn thing to happen to OS X since OS X itself. Default Homebrew installs to `/usr/local`: it runs `chown` to make sure you own the folder and then all Homebrew installs, including `bin/` and `etc/` all get installed in that folder. Boxen, however, installs it to `/opt/boxen`. This isn't a huge problem, except when *every* single Homebrew-related instruction or documentation assumes `/usr/local`.
+
+This problem was [fixed](https://github.com/boxen/puppet-boxen/issues/20) at some point, though it seems like the Boxen team has taken some pretty [liberal steps](https://github.com/boxen/puppet-homebrew/issues/8) on their implementation on Homebrew inside of Boxen.
+
+Boxen is [Puppet](http://puppetlabs.com/puppet/what-is-puppet) underneath, and while Puppet itself doesn't seem inherently bad, I think I'm starting to become disinterested in the idea of DevOps if you're running less than five computers. I tried [chef-solo](http://docs.opscode.com/chef_solo.html) as well, and was even planning to write a post on it, but it turned out that it was just too much work for such a simple task.
+
+The above setup steps are really not that hard, and using something like Homebrew, they can really be simplified to:
+
+1. Install Xcode / Command Line Tools
+2. Install Homebrew
+3. Let Homebrew just kick ass
+
+In the same way that you can get a lot of mileage out of a bash script that just calls `apt-get` on a Linux box, you can probably do the same thing on Mac very easily. With the addition of something like [homebrew-cask](https://github.com/phinze/homebrew-cask), you can even begin to delve into installing actual Mac applications, which is a use case that Boxen aims to solve.
+
+I've worked up a little bootstrap script that I think covers it well. It checks for the existence of Xcode and Homebrew (and gives you links to go download them if need be), and then looks for the existence of a `casks` file to install Mac apps, and a `brews` file to install Homebrew brews (I think that's the right phrase but the homebrewing metaphor is so thorough in Homebrew that I just don't even care). The script can be found on [gist.github.com](https://gist.github.com/imkmf/10764031), but here's what the output looks like:
+
+    Checking for requirements:
+            ✓ Found Xcode.app.
+            ✓ Found Homebrew.app.
+
+    Proceeding to install things!
+    Please don't touch! :)
+
+            homebrew-cask already installed.
+            Installing casks
+    ==> Success! adium installed to /opt/homebrew-cask/Caskroom/adium/1.5.9
+            Installing brews
+    /usr/local/Cellar/chruby/0.3.8: 11 files, 76K, built in 2 seconds
+    ❤ Installation completed.❤
+
+If you're from a DevOps background, you might be crying a little bit right now. If you run the script again, it barely passes as idempotent because Homebrew won't try and reinstall something. The output will be ugly, and the above example doesn't show the output that Homebrew gives by default. In my case, however, I'm quite satisfied. I can clone down something similar to a fresh Mac and have little to no trouble running it, because it's 100% bash and plaintext files.
+
+If I'm ever in a situation where I'm running a ton of computers and feel like I should set up some kind of master/slave provisioning system, there's no way this will suffice. But for now? I have two computers that have a fair amount of overlap, and I don't mind going through and doing this install on each. YMMV. Fork/comment if you think there should be changes. :)

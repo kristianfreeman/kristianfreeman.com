@@ -1,0 +1,55 @@
+---
+title: "HTTPS For Free"
+description: ""
+pubDate: 'Sep 11 2013'
+tags:
+  - archive
+---
+
+
+[HTTPS] is a **Good Idea™**. Without getting too political, today's date
+(September 11, 2013 at time of writing) is a day of rememberance, but also
+a day of realization. Things have gotten pretty damn bad in the United States
+of America, in terms of internet security and personal privacy. While it might
+be a bit naive to draw a straight line from 9/11 to our concerns of today,
+there is a definite progression.
+
+Thus, I thought I'd take a bit of time today to secure my website for both
+readers and myself. HTTPS certificates have a reputation for being somewhat
+expensive, and complicated. Complicated doesn't bother me, but expensive does
+-- this site is incredibly cheap to run and I'd rather not hike up the costs
+for something that has relatively low traffic.
+
+I came across a post today via Twitter that seems like a good solution:
+["Switch To HTTPS Now, For Free"][forfree]. It seems as though a company called
+[StartSSL](https://www.startssl.com/) offers free SSL certificates, and even
+has a guide to setting them up. I found their guide to be pretty
+self-explanatory: you have to verify your email, your domain, and then you
+proceed with creating your SSL certificate.
+
+The article linked above does a better job of explaining this process than
+I am, and there's no need for me to repeat it. Follow the article (I like the
+command-line DIY version) and you'll be there in minutes.
+
+I did run into one problem; namely, an error resembling
+`PEM_read_bio:bad end line`. There's a solution for this. If you follow the
+article and `cat` your certificates together, there's a good chance that the
+first two will concatenate with the `BEGIN` and `END` blocks on a single line.
+
+```
+-----END CERTIFICATE----------BEGIN CERTIFICATE-----
+```
+
+The solution is simple: count five hyphens in from `END CERTIFICATE` and
+separate them:
+
+```
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+```
+
+Otherwise, the guide is great. This site is now running HTTPS, and everyone is
+all the better for it.
+
+[HTTPS]: http://en.wikipedia.org/wiki/HTTP_Secure
+[forfree]: https://konklone.com/post/switch-to-https-now-for-free

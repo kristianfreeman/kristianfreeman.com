@@ -1,0 +1,26 @@
+---
+title: "AndroVM"
+description: ""
+pubDate: 'Apr 09 2013'
+tags:
+  - archive
+---
+
+
+I've been curious about Android recently -- [Google Now](http://www.google.com/landing/now/) as a kind of souped-up Siri was the first to stir my interest, then the promise of implementing my own systems to create a *real* [smart](https://play.google.com/store/apps/details?id=com.kebab.Llama&hl=en) [phone](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm&hl=en) pushed me over the edge. I've spent a good portion of the last couple weeks trying to find a good way to emulate the *entire* Android ecosystem: not just a emulation for development, but what it's like to use an actual Android device. Short of buying an actual phone or tablet, the closest thing, I've determined, is powerful emulation.
+
+![AndroVM](http://i.imgur.com/tQ7hH9J.png)
+
+[AndroVM](http://androvm.org/) solves that problem beautifully. It's a complete and up-to-date Android distribution, with the most recent firmware (at time of writing, Jelly Bean). It *does* include Google Apps -- Google's Play store, Search, etc.; I'm not sure on the legality of this, so I won't outright suggest those distributions. There are builds *without* Google apps -- without that build, however, you're missing out on Houdini, an addon designed to emulate ARM processing and thus allow apps like Google Search (and consequently, Google Now), to function.
+
+It's quite simple to get AndroVM running, enough that I can duplicate the steps here:
+
+1. Download [VirtualBox](https://www.virtualbox.org).
+2. Download an [AndroVM distribution](http://androvm.org/blog/download/) -- `vbox86p`, `vbox86t`, and `vbox86tp` refer to the build type of the Android image. As the site makes clear, some apps will only work if the OS is designated as a "phone" (`vbox86p`/`vbox86tp`) build.
+3. Download the AndroVMplayer, located on the same page as the distributions.
+4. Import the `distribution.ova` file into VirtualBox. It'll automatically set up all the correct preferences.
+5. Run the AndroVMplayer and in theory, you'll have a running and functional Android build.
+
+Some functionality doesn't work on an emulated device like AndroVM, but there are hacks around it. The beauty of the Android application ecosystem is that someone has probably figured out a way to do what you're already trying to do. For example, trying to test out Google Maps or Google Now's location functionality? An app like [FakeGPS](https://play.google.com/store/apps/details?id=com.lexa.fakegps&hl=en) can simulate a changing GPS location as well as actual consistent movement.
+
+I've only scratched the surface of Android with AndroVM so far, but I've been pleasantly surprised. It seems like the OS has taken many steps forward since the days of Android 1.0/2.0. I've enjoyed finding many features of the OS that not only match iOS, but beat it entirely!
