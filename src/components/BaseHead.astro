@@ -50,10 +50,23 @@ const ogImage = new URL('/og-sm.jpg', Astro.url);
 <meta property="twitter:image" content={ogImage} />
 
 <script is:inline>
+  const setTheme = (theme) => {
+    localStorage.theme = theme
+    document.documentElement.classList.remove('dark')
+    document.documentElement.classList.add(theme)
+  }
+
   window.addEventListener('load', () => {
     const date = new Date();
     if (date.getMonth() === 9) {
       document.documentElement.classList.add('cursor-halloween');
     }
+
+    const theme = localStorage.theme || 'dark'
+    setTheme(theme)
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      e.matches ? setTheme('dark') : setTheme('light')
+    })
   })
 </script>
