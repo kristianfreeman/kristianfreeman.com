@@ -2,6 +2,7 @@
 
 ## Places you can find me online.
 
-- [𝕏](https://twitter.com/kristianf_)
 - [GitHub](https://github.com/kristianfreeman)
+- [Last.fm](https://last.fm/user/kristianfr)
+- [𝕏](https://x.com/kristianf_)
 - [YouTube](https://kristianf.dev/youtube)

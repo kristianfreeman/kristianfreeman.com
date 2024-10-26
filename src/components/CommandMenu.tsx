@@ -13,7 +13,7 @@ import {
   CommandList,
 } from "@/components/ui/command"
 
-import { Home, Lightbulb, Newspaper, Paperclip } from "lucide-react"
+import { Home, Lightbulb, Newspaper, NotebookPen, Paperclip, Tag } from "lucide-react"
 import { SiGithub, SiX, SiYoutube } from "@icons-pack/react-simple-icons"
 
 const LinkItem = ({ href, children, keywords }: { href: string, children: React.ReactNode, keywords?: string[] }) => (
@@ -25,7 +25,7 @@ const LinkItem = ({ href, children, keywords }: { href: string, children: React.
 export default function CommandMenu({ posts, tags }: { posts: Post[], tags: string[] }) {
   const [open, setOpen] = useState(false)
 
-  const sortedPosts = useMemo(() => 
+  const sortedPosts = useMemo(() =>
     posts.sort(
       (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
     ), [posts])
@@ -80,6 +80,7 @@ export default function CommandMenu({ posts, tags }: { posts: Post[], tags: stri
           <CommandGroup heading="Tags">
             {sortedTags.map((tag) => (
               <LinkItem key={tag} href={`/tags/${tag}`} keywords={[tag]}>
+                <Tag />
                 #{tag}
               </LinkItem>
             ))}
@@ -89,6 +90,7 @@ export default function CommandMenu({ posts, tags }: { posts: Post[], tags: stri
           <CommandGroup heading="Posts">
             {sortedPosts.map((post) => (
               <LinkItem key={post.slug} href={`/${post.slug}`} keywords={post.data.tags}>
+                <NotebookPen />
                 {post.data.title}
               </LinkItem>
             ))}
