@@ -16,7 +16,7 @@ export default ({ post, url }: { post?: BlogPost, url: URL }) => {
           </a>
         </div>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="flex items-center gap-8">
           <HeaderLink active={url.pathname.startsWith("/blog") || post && !post.tags.includes('tip')} href="/blog">
             <Newspaper size={14} />
             Blog
