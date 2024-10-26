@@ -1,11 +1,10 @@
 ---
-title: 'How to check the installed version of Node.js'
+title: "How to check the installed version of Node.js"
 description: ""
-pubDate: 'Jul 24 2023'
+pubDate: "Jul 24 2023"
 tags:
   - archive
 ---
-
 
 Understanding your Node.js version is crucial for managing your software environment. Check it with these steps:
 
@@ -31,11 +30,11 @@ $ which node
 /Users/dev/.volta/bin/node
 ```
 
-2. If you’re expecting that path to be somewhere else, it could be due to your `PATH`, which tells the CLI where to look for commands/executables, and importantly, *in what order*:
+2. If you’re expecting that path to be somewhere else, it could be due to your `PATH`, which tells the CLI where to look for commands/executables, and importantly, _in what order_:
 
 ```bash
 $ echo $PATH
 /Users/dev/.volta/bin:/opt/homebrew/bin
 ```
 
-3. For instructions on how to update the `$PATH` value, see our blog post ["How to permanently update your shell $PATH"](https://7.dev/update-shell-path/).
+3. For instructions on how to update the `$PATH` value, see our blog post ["How to permanently update your shell $PATH"](/update-shell-path/).

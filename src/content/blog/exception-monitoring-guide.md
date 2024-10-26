@@ -1,11 +1,10 @@
 ---
-title: 'Get started with exception monitoring'
+title: "Get started with exception monitoring"
 description: ""
-pubDate: 'Mar 09 2021'
+pubDate: "Mar 09 2021"
 tags:
   - archive
 ---
-
 
 <div class="sponsored"><span style="color: var(--contrast); font-family: inherit; font-size: 35px; font-style: inherit; background-color: var(--base-3);">🎓 What is it?</span>
 
@@ -15,11 +14,11 @@ Here’s Stackify on [why exception monitoring is important](https://stackify.co
 
 > Exception monitoring offers another better way of gaining early insight into production problems. By monitoring exceptions, you can trace a performance issue to its root case, thereby gaining the time and means to spot the problem before it reaches a tipping point and impacts your users or company.
 
-<figure class="kg-card kg-image-card kg-width-full">![](https://7.dev/content/images/2021/03/giphy.gif-cid-ecf05e47odnafqyjpm1az6wk8d240zeo2xjqseqqyym1ma76-rid-giphy.gif)</figure>## ⌛ The past
+<figure class="kg-card kg-image-card kg-width-full">![](/content/images/2021/03/giphy.gif-cid-ecf05e47odnafqyjpm1az6wk8d240zeo2xjqseqqyym1ma76-rid-giphy.gif)</figure>## ⌛ The past
 
-Most small applications track *happy path* traffic. A request comes in, a long-running task executes, and if you’re interested in monitoring how your application is doing, you might check your logs occasionally, or even send them to a logging service.
+Most small applications track _happy path_ traffic. A request comes in, a long-running task executes, and if you’re interested in monitoring how your application is doing, you might check your logs occasionally, or even send them to a logging service.
 
-As applications become business critical, happy path traffic becomes less crucial. Instead, *why and where things go wrong* is what becomes important to track. Logging can help with this, but it often doesn’t provide much context about what is going wrong—just that something *has* gone wrong.
+As applications become business critical, happy path traffic becomes less crucial. Instead, _why and where things go wrong_ is what becomes important to track. Logging can help with this, but it often doesn’t provide much context about what is going wrong—just that something _has_ gone wrong.
 
 Consider the following error message in your logs:
 
@@ -30,25 +29,25 @@ TypeError: Cannot read property 'toString' of undefined    at /home/kristian/src
 
 In a single instance, this log isn’t immediately helpful—you can see what method specifically errored (`toString`), but you can’t look at the code itself, and you don’t know, for instance, that this error is occurring because of data coming from a user.
 
-**Exception monitoring fills in the gaps in this error log.** It helps you see *data*, *user context*, and *performance characteristics* about the error you’re seeing.
+**Exception monitoring fills in the gaps in this error log.** It helps you see _data_, _user context_, and _performance characteristics_ about the error you’re seeing.
 
-<figure class="kg-card kg-image-card kg-card-hascaption">![](https://7.dev/content/images/2021/03/hb-bread.PNG)<figcaption>Error context in Honeybadger’s “Breadcrumbs” view</figcaption></figure>## 📌 Right now
+<figure class="kg-card kg-image-card kg-card-hascaption">![](/content/images/2021/03/hb-bread.PNG)<figcaption>Error context in Honeybadger’s “Breadcrumbs” view</figcaption></figure>## 📌 Right now
 
-Exception monitoring tools often are integrated via an SDK into your applications. Instead of just letting your app fail and output into your logs, tools like Honeybadger, Sentry, and Rollbar give line-by-line details about how your code went wrong, and in some cases, even the full context (Honeybadger calls this *breadcrumbs*) of how your code came to fail.
+Exception monitoring tools often are integrated via an SDK into your applications. Instead of just letting your app fail and output into your logs, tools like Honeybadger, Sentry, and Rollbar give line-by-line details about how your code went wrong, and in some cases, even the full context (Honeybadger calls this _breadcrumbs_) of how your code came to fail.
 
 It’s easy to forget that humans are… fallible. When it comes to the art of reading request and error logs, we’re not usually able to recognize patterns, especially as systems grow more complex.
 
 Exception monitoring tools track and collate your application’s errors. If you’re building something that has a ton of traffic (thus a ton of exceptions), knowing “What is the most common error in my application right now” is a really powerful way to prioritize fixes and tech debt.
 
-Robust exception monitoring is often the sign of a functioning engineering organization. Errors in code are basically *always* going to happen—unless you believe the marketing and hype around tools like TypeScript or Rust—and it’s how you or your engineering team responds to those errors that matters.
+Robust exception monitoring is often the sign of a functioning engineering organization. Errors in code are basically _always_ going to happen—unless you believe the marketing and hype around tools like TypeScript or Rust—and it’s how you or your engineering team responds to those errors that matters.
 
 GitHub’s 2016 blog post [“Exception Monitoring and Response”](https://github.blog/2015-06-16-exception-monitoring-and-response/) is a great look at how an organization deals with exception monitoring at scale. Using a homegrown tool, GitHub categories exceptions by “Areas of Responsibilities”, or AORs.
 
 > Areas of Responsibility help us in a couple of ways. They define instantly recognizable high-level areas of the site, and within each of those, a set of teams generally responsible for their well being and upkeep. Beyond that, we track exception rates for AORs in Graphite, so we can see any degradation over time.
 
-<figure class="kg-card kg-image-card kg-card-hascaption">![](https://7.dev/content/images/2021/03/github-exceptions.png)<figcaption>GitHub’s exceptions on their application, categorized by areas of responsibilities</figcaption></figure>## 👶 Where to start
+<figure class="kg-card kg-image-card kg-card-hascaption">![](/content/images/2021/03/github-exceptions.png)<figcaption>GitHub’s exceptions on their application, categorized by areas of responsibilities</figcaption></figure>## 👶 Where to start
 
-Even if you don’t have a high-traffic production application, learning how to integrate an exception monitoring tool is a great exercise. For newer developers, it also reflects well on your resume or skillset to care about exception monitoring, as practically you’ll *always* work with applications that are generating exceptions.
+Even if you don’t have a high-traffic production application, learning how to integrate an exception monitoring tool is a great exercise. For newer developers, it also reflects well on your resume or skillset to care about exception monitoring, as practically you’ll _always_ work with applications that are generating exceptions.
 
 Honeybadger, Sentry, and Rollbar are all popular exception monitoring tools, with free trials so you can begin experimenting with them. They also all have integration guides for a variety of languages, so whether you’re writing a React.js site or a Go backend API, you can integrate them into your codebase.
 
@@ -60,7 +59,7 @@ A great rule of thumb is to implement these best practices from Airbrake, covere
 
 > **Structure**: Structured data such as user id, error type, operating system, and more will make it a lot easier for your monitoring tools to be able to track common problems.
 
-I’m working on a more practical example video on my YouTube channel to show you the *how* and *why* of error monitoring and how this category of tools can help you out, so keep an eye out for that 👀
+I’m working on a more practical example video on my YouTube channel to show you the _how_ and _why_ of error monitoring and how this category of tools can help you out, so keep an eye out for that 👀
 
 ## 🙋‍♀️ Who to know
 

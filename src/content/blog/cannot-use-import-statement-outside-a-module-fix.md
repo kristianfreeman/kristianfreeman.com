@@ -1,11 +1,10 @@
 ---
 title: 'How to fix the "Cannot Use Import Statement Outside a Module" error in JavaScript'
 description: ""
-pubDate: 'Jul 24 2023'
+pubDate: "Jul 24 2023"
 tags:
   - archive
 ---
-
 
 The common JavaScript error "Cannot use import statement outside a module" indicates issues in importing modules and occurs in non-ECMAScript Module (ESM). Here’s a quick solution for both Browser and Node.js (sometimes referred to as "server-side JavaScript") environments.
 
@@ -35,11 +34,11 @@ Try changing the ‘.js’ extension to ‘.mjs’: Node.js treats ‘.mjs’ as
 $ mv server.js server.mjs
 ```
 
-If that doesn’t work, you can modify the project’s `package.json`. Include `"type": "module"` to your [package.json](https://7.dev/package-json-for-javascript-adventurers/) to interpret ‘.js’ files as ES modules.
+If that doesn’t work, you can modify the project’s `package.json`. Include `"type": "module"` to your [package.json](/package-json-for-javascript-adventurers/) to interpret ‘.js’ files as ES modules.
 
 ```json
 {
-  "type": "module",
+  "type": "module"
 }
 ```
 

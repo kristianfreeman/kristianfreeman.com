@@ -1,11 +1,10 @@
 ---
-title: 'What you need to know to get started with Flutter, the cross-platform app framework'
+title: "What you need to know to get started with Flutter, the cross-platform app framework"
 description: ""
-pubDate: 'Nov 24 2020'
+pubDate: "Nov 24 2020"
 tags:
   - archive
 ---
-
 
 ## **🎓 What is it?**
 
@@ -29,16 +28,16 @@ tags:
 ## **🤔 Why it matters**
 
 - All cross-platform frameworks (e.g. React Native, Cordova, etc.) allow you to do more with less. Using a single codebase to build multiple applications allows you to ship your product to a larger audience without getting bogged down in specialization.
-- Because of this, you’re less constrained by implementation details. You can quickly take projects from idea to app, and with the ubiquity of mobile devices, you can [reach unexpected audiences](https://7.dev/endangered-language-revitalization-with-flutter).
+- Because of this, you’re less constrained by implementation details. You can quickly take projects from idea to app, and with the ubiquity of mobile devices, you can [reach unexpected audiences](/endangered-language-revitalization-with-flutter).
 - Flutter compiles to native code. Unlike React Native, there’s no intermediary bridge translating your code to the device you’re running on. This means that Flutter apps [are faster](https://medium.com/swlh/flutter-vs-native-vs-react-native-examining-performance-31338f081980#:~:text=Java%20and%20Kotlin%20have%20similar,15%20times%20slower%20than%20native.) than React Native apps, but not as fast as 100% native apps.
-- Flutter is in an interesting spot because there isn’t a definitive set of patterns that have been ordained as *the way to build Flutter apps*. For instance, state management remains an open question: developers have ported familiar tooling like [Redux](https://pub.dev/packages/redux) into Dart.
+- Flutter is in an interesting spot because there isn’t a definitive set of patterns that have been ordained as _the way to build Flutter apps_. For instance, state management remains an open question: developers have ported familiar tooling like [Redux](https://pub.dev/packages/redux) into Dart.
 - Like with React, composing your Flutter components is also a wheel constantly being reinvented, though seemingly the most popular pattern right now for building them is with the [bloc](https://pub.dev/packages/bloc) package.
 
 ## **🙅‍♀️ Criticisms**
 
 - [Flutter’s biggest problem](https://www.reddit.com/r/FlutterDev/comments/ju2zza/flutters_biggest_problem/), according to developers, is that development needs to slow down. The team has been adding more platforms and deploy targets at the expense of engine performance and the quality of first-party plugins.
-- Flutter [doesn’t build native components](https://medium.com/asos-techblog/flutter-vs-react-native-for-ios-android-app-development-c41b4e038db9#:~:text=Flutter%20paints%20the%20UI%20on%20its%20own%20custom%20way,%20it%20doesn%E2%80%99t%20create%20native%20components.). It replicates them well (by providing Material UI components for Android, and the *Cupertino* library for iOS), but at the end of the day, it isn’t native, and savvy users might notice that your Flutter app feels a bit different than the other apps they use day-to-day.
-- Cross-platform development as a whole remains experimental. As famously covered by Airbnb’s [“Sunsetting React Native”](https://medium.com/airbnb-engineering/sunsetting-react-native-1868ba28e30a) blog post, working with cross-platform frameworks is great *when they work*. When they don’t, it’s extremely painful, and in Airbnb’s case, it was enough for them to abandon the approach entirely.
+- Flutter [doesn’t build native components](https://medium.com/asos-techblog/flutter-vs-react-native-for-ios-android-app-development-c41b4e038db9#:~:text=Flutter%20paints%20the%20UI%20on%20its%20own%20custom%20way,%20it%20doesn%E2%80%99t%20create%20native%20components.). It replicates them well (by providing Material UI components for Android, and the _Cupertino_ library for iOS), but at the end of the day, it isn’t native, and savvy users might notice that your Flutter app feels a bit different than the other apps they use day-to-day.
+- Cross-platform development as a whole remains experimental. As famously covered by Airbnb’s [“Sunsetting React Native”](https://medium.com/airbnb-engineering/sunsetting-react-native-1868ba28e30a) blog post, working with cross-platform frameworks is great _when they work_. When they don’t, it’s extremely painful, and in Airbnb’s case, it was enough for them to abandon the approach entirely.
 - When you pick up a cross-platform framework, you’re heavily relying on the ecosystem and the maintainers of that framework to stay up-to-date with the underlying operating systems and platforms you’re building apps for. This means supporting new iOS and Android versions at least once a year, as well as constantly supporting new hardware and APIs. Andres Avendano cites this as a primary reason [not to build hybrid apps](https://bluefletch.com/avoid-hybrid-apps-in-2020/).
 
 ## **🙋 Who to know**

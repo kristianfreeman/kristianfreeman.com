@@ -1,13 +1,12 @@
 ---
-title: 'How to customize your Windows Terminal with custom themes and color schemes'
+title: "How to customize your Windows Terminal with custom themes and color schemes"
 description: ""
-pubDate: 'Mar 01 2021'
+pubDate: "Mar 01 2021"
 tags:
   - archive
 ---
 
-
-If you’re using [Windows](https://7.dev/tag/windows/) for your development work like I am, you’ll want to quickly customize your Windows Terminal application to have a better color scheme combination.
+If you’re using [Windows](/tag/windows/) for your development work like I am, you’ll want to quickly customize your Windows Terminal application to have a better color scheme combination.
 
 Here’s a quick video on how to do it 📺
 

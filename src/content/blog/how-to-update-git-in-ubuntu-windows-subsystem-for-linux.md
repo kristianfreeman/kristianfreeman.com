@@ -1,15 +1,14 @@
 ---
-title: 'How to update Git in Ubuntu + Windows Subsystem for Linux'
+title: "How to update Git in Ubuntu + Windows Subsystem for Linux"
 description: ""
-pubDate: 'Mar 10 2021'
+pubDate: "Mar 10 2021"
 tags:
   - archive
 ---
 
-
 Recently, the Git team [announced a vulnerability](https://github.com/git/git/security/advisories/GHSA-8prw-h3cq-mghm) in Git’s cloning mechanism. To mitigate this vulnerability, the team released version 2.30.2.
 
-I use [Windows](https://7.dev/tag/windows/) Subsystem for [Linux](http://7.dev/tag/linux) (WSL), specifically the Ubuntu distribution. In this blog post, I’ll show you how to update Git on your machine (whether specifically for this vulnerability, or in the future).
+I use [Windows](/tag/windows/) Subsystem for [Linux](http://7.dev/tag/linux) (WSL), specifically the Ubuntu distribution. In this blog post, I’ll show you how to update Git on your machine (whether specifically for this vulnerability, or in the future).
 
 ## Check your Git version
 

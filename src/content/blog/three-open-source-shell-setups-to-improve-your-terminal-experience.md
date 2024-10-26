@@ -1,11 +1,10 @@
 ---
-title: 'Three open-source shell setups to improve your terminal experience'
+title: "Three open-source shell setups to improve your terminal experience"
 description: ""
-pubDate: 'Jul 12 2023'
+pubDate: "Jul 12 2023"
 tags:
   - archive
 ---
-
 
 Picking an open-source shell framework is a great way to rapidly improve your productivity and workflow while working in the terminal.
 
@@ -31,7 +30,7 @@ If you want to stick with Bash, which is generally the default shell for most [L
 
 ## Starship
 
-[Starship](https://github.com/starship/starship) is the cutting-edge alternative to oh-my-zsh and bash-it. If you want to use all-new tooling in your terminal — [Rust,](https://7.dev/tag/rust/) and [fish](https://fishshell.com) — starship is worth checking out. It is quite new, but the community is very active and worth looking into.
+[Starship](https://github.com/starship/starship) is the cutting-edge alternative to oh-my-zsh and bash-it. If you want to use all-new tooling in your terminal — [Rust,](/tag/rust/) and [fish](https://fishshell.com) — starship is worth checking out. It is quite new, but the community is very active and worth looking into.
 
 ![](https://raw.githubusercontent.com/starship/starship/master/media/demo.gif)
 

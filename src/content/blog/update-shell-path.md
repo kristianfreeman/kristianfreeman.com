@@ -1,13 +1,12 @@
 ---
-title: 'How to permanently update your shell $PATH'
+title: "How to permanently update your shell $PATH"
 description: ""
-pubDate: 'Jul 24 2023'
+pubDate: "Jul 24 2023"
 tags:
   - archive
 ---
 
-
-In our blog post ["How to check the installed version of Node.js"](https://7.dev/how-to-check-the-installed-version-of-node-js/), we covered situations where your CLI could run a command from an unexpected place:
+In our blog post ["How to check the installed version of Node.js"](/how-to-check-the-installed-version-of-node-js/), we covered situations where your CLI could run a command from an unexpected place:
 
 > Check where the node command is coming from
 
@@ -36,7 +35,7 @@ $ echo $SHELL
 
 In my case, my home directory is `/Users/dev`, and my shell is `/bin/zsh`, meaning I’m using Zsh (or Zshell). This means that my Zsh configuration file is likely `/Users/dev/.zshrc` (rc generally standing for `runtime configuration`).
 
-Note that in most shells, your `$HOME` directory is aliased or shortened to the tilde key `~`. This means that my home directory can also be referred to `/Users/dev` *or* `~`.
+Note that in most shells, your `$HOME` directory is aliased or shortened to the tilde key `~`. This means that my home directory can also be referred to `/Users/dev` _or_ `~`.
 
 Here’s a list of filenames you can look for in your home directory — one of them will probably the file you should open:
 

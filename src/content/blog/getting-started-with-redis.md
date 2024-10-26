@@ -1,21 +1,20 @@
 ---
-title: 'Getting started with Redis'
+title: "Getting started with Redis"
 description: ""
-pubDate: 'Feb 09 2021'
+pubDate: "Feb 09 2021"
 tags:
   - archive
 ---
 
-
 **Redis is a powerful key-value database, perfect for caching and in-memory (ephemeral) storage of data.**
 
-In this issue of Bytesized, we’ll dig into the *what*, the *why*, and the *how* of Redis, and give you the tools you need to get started deploying your first Redis instance.
+In this issue of Bytesized, we’ll dig into the _what_, the _why_, and the _how_ of Redis, and give you the tools you need to get started deploying your first Redis instance.
 
-Redis is highly performant: written entirely in C (and [open-source on GitHub](https://github.com/redis/redis)), it fits in the space between *databases* — persistent, rock-solid places to store the bulk of your app’s data — and in-app memory — small variables or constants you hold onto while handling a request. Instead, Redis excels at situations where you need to cache a value *between* requests or *between* users.
+Redis is highly performant: written entirely in C (and [open-source on GitHub](https://github.com/redis/redis)), it fits in the space between _databases_ — persistent, rock-solid places to store the bulk of your app’s data — and in-app memory — small variables or constants you hold onto while handling a request. Instead, Redis excels at situations where you need to cache a value _between_ requests or _between_ users.
 
 Let’s start with a quick introduction to Redis — how to set up your first Redis instance, and issuing commands — before looking at best practices, stories of Redis saving the day in production, and what to check out next as you master Redis and use it in your workflows.
 
-<figure class="kg-card kg-image-card">![](https://7.dev/content/images/2021/02/anykey.gif)</figure>## A brief guide to Redis
+<figure class="kg-card kg-image-card">![](/content/images/2021/02/anykey.gif)</figure>## A brief guide to Redis
 
 **Installation**
 
@@ -29,7 +28,7 @@ With Redis installed, you’ll need to then start the Redis service on your mach
 
 ```bash
 $ redis-server
-30851:C 08 Feb 2021 11:42:00.621 
+30851:C 08 Feb 2021 11:42:00.621
 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
 ```
 
@@ -52,7 +51,7 @@ redis> SET newsletter "Bytesized"
 OK
 ```
 
-In doing so, I’ve set the key `newsletter` to the value `Bytesized`. *Values in Redis are always strings* — that means that you’ll often *coerce* values into strings if you’re working with Redis as part of a larger application.
+In doing so, I’ve set the key `newsletter` to the value `Bytesized`. _Values in Redis are always strings_ — that means that you’ll often _coerce_ values into strings if you’re working with Redis as part of a larger application.
 
 With our key set, we want to get it back from the Redis server. The `GET` command does this:
 
@@ -93,7 +92,7 @@ redis> GET currently_working_on
 
 **Basic data structures**
 
-On top of basic string values, Redis also has commands for building around more complex data structures. The most classic of those is the *list* — a set of values that can quickly be retrieved and written to. The `LPUSH` command takes a key, and a value to push onto the beginning of the list at that key. The `RPUSH` command is similar: instead of pushing to the beginning of the list, it’ll add it to the end. The response will be the total size of the list:
+On top of basic string values, Redis also has commands for building around more complex data structures. The most classic of those is the _list_ — a set of values that can quickly be retrieved and written to. The `LPUSH` command takes a key, and a value to push onto the beginning of the list at that key. The `RPUSH` command is similar: instead of pushing to the beginning of the list, it’ll add it to the end. The response will be the total size of the list:
 
 ```bash
 redis> LPUSH languages "JavaScript"
@@ -104,7 +103,7 @@ redis> RPUSH languages "CSS"
 (integer) 3
 ```
 
-The `LRANGE` command is analogous to `GET` for standard key-value pairs, allowing you to get a list of values from a key. Instead of just taking a key, it also takes a pair of indexes, `start` and `stop`, which allow you to specify how many items you want out of the list. Passing a matching pair of `start` and `stop` indexes will get a single value (for instance, `0 0` meaning “start *and* stop at the first index, `0`“), and providing negative values will start from the end of the list:
+The `LRANGE` command is analogous to `GET` for standard key-value pairs, allowing you to get a list of values from a key. Instead of just taking a key, it also takes a pair of indexes, `start` and `stop`, which allow you to specify how many items you want out of the list. Passing a matching pair of `start` and `stop` indexes will get a single value (for instance, `0 0` meaning “start _and_ stop at the first index, `0`“), and providing negative values will start from the end of the list:
 
 ```bash
 # Get the first value stored at index 0
@@ -116,7 +115,7 @@ redis> LRANGE languages 0 1
 1) "HTML"
 2) "JavaScript"
 
-# Get the entire list, starting at index 0 and stopping at index -1 
+# Get the entire list, starting at index 0 and stopping at index -1
 # (the last value in the list)
 redis> LRANGE languages 0 -1
 1) "HTML"
@@ -142,7 +141,7 @@ I was surprised to find out that even with Redis’ ubiquity in high-availabilit
 
 ### [Build a simple Twitter clone using PHP and Redis](https://redis.io/topics/twitter-clone)
 
-This tutorial from Redis’ creator, Salvatore Sanfilippo, shows how to build a simple Twitter clone in just PHP and Redis. Even if you don’t know PHP (like me), the dive into *how* to model Twitter or something like it with Redis is a useful way to transfer existing knowledge (Twitter, and how it would be structured in a traditional database) to new things (how Redis stores and handles data).
+This tutorial from Redis’ creator, Salvatore Sanfilippo, shows how to build a simple Twitter clone in just PHP and Redis. Even if you don’t know PHP (like me), the dive into _how_ to model Twitter or something like it with Redis is a useful way to transfer existing knowledge (Twitter, and how it would be structured in a traditional database) to new things (how Redis stores and handles data).
 
 ### [Redis Crash Course](https://www.youtube.com/watch?v=Hbt56gFj998)
 
@@ -154,7 +153,7 @@ On the topic of data types and structures in Redis, this blog post from RedisGre
 
 ### [Rethink your Data Model](https://www.openmymind.net/2011/7/5/Rethink-your-Data-Model/)
 
-As you begin to use Redis in earnest, you’ll learn quickly that *how* you structure your data tends to be one of the most important concerns you’ll have. This blog post covers common pitfalls with picking good keys for your data, and how to develop better instincts around key lookups as a common performance bottleneck.
+As you begin to use Redis in earnest, you’ll learn quickly that _how_ you structure your data tends to be one of the most important concerns you’ll have. This blog post covers common pitfalls with picking good keys for your data, and how to develop better instincts around key lookups as a common performance bottleneck.
 
 ## Use-cases and proof-of-concepts
 
@@ -174,6 +173,6 @@ This article from High Scability, published in 2014, outlines the details of a t
 
 <figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="113" loading="lazy" src="https://www.youtube.com/embed/rP9EKvWt0zo?feature=oembed" width="200"></iframe></figure>### [Redis clients](https://github.com/JamzyWang/awesome-redis#redis-client)
 
-Redis works with basically *any* programming language. Because of the simple primitives it provides for interfacing with the Redis server, there’s clients for basically every language and situation. The `awesome-redis` repo has a great list of Redis clients in a variety of languages, like JavaScript, Ruby, Python, Go, and more.
+Redis works with basically _any_ programming language. Because of the simple primitives it provides for interfacing with the Redis server, there’s clients for basically every language and situation. The `awesome-redis` repo has a great list of Redis clients in a variety of languages, like JavaScript, Ruby, Python, Go, and more.
 
 <figure class="kg-card kg-bookmark-card"></figure>

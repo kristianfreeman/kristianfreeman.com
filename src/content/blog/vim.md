@@ -1,28 +1,28 @@
 ---
 title: "Here's what you need to learn and master Vim, the modal text editor"
 description: ""
-pubDate: 'Jan 12 2021'
+pubDate: "Jan 12 2021"
 tags:
   - archive
 ---
 
 **Vim** (Vi IMproved) was first released in 1991 by [Bram Moolenaar](https://www.moolenaar.net/). It started as a clone of `vi`, a Unix text editor initially released in 1976.
 
-Vim (and Vi) are *modal* text editors: they have contextual “modes” that allow you to interact with the text in your file in different ways. Vim has modes for different situations – `insert` for when you’re writing text, `visual` for selecting text and manipulating it, `normal` for navigating through your document, and many more for ancillary situations.
+Vim (and Vi) are _modal_ text editors: they have contextual “modes” that allow you to interact with the text in your file in different ways. Vim has modes for different situations – `insert` for when you’re writing text, `visual` for selecting text and manipulating it, `normal` for navigating through your document, and many more for ancillary situations.
 
 [Here’s Greg Hurrell on modal text editors:](https://wincent.com/wiki/Modal_editor)
 
 > A [modal text editor](https://wincent.com/wiki/modal_text_editor) is a, nowadays rare, text editor that offers multiple interaction modes which are optimized for specific types of action and interaction. The rationale is that each mode is a finely-tuned tool which allows the user to realize their objectives in an efficient and powerful manner. This does require more learning than you might be accustomed to as a user of a non-modal editor, but the reward is hopefully increased efficiency and power.
 
-<figure class="kg-card kg-image-card">![](https://7.dev/content/images/2021/01/vim.png)</figure>[Last week, we looked at the most popular editor in the world, VSCode.](https://7.dev/8-vscode/)
+<figure class="kg-card kg-image-card">![](/content/images/2021/01/vim.png)</figure>[Last week, we looked at the most popular editor in the world, VSCode.](/8-vscode/)
 
-Our focus was on *productivity* – most readers of Bytesized probably know of VSCode, and are probably using it.
+Our focus was on _productivity_ – most readers of Bytesized probably know of VSCode, and are probably using it.
 
 The same generally can’t be said of Vim: only [25% of people surveyed in Stack Overflow’s 2019 Developer Survey](https://insights.stackoverflow.com/survey/2019#development-environments-and-tools) use Vim, and it has a notoriously hard learning curve.
 
-I’ve used Vim for almost a decade, and even if I’m not in Vim every day, the concepts of modal editing and keyboard-based navigation have transferred over into *everything* I do on the computer. Learning Vim is worth doing!
+I’ve used Vim for almost a decade, and even if I’m not in Vim every day, the concepts of modal editing and keyboard-based navigation have transferred over into _everything_ I do on the computer. Learning Vim is worth doing!
 
-In this edition of [the Bytesized newsletter](https://7.dev/), I’ll cover both *how* to learn Vim, by going through some great tutorials and long-form pieces on how to think about modal editing, as well as some batteries-included configurations and plugins to have a great setup quickly. The Vim ecosystem is incredibly active and there’s a ton of great developer experience improvements to be made over Vim’s default setup as well, so if you’re using Vim, you’ll still get a ton out of this newsletter. Let’s dig in!
+In this edition of [the Bytesized newsletter](/), I’ll cover both _how_ to learn Vim, by going through some great tutorials and long-form pieces on how to think about modal editing, as well as some batteries-included configurations and plugins to have a great setup quickly. The Vim ecosystem is incredibly active and there’s a ton of great developer experience improvements to be made over Vim’s default setup as well, so if you’re using Vim, you’ll still get a ton out of this newsletter. Let’s dig in!
 
 ## Learn Vim, fast
 
@@ -41,7 +41,7 @@ VimTricks is a newsletter covering Vim tricks and plugins. Each week, you get a 
 
 ### [Learn Vim For the Last Time: A Tutorial and Primer](https://danielmiessler.com/study/vim/)
 
-Daniel Missler’s blog has a comprehensive (and up-to-date) reference to Vim, covering both the basics – working with files, changing/deleting text, etc., and more advanced topics, like repeating commands, macros. Of particular note is the section on Vim’s *editing language* – see the video “Mastering the Vim Language” later in the newsletter for more on this.
+Daniel Missler’s blog has a comprehensive (and up-to-date) reference to Vim, covering both the basics – working with files, changing/deleting text, etc., and more advanced topics, like repeating commands, macros. Of particular note is the section on Vim’s _editing language_ – see the video “Mastering the Vim Language” later in the newsletter for more on this.
 
 ### [vim.so: Learn and Master Vim faster with interactive exercises](https://www.vim.so/)
 
@@ -49,7 +49,7 @@ Kenneth Cassel is building an interactive online Vim course that’s available f
 
 ## Instant configurations
 
-A huge part of Vim’s culture is *sharing your configuration*. The rise of GitHub has made this super easy: there’s a ton of batteries-included Vim configurations that you can install in minutes to completely change (and hopefully enhance) your Vim workflow. Here’s some of the more popular ones:
+A huge part of Vim’s culture is _sharing your configuration_. The rise of GitHub has made this super easy: there’s a ton of batteries-included Vim configurations that you can install in minutes to completely change (and hopefully enhance) your Vim workflow. Here’s some of the more popular ones:
 
 - [amix/vimrc](https://github.com/amix/vimrc)
 - [SpaceVim/SpaceVim](https://github.com/SpaceVim/SpaceVim)
@@ -83,7 +83,7 @@ Like I said at the beginning of the email, I’ve been using Vim for almost a de
 
 ### [vim-airline](https://github.com/vim-airline/vim-airline)
 
-`vim-airline` was one of the first plugins I used to make my Vim installation *look good*. It updates Vim’s tabline (the solid bar across the bottom of Vim’s UI) with better colors, as well as the ability to customize it with information from other plugins, or from your own custom scripts.
+`vim-airline` was one of the first plugins I used to make my Vim installation _look good_. It updates Vim’s tabline (the solid bar across the bottom of Vim’s UI) with better colors, as well as the ability to customize it with information from other plugins, or from your own custom scripts.
 
 ### [ctrlp](https://github.com/kien/ctrlp.vim)
 

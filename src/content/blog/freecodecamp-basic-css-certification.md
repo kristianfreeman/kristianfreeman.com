@@ -1,13 +1,12 @@
 ---
-title: 'freeCodeCamp Basic CSS Certification - Complete Study Guide (1 Hour Video)'
+title: "freeCodeCamp Basic CSS Certification - Complete Study Guide (1 Hour Video)"
 description: ""
-pubDate: 'Mar 30 2021'
+pubDate: "Mar 30 2021"
 tags:
   - archive
 ---
 
-
-[Last week, I shared what I’ve been working on recently](https://7.dev/freecodecamp-basic-html-certification/) — an up-to-date “codethrough” of freeCodeCamp’s curriculum: walking through *every* exercise, lesson, and challenge, and adding my own spin on it where possible.
+[Last week, I shared what I’ve been working on recently](/freecodecamp-basic-html-certification/) — an up-to-date “codethrough” of freeCodeCamp’s curriculum: walking through _every_ exercise, lesson, and challenge, and adding my own spin on it where possible.
 
 I also shared the first video in the series, covering the basics of HTML, including tags, attributes, and basic input handling.
 
