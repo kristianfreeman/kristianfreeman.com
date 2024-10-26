@@ -1,0 +1,40 @@
+---
+title: 'Three open-source shell setups to improve your terminal experience'
+description: ""
+pubDate: 'Jul 12 2023'
+tags:
+  - archive
+---
+
+
+Picking an open-source shell framework is a great way to rapidly improve your productivity and workflow while working in the terminal.
+
+All of the shell setups I’ll describe in this post offer:
+
+– Prompt customization (themes, syntax highlighting)
+
+– Plugins (e.g. Git, Node, Python)
+
+– Quick installation (&lt;5 minutes, usually a single command to install)
+
+## oh-my-zsh
+
+[oh-my-zsh](https://ohmyz.sh) is easily the most-popular open-source shell framework on GitHub. Built for Z shell (zsh), it offers 150+ themes and 300+ plugins. It’s a great starting point and what I would recommend for most developers who are looking to get into this space.
+
+![](https://cloud.githubusercontent.com/assets/2618447/6316862/70f58fb6-ba03-11e4-82c9-c083bf9a6574.png)
+
+## bash-it
+
+If you want to stick with Bash, which is generally the default shell for most [Linux/Unix](http://7.dev/tag/linux) operating systems, [bash-it](https://github.com/Bash-it/bash-it) provides a similar experience to oh-my-zsh but in Bourne Again shell (bash).
+
+![](https://bash-it.github.io/bash-it/docs/images/modern-black.jpg)
+
+## Starship
+
+[Starship](https://github.com/starship/starship) is the cutting-edge alternative to oh-my-zsh and bash-it. If you want to use all-new tooling in your terminal — [Rust,](https://7.dev/tag/rust/) and [fish](https://fishshell.com) — starship is worth checking out. It is quite new, but the community is very active and worth looking into.
+
+![](https://raw.githubusercontent.com/starship/starship/master/media/demo.gif)
+
+## Conclusion
+
+Regardless of what you choose, each of these options will improve your productivity if you dig into the configuration options, including enabling plugins for your language and stack of choice. I’d love to hear what you use — hit us up on Threads at [@7dotdev](https://www.threads.net/@7dotdev)!

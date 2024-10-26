@@ -1,0 +1,28 @@
+---
+title: 'How to customize your Windows Terminal with custom themes and color schemes'
+description: ""
+pubDate: 'Mar 01 2021'
+tags:
+  - archive
+---
+
+
+If you’re using [Windows](https://7.dev/tag/windows/) for your development work like I am, you’ll want to quickly customize your Windows Terminal application to have a better color scheme combination.
+
+Here’s a quick video on how to do it 📺
+
+<figure class="kg-card kg-embed-card"><iframe allowfullscreen="allowfullscreen" frameborder="0" height="113" loading="lazy" src="https://www.youtube.com/embed/etRe7gXlaEY?feature=oembed" width="200"></iframe></figure>Here’s the text guide, too!
+
+First, download [ColorTool](https://github.com/Microsoft/Terminal/tree/main/src/tools/ColorTool) on GitHub and extract the source from the ZIP file.
+
+In your terminal, navigate to the downloaded ColorTool source, and apply a theme from the provided `schemes` folder:
+
+```
+./ColorTool.exe -x schemes/solarized_dark.itermcolors
+```
+
+A neat feature of ColorTool is that it supports iTerm2 themes. iTerm2-Color-Schemes is a popular GitHub repo with 230+ color schemes for the iTerm2 terminal, but ColorTool allows you to apply them to your Windows Terminal too! Check out [iterm2colorschemes.com](https://iterm2colorschemes.com/), find the theme you want, and save the file locally.
+
+Once the file has been saved locally, move it into the `ColorTool/schemes` directory, and apply it in the same way as you applied the Solarized theme. In the video, I use [Dracula+](https://raw.githubusercontent.com/mbadolato/iTerm2-Color-Schemes/master/schemes/Dracula%2B.itermcolors):
+
+`./ColorTool.exe -x schemes/Dracula+.itermcolors`

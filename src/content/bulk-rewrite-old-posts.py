@@ -3,11 +3,11 @@ import re
 from datetime import datetime
 
 # Update these paths as necessary
-PATH_TO_BLOG_POSTS = "./blog/"
-FILES_EXTENSION = ".markdown"
+PATH_TO_BLOG_POSTS = "./blog"
+FILES_EXTENSION = ".md"
 
 def update_front_matter(file_content, filename):
-    # Extract the current front matter using regex
+    # Extract the current front matter
     old_front_matter = re.search(r"---(.*?)---", file_content, re.DOTALL)
     
     if not old_front_matter:
@@ -18,25 +18,25 @@ def update_front_matter(file_content, filename):
     old_content = old_front_matter.group(1)
     
     # Get the title from the old front matter, if it exists
-    title_match = re.search(r"title:\s*(.*)", old_content)
+    title_match = re.search(r"title:\s*'(.*)'", old_content)
     if not title_match:
         print(f"Error: No title found in the front matter of {filename}")
         return None
     
     current_title = title_match.group(1).strip()  # Extract and clean the current title
     
-    # Get the date from the old front matter
-    date_match = re.search(r"date:\s*([\d-]+)", old_content)
+    # Get the date from the old front matter, even if it's in datetime format with timezone
+    date_match = re.search(r"date:\s*'([\d-]+T[\d:.+-]+)'", old_content)  # Matches dates possibly with time and timezone
     if not date_match:
         print(f"Error: No date found in the front matter of {filename}")
         return None
 
-    old_date = date_match.group(1)  
-    new_date = datetime.strptime(old_date, '%Y-%m-%d').strftime("%b %d %Y")  # Convert date format
+    old_date = date_match.group(1)
+    new_date = datetime.strptime(old_date[:10], '%Y-%m-%d').strftime("%b %d %Y")  # Consider only the date part (YYYY-MM-DD)
 
-    # Build the new front matter with the extracted title, blank description, and updated tags
+    # Build the new front matter with the extracted title, blank description, and updated tags.
     new_front_matter = f"""---
-title: {current_title}
+title: '{current_title}'
 description: ""
 pubDate: '{new_date}'
 tags:
@@ -72,4 +72,3 @@ def process_files():
 if __name__ == "__main__":
     process_files()
     print("All timestamp-prefixed blog posts have been processed.")
-

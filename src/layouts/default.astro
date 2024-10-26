@@ -5,7 +5,7 @@ import Header from "@/components/Header.tsx";
 import Footer from "@/components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
 import CommandMenu from "@/components/CommandMenu.tsx";
-const { title, description } = Astro.props;
+const { fullWidth, title, description } = Astro.props;
 const posts = await getCollection("blog");
 const allTags = [
   ...new Set(
@@ -30,7 +30,7 @@ const allTags = [
     <CommandMenu client:only="react" posts={posts} tags={allTags} />
     <div class="container mx-auto space-y-8">
       <Header url={Astro.url} />
-      <main class="prose">
+      <main class={fullWidth ? "max-w-full prose" : "prose"}>
         <slot />
       </main>
       <Footer />
