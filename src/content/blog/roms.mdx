@@ -1,0 +1,163 @@
+---
+title: ROMs
+description: Downloading ROMs at scale.
+pubDate: 'Jan 20 2023'
+tags:
+  - gaming
+---
+
+I recently received the [AtLegends Ultimate](https://www.atgames.net/arcades/legends-ultimate/) as a gift. It's great! I wanted to briefly jot down my process for downloading roms at scale.
+
+[myrient](https://myrient.erista.me/) is an archivist-level site for downloading roms. They have file browser, ftp, and rsync interfaces for getting roms of any language for consoles and handhelds ranging from atari 2600/c64 (early stuff) all the way to ps3-era.
+
+I love the rsync interface. I scripted a workflow that is fairly rough but might be useful to someone for downloading them at scale. _warning that this is terabytes of data, so get a big hard drive_:
+
+```sh
+echo -e "Beginning rom sync script\n"
+
+if [ -z "$SKIP_RSYNC" ]; then
+  echo -e "Syncing NES\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/No-Intro/Nintendo - Nintendo Entertainment System (Headered)" .
+
+  echo -e "Syncing Amiga\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/No-Intro/Commodore - Amiga" .
+
+  echo -e "Syncing Atari 2600\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/No-Intro/Atari - 2600" .
+
+  echo -e "Syncing GB\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/No-Intro/Nintendo - Game Boy" .
+
+  echo -e "Syncing GBA\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/No-Intro/Nintendo - Game Boy Advance" .
+
+  echo -e "Syncing GBC\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/No-Intro/Nintendo - Game Boy Color" .
+
+  echo -e "Syncing Gamecube\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/Redump/Nintendo - GameCube - NKit RVZ [zstd-19-128k]" .
+
+  echo -e "Syncing N64\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/No-Intro/Nintendo - Nintendo 64 (BigEndian)" .
+
+  echo -e "Syncing NDS\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/No-Intro/Nintendo - Nintendo DS (Decrypted)" .
+
+  echo -e "Syncing SNES\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/No-Intro/Nintendo - Super Nintendo Entertainment System" .
+
+  echo -e "Syncing Dreamcast\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/Redump/Sega - Dreamcast" .
+
+  echo -e "Syncing Saturn\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/Redump/Sega - Saturn" .
+
+  echo -e "Syncing SegaCD\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/Redump/Sega - Mega CD & Sega CD" .
+
+  echo -e "Syncing PSX\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/Redump/Sony - PlayStation" .
+
+  echo -e "Syncing PS2\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/Redump/Sony - PlayStation 2" .
+
+  echo -e "Syncing PSP\n"
+  rsync --include="*(USA)*" --include="*/" --exclude="*" -r --progress "rsync://rsync.myrient.erista.me/files/Redump/Sony - PlayStation Portable" .
+fi
+
+echo -e "Amiga"
+cd /nas/games
+cd /nas/games/amiga
+ln -s "../Commodore - Amiga"/* .
+
+echo -e "Atari 2600"
+cd /nas/games
+cd /nas/games/atari2600
+ln -s "../Atari - 2600"/* .
+
+echo -e "Game Boy"
+cd /nas/games
+cd /nas/games/gb
+ln -s "../Nintendo - Game Boy"/* .
+
+echo -e "Game Boy Advance"
+cd /nas/games
+cd /nas/games/gba
+ln -s "../Nintendo - Game Boy Advance"/* .
+
+echo -e "Game Boy Color"
+cd /nas/games
+cd /nas/games/gbc
+ln -s "../Nintendo - Game Boy Color"/* .
+
+echo -e "GameCube"
+cd /nas/games
+cd /nas/games/gamecube
+ln -s "../Nintendo - GameCube - NKit RVZ [zstd-19-128k]"/* .
+
+echo -e "NES"
+cd /nas/games
+cd /nas/games/nes
+ln -s "../Nintendo - Nintendo Entertainment System (Headered)"/* .
+
+echo -e "N64"
+cd /nas/games
+cd /nas/games/n64
+ln -s "../Nintendo - Nintendo 64 (BigEndian)"/* .
+
+echo -e "N64"
+cd /nas/games
+cd /nas/games/nds
+ln -s "../Nintendo - Nintendo DS (Decrypted)"/* .
+
+echo -e "SNES"
+cd /nas/games
+cd /nas/games/snes
+ln -s "../Nintendo - Super Nintendo Entertainment System"/* .
+
+echo -e "Dreamcast"
+cd /nas/games
+cd /nas/games/dreamcast
+ln -s "../Sega - Dreamcast"/* .
+
+echo -e "Saturn"
+cd /nas/games
+cd /nas/games/saturn
+ln -s "../Sega - Saturn"/* .
+
+echo -e "SegaCD"
+cd /nas/games
+cd /nas/games/segacd
+ln -s "../Sega - Mega CD & Sega CD"/* .
+
+echo -e "PSX"
+cd /nas/games
+cd /nas/games/psx
+ln -s "../Sony - PlayStation"/* .
+
+echo -e "PS2"
+cd /nas/games
+cd /nas/games/ps2
+ln -s "../Sony - PlayStation 2"/* .
+
+echo -e "PSP"
+cd /nas/games
+cd /nas/games/psp
+ln -s "../Sony - PlayStation Portable"/* .
+
+echo -e "Done :)"
+```
+
+I use this python script called [`rom_cleaner.py`](https://gist.github.com/nicolalamacchia/967b10fab53544d1422249f5506bd3ed) to clean out duplicates and non-english roms. It works like this:
+
+```sh
+$ python ~/tools/clean_roms.py --delete
+```
+
+That clears out a ton of junk - after that, I go and format the roms for _actual_ functioning usage in [batocera](https://batocera.org/), the linux-based distro I play all my roms on:
+
+1. unzip all zip files for later-gen systems (psx, ps2, gamecube, etc.)
+2. rm zips (`rm *.zip`)
+3. generate m3us as needed (psx): i use [github.com/danyboy666/Generate-PSX-m3u-playlist](https://github.com/danyboy666/Generate-PSX-m3u-playlist) for this
+
+I'm not super ocd about having _every_ rom: for instance, by just filtering for "USA" roms, I'm probably losing things that are mistagged as "world" or have no tag at all, but are technically "english" roms. I figure that if I really want something, I can add it manually once this automated process has caught 95% of what I need. At the end of the day, I won't even play all of these, and definitely won't finish them, so it's not that big of a deal. (This is the stuff you do when you have a 32TB NAS...)

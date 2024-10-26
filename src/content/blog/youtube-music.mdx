@@ -1,0 +1,43 @@
+---
+title: YouTube Music
+pubDate: 'Dec 20 2022'
+description: "A process for collecting music from YouTube, for the completionists."
+tags:
+  - media
+---
+
+When I was a what.cd user (rip), I cared about audio quality and tried to download at least 320kbps mp3s for most albums. Spotify took over my streaming life and that sort of thing drifted out of my mind.
+
+Now, I'm increasingly interested in using my quite large Plex server this) to _also_ host music. [PlexAmp](https://plexamp.com/) is available to Plex Pass users and it's a rock solid music player - probably better than Spotify.
+
+With the ability to self-host/store my music and listen back to it with PlexAmp, I've become a little less picky about quality of music and more concerned with actually capturing it.
+
+One thing I've started doing recently in that vein is capturing music directly from youtube using [yt-dlp](https://github.com/yt-dlp/yt-dlp).
+
+I'll rip it using yt-dlp direct to mp3, and then usually it requires a bit more finagling with metadata inside of Plex for me to be happy with it.
+
+Here's the command I use for ripping:
+
+```
+$ yt-dlp \
+  -f bestaudio \
+  -x \
+  --audio-format mp3 \
+  --audio-quality 320k \
+  --embed-thumbnail \
+  --add-metadata \
+  --postprocessor-args "-id3v2_version 3" \
+  $YOUTUBE_URL
+```
+
+It could (and probably should) be formatted better if you are downloading a playlist/album. 
+
+The below album (Titanic AOT soundtrack) was captured using a command I didn't save with accurate song titles, but I still had to fix the track numbers. 
+
+It's not a perfect science - if you're planning on downloading 10+ songs, I would try and invest some time in finding some good open-source, off the shelf tools.
+
+Some stuff I've captured recently:
+
+- Kanye West - God's Country (Jeen's Edition). ironically enough, this video is no longer on youtube and exactly proves my point. lol
+- [Titanic - Adventure Out of Time Soundtrack](https://www.youtube.com/watch?v=qOKy58k07ow&list=PLC2F41E6C5B5E9F2D)
+- [Thriller Access Memories - Daft Punk/Michael Jackson mashup](https://www.youtube.com/watch?v=COx8HzGsCgM)
