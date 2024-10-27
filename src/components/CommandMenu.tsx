@@ -13,7 +13,7 @@ import {
   CommandList,
 } from "@/components/ui/command"
 
-import { Home, Newspaper, NotebookPen, Paperclip, Tag } from "lucide-react"
+import { Home, Newspaper, NotebookPen, Palette, Paperclip, Tag } from "lucide-react"
 import { SiGithub, SiX, SiYoutube } from "@icons-pack/react-simple-icons"
 
 const LinkItem = ({ href, children, keywords }: { href: string, children: React.ReactNode, keywords?: string[] }) => (
@@ -56,6 +56,9 @@ export default function CommandMenu({ posts, tags }: { posts: Post[], tags: Tag[
           </LinkItem>
           <LinkItem href="/blog">
             <Newspaper /> Blog
+          </LinkItem>
+          <LinkItem href="/colophon">
+            <Palette /> Colophon
           </LinkItem>
           <LinkItem href="/links">
             <Paperclip /> Links
