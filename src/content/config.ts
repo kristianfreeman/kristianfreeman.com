@@ -2,7 +2,6 @@ import { defineCollection, reference, z } from "astro:content";
 
 const blog = defineCollection({
   type: "content",
-  // Type-check frontmatter using a schema
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
@@ -16,10 +15,12 @@ const tag = defineCollection({
   type: "content",
   schema: z.object({
     name: z.string(),
-    warning: z.object({
-      title: z.string(),
-      description: z.string(),
-    }).optional(),
+    warning: z
+      .object({
+        title: z.string(),
+        description: z.string(),
+      })
+      .optional(),
   }),
 });
 
@@ -27,8 +28,6 @@ const page = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
-    description: z.string(),
-    heroImage: z.string().optional(),
   }),
 });
 
