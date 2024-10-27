@@ -14,19 +14,16 @@ import Footer from "@/components/Footer.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
 
 type Props = CollectionEntry<"blog">["data"];
+
+const allTags = await getCollection("tag");
 const posts = await getCollection("blog");
-const allTags = [
-  ...new Set(
-    posts
-      .map((post) => post.data.tags)
-      .flat()
-      .filter(Boolean)
-  ),
-].sort();
+
 const { title, description, pubDate, tags } = Astro.props;
-const isOld = tags.includes("archive");
-const isOldNewsletter = tags.includes("bytesized");
-const isBearRelated = tags.includes("bear");
+
+const tagSlugs = tags.map((tag) => tag.slug);
+const isOld = tagSlugs.includes("archive");
+const isOldNewsletter = tagSlugs.includes("bytesized");
+const isBearRelated = tagSlugs.includes("bear");
 ---
 
 <html lang="en" class="dark">
@@ -71,7 +68,7 @@ const isBearRelated = tags.includes("bear");
                       <Tag size={16} />
                       <span class="space-x-2">
                         {tags.map((tag) => (
-                          <a href={`/tags/${tag}`}>#{tag}</a>
+                          <a href={`/tags/${tag.slug}`}>#{tag.slug}</a>
                         ))}
                       </span>
                     </span>

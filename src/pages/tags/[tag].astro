@@ -1,47 +1,35 @@
 ---
 import Default from "@/layouts/default.astro";
 import { titleize } from "inflection";
-import { getCollection } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 import FormattedDate from "@/components/FormattedDate.astro";
 
-let posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
-const tags = [
-  ...new Set(
-    posts
-      .map((post) => post.data.tags)
-      .flat()
-      .filter(Boolean)
-  ),
-].sort();
+const { tag: slug } = Astro.params;
 
-const tag = Astro.params.tag;
-posts = posts.filter((post) => post.data.tags.includes(tag));
+const tag = await getEntry("tag", slug)
+const { Content } = await tag.render();
+
+let posts = (await getCollection("blog", ({ data }) => data.tags.map(({ slug }) => slug).includes(slug)))
+
+posts = posts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+).filter(post => !post.data.draft);
+
+const tags = await getCollection("tag")
 
 export async function getStaticPaths() {
-  let posts = (await getCollection("blog")).sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-  );
-  const tags = [
-    ...new Set(
-      posts
-        .map((post) => post.data.tags)
-        .flat()
-        .filter(Boolean)
-    ),
-  ];
+  let tags = await getCollection("tag")
+
   return tags.map((tag) => ({
-    params: { tag },
+    params: { tag: tag.slug },
     props: { tag },
   }));
 }
 ---
 
-<Default title={titleize(tag)}>
-  <h1 class="text-2xl">
-    Posts tagged with <span class="underline">#{tag}</span>
-  </h1>
+<Default title={titleize(tag.data.name)}>
+  <h1>{tag.data.name}</h1>
+  <Content />
   <section>
     <div class="flex flex-col">
       {
@@ -63,8 +51,8 @@ export async function getStaticPaths() {
     <div class="flex flex-wrap gap-4">
       {
         tags.map((tag) => (
-          <a href={`/tags/${tag}`} class="text-sm">
-            #{tag}
+          <a href={`/tags/${tag.slug}`} class="text-sm">
+            #{tag.slug}
           </a>
         ))
       }

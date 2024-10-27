@@ -12,14 +12,8 @@ let posts = (await getCollection("blog")).sort(
 ).filter(post => !post.data.draft);
 
 let firstPostYear = posts[posts.length - 1].data.pubDate.getFullYear();
-let tags = [
-  ...new Set(
-    posts
-      .map((post) => post.data.tags)
-      .flat()
-      .filter(Boolean)
-  ),
-].sort();
+
+let tags = await getCollection("tag")
 
 const postsGroupedByYear = posts.reduce(
   (acc: Record<string, Post[]>, post: Post) => {
@@ -80,7 +74,7 @@ const postsGroupedByYear = posts.reduce(
 
   <section class="mt-12">
     <div class="flex flex-wrap gap-4">
-      {tags.map((tag) => <a href={`/tags/${tag}`}>#{tag}</a>)}
+      {tags.map((tag) => <a href={`/tags/${tag.slug}`}>#{tag.slug}</a>)}
     </div>
   </section>
 </Default>

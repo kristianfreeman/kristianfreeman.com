@@ -6,15 +6,9 @@ import Footer from "@/components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
 import CommandMenu from "@/components/CommandMenu.tsx";
 const { fullWidth, title, description } = Astro.props;
+
 const posts = await getCollection("blog");
-const allTags = [
-  ...new Set(
-    posts
-      .map((post) => post.data.tags)
-      .flat()
-      .filter(Boolean)
-  ),
-].sort();
+const tags = await getCollection("tag");
 ---
 
 <!doctype html>
@@ -27,7 +21,7 @@ const allTags = [
   </head>
 
   <body class="bg-base px-4 md:px-0">
-    <CommandMenu client:only="react" posts={posts} tags={allTags} />
+    <CommandMenu client:only="react" posts={posts} tags={tags} />
     <div class="container mx-auto space-y-8">
       <Header url={Astro.url} />
       <main class={fullWidth ? "max-w-full prose" : "prose"}>

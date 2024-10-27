@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react"
 
 import type { CollectionEntry } from "astro:content";
 type Post = CollectionEntry<'blog'>;
+type Tag = CollectionEntry<'tag'>;
 
 import {
   CommandDialog,
@@ -12,7 +13,7 @@ import {
   CommandList,
 } from "@/components/ui/command"
 
-import { Home, Lightbulb, Newspaper, NotebookPen, Paperclip, Tag } from "lucide-react"
+import { Home, Newspaper, NotebookPen, Paperclip, Tag } from "lucide-react"
 import { SiGithub, SiX, SiYoutube } from "@icons-pack/react-simple-icons"
 
 const LinkItem = ({ href, children, keywords }: { href: string, children: React.ReactNode, keywords?: string[] }) => (
@@ -21,7 +22,7 @@ const LinkItem = ({ href, children, keywords }: { href: string, children: React.
   </CommandItem>
 )
 
-export default function CommandMenu({ posts, tags }: { posts: Post[], tags: string[] }) {
+export default function CommandMenu({ posts, tags }: { posts: Post[], tags: Tag[] }) {
   const [open, setOpen] = useState(false)
 
   const sortedPosts = useMemo(() =>
@@ -29,7 +30,9 @@ export default function CommandMenu({ posts, tags }: { posts: Post[], tags: stri
       (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
     ), [posts])
 
-  const sortedTags = useMemo(() => tags.sort(), [tags])
+  const sortedTags = useMemo(() =>
+    tags.sort((a, b) => a.data.name.localeCompare(b.data.name)
+    ), [tags])
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -54,9 +57,6 @@ export default function CommandMenu({ posts, tags }: { posts: Post[], tags: stri
           <LinkItem href="/blog">
             <Newspaper /> Blog
           </LinkItem>
-          <LinkItem href="/tags/tip">
-            <Lightbulb /> Tips
-          </LinkItem>
           <LinkItem href="/links">
             <Paperclip /> Links
           </LinkItem>
@@ -78,9 +78,9 @@ export default function CommandMenu({ posts, tags }: { posts: Post[], tags: stri
         {sortedTags && (
           <CommandGroup heading="Tags">
             {sortedTags.map((tag) => (
-              <LinkItem key={tag} href={`/tags/${tag}`} keywords={[tag]}>
+              <LinkItem key={tag.data.name} href={`/tags/${tag.slug}`} keywords={[tag.data.name]}>
                 <Tag />
-                #{tag}
+                {tag.data.name}
               </LinkItem>
             ))}
           </CommandGroup>
@@ -88,7 +88,7 @@ export default function CommandMenu({ posts, tags }: { posts: Post[], tags: stri
         {sortedPosts && (
           <CommandGroup heading="Posts">
             {sortedPosts.map((post) => (
-              <LinkItem key={post.slug} href={`/${post.slug}`} keywords={post.data.tags}>
+              <LinkItem key={post.slug} href={`/${post.slug}`}>
                 <NotebookPen />
                 {post.data.title}
               </LinkItem>
