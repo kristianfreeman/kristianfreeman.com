@@ -5,13 +5,11 @@ import { Calendar, Tag } from "lucide-react";
 
 import BaseHead from "@/components/BaseHead.astro";
 import CommandMenu from "@/components/CommandMenu.tsx";
-import BearPostBanner from "@/components/BearPostBanner.astro";
-import OldNewsletterBanner from "@/components/OldNewsletterBanner.astro";
-import OldPostBanner from "@/components/OldPostBanner.astro";
-import Header from "@/components/Header.tsx";
-import Footnotes from "@/components/Footnotes.tsx";
 import Footer from "@/components/Footer.astro";
+import Footnotes from "@/components/Footnotes.tsx";
 import FormattedDate from "@/components/FormattedDate.astro";
+import Header from "@/components/Header.tsx";
+import WarningBanner from "@/components/WarningBanner.astro";
 
 type Props = CollectionEntry<"blog">["data"];
 
@@ -19,11 +17,11 @@ const allTags = await getCollection("tag");
 const posts = await getCollection("blog");
 
 const { title, description, pubDate, tags } = Astro.props;
+const blogPostTags = await getCollection("tag", ({ slug }) => {
+  return tags.map(({ slug }) => slug).includes(slug);
+});
 
-const tagSlugs = tags.map((tag) => tag.slug);
-const isOld = tagSlugs.includes("archive");
-const isOldNewsletter = tagSlugs.includes("bytesized");
-const isBearRelated = tagSlugs.includes("bear");
+const hasWarning = blogPostTags.find((tag) => tag.data.warning);
 ---
 
 <html lang="en" class="dark">
@@ -62,6 +60,7 @@ const isBearRelated = tagSlugs.includes("bear");
                   <Calendar size={16} />
                   <FormattedDate date={pubDate} />
                 </div>
+
                 {
                   tags.length > 0 && (
                     <span class="flex items-center gap-2">
@@ -76,9 +75,9 @@ const isBearRelated = tagSlugs.includes("bear");
                 }
               </div>
             </div>
-            {isOldNewsletter && <OldNewsletterBanner />}
-            {isBearRelated && <BearPostBanner />}
-            {isOld && !isOldNewsletter && <OldPostBanner />}
+
+            {hasWarning && <WarningBanner {...hasWarning.data.warning} />}
+
             <slot />
             <hr />
           </div>

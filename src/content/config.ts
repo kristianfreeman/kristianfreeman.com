@@ -16,6 +16,10 @@ const tag = defineCollection({
   type: "content",
   schema: z.object({
     name: z.string(),
+    warning: z.object({
+      title: z.string(),
+      description: z.string(),
+    }).optional(),
   }),
 });
 
