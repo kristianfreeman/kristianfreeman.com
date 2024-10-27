@@ -27,6 +27,7 @@
     "astro": "^4.16.6",
     "astro-cloudflare-redirects": "^0.0.2",
     "astro-embed": "^0.7.4",
+    "astro-expressive-code": "^0.37.1",
     "astro-tweet": "^0.0.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

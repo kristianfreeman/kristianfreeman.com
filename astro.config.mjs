@@ -7,6 +7,8 @@ import tailwind from '@astrojs/tailwind';
 import { transformerMetaHighlight } from '@shikijs/transformers'
 import cloudflareRedirects from 'astro-cloudflare-redirects';
 
+import expressiveCode from 'astro-expressive-code';
+
 // https://astro.build/config
 export default defineConfig({
   experimental: {
@@ -14,6 +16,9 @@ export default defineConfig({
   },
 
   integrations: [
+    expressiveCode({
+      themes: ['catppuccin-mocha']
+    }),
     mdx(),
     react(),
     sitemap(),

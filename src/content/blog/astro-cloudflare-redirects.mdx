@@ -11,7 +11,7 @@ Cloudflare, as part of the [Cloudflare Pages](https://pages.cloudflare.com/) pla
 
 It looks like this:
 
-```
+```txt title="_redirects"
 /home301 / 301
 /home302 / 302
 /querystrings /?query=string 301
@@ -69,7 +69,7 @@ $ npm install astro-cloudflare-redirects
 
 Once installed, you can add the integration to your Astro config:
 
-```js
+```js title="astro.config.mjs"
 import { defineConfig } from 'astro/config';
 import cloudflareRedirects from 'astro-cloudflare-redirects';
 
@@ -82,13 +82,13 @@ export default defineConfig({
 
 You can use it by generating a file in `public/_redirects` with the same format as the Cloudflare redirects file. For instance, if you wanted to redirect `/old-url` to `/new-url`, you could create a `_redirects` file like this:
 
-```
+```txt title="_redirects"
 /old-url /new-url
 ```
 
 You can also specify a custom file location, if you'd like:
 
-```js
+```js title="astro.config.mjs"
 import { defineConfig } from 'astro/config';
 import cloudflareRedirects from 'astro-cloudflare-redirects';
 
