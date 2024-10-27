@@ -1,0 +1,104 @@
+---
+title: Announcing the Astro Cloudflare Redirects integration
+description: A plugin for Astro to automatically generate redirects using Cloudflare's _redirects file specification.
+pubDate: "Oct 27 2024"
+tags:
+  - astro
+  - webdev
+---
+
+Cloudflare, as part of the [Cloudflare Pages](https://pages.cloudflare.com/) platform, has a file specification for redirects, usually defined via a [`_redirects` file](https://developers.cloudflare.com/pages/platform/redirects/). This feature allows you to specify a list of URLs and their destinations, and Cloudflare will automatically redirect traffic to those URLs to the specified destinations.
+
+It looks like this:
+
+```
+/home301 / 301
+/home302 / 302
+/querystrings /?query=string 301
+/twitch https://twitch.tv
+/trailing /trailing/ 301
+/notrailing/ /nottrailing 301
+/page/ /page2/#fragment 301
+/blog/* https://blog.my.domain/:splat
+/products/:code/:name /products?code=:code&name=:name
+```
+
+This is a helpful way to keep broken URLs from piling up on your site, and I wanted to use it inside of my Astro-based site.
+
+Luckily, [the `vite-plugin-cloudflare-redirect`](https://github.com/bluwy/vite-plugin-cloudflare-redirect) was created by a member of Astro's community. I used that Vite plugin and wrapped in an Astro integration package, meaning it's incredibly easy to install:
+
+```sh
+$ npx astro add astro-cloudflare-redirects
+```
+
+This will do a guided install to add the integration to your Astro project. 
+
+```sh
+npx astro add astro-cloudflare-redirects
+⚠ astro-cloudflare-redirects is not an official Astro package.
+✔ Continue? … yes
+✔ Resolving with third party packages...
+
+  Astro will run the following command:
+  If you skip this step, you can always run it yourself later
+
+ ╭────────────────────────────────────────────────╮
+ │ npm install astro-cloudflare-redirects@^0.0.1  │
+ ╰────────────────────────────────────────────────╯
+
+✔ Continue? … yes
+✔ Installing dependencies...
+
+  Astro will make the following changes to your config file:
+
+ ╭ astro.config.mjs ─────╮
+ │ // ...                │
+ ╰───────────────────────╯
+
+✔ Continue? … yes
+  
+   success  Added the following integration to your project:
+  - astro-cloudflare-redirects
+```
+
+You can also install it manually:
+
+```sh
+$ npm install astro-cloudflare-redirects
+```
+
+Once installed, you can add the integration to your Astro config:
+
+```js
+import { defineConfig } from 'astro/config';
+import cloudflareRedirects from 'astro-cloudflare-redirects';
+
+export default defineConfig({
+  integrations: [cloudflareRedirects()],
+});
+```
+
+## Usage
+
+You can use it by generating a file in `public/_redirects` with the same format as the Cloudflare redirects file. For instance, if you wanted to redirect `/old-url` to `/new-url`, you could create a `_redirects` file like this:
+
+```
+/old-url /new-url
+```
+
+You can also specify a custom file location, if you'd like:
+
+```js
+import { defineConfig } from 'astro/config';
+import cloudflareRedirects from 'astro-cloudflare-redirects';
+
+export default defineConfig({
+  integrations: [cloudflareRedirects({
+    redirectsFile: './src/_redirects',
+  })],
+});
+```
+
+## Why build this?
+
+I like Cloudflare's \_redirects file format, but by pulling it into Astro via a Vite plugin, you can use it in any environment. Regardless of how you're deploying your Astro application, you can use this plugin for easy redirect handling.

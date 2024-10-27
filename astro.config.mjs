@@ -13,9 +13,17 @@ export default defineConfig({
     clientPrerender: true,
   },
 
-  integrations: [mdx(), react(), sitemap(), tailwind({
-    applyBaseStyles: false,
-  }), cloudflareRedirects()],
+  integrations: [
+    mdx(),
+    react(),
+    sitemap(),
+    tailwind({
+      applyBaseStyles: false,
+    }),
+    cloudflareRedirects({
+      redirectsFile: './src/_redirects',
+    })
+  ],
 
   markdown: {
     shikiConfig: {
