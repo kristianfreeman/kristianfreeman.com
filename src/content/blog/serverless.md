@@ -1,12 +1,10 @@
 ---
-title: 'Everything you need to know to understand Serverless'
+title: "Everything you need to know to understand Serverless"
 description: ""
-pubDate: 'Nov 17 2020'
+pubDate: "Nov 17 2020"
 tags:
   - archive
-  - bytesized
 ---
-
 
 ## **🎓 What is it?**
 
@@ -16,9 +14,9 @@ Serverless computing is a new architecture pattern allowing developers to deploy
 
 ## **⌛ The past**
 
-Software is written to run on a computer. That much is obvious. The question of *where that computer is*, or *who owns that computer* is not as immediately obvious.
+Software is written to run on a computer. That much is obvious. The question of _where that computer is_, or _who owns that computer_ is not as immediately obvious.
 
-In the past, software run on servers that *you* (or your organization) owned. That model, known as “on-premise”, meant that you were in charge of maintenance of that machine, administrating the operating system, and managing the necessary resources (storage, networking, security) for that server to do its job.
+In the past, software run on servers that _you_ (or your organization) owned. That model, known as “on-premise”, meant that you were in charge of maintenance of that machine, administrating the operating system, and managing the necessary resources (storage, networking, security) for that server to do its job.
 
 Throughout the 90s, server companies began abstracting the physical management aspects of running software online. Instead of implementing storage redundancy and ensuring high availability for your machines, you could rent one of [Rackspace’s machines](https://www.rackspace.com/), focus on getting your code up and running, and leave the “operations” work to the people who are good at it.
 
@@ -62,13 +60,13 @@ The [Serverless framework](https://httpstatuses.com/) makes it easy to deploy fu
 
 One of the defining characteristics around serverless is the vast amount of opportunity to improve both developer experience and performance characteristics. Simply put: there is a lot still to be done in serverless.
 
-On the developer experience front, many providers and tools are building higher level abstractions to make it easier for developers to *just ship code*. The aforementioned Serverless framework allows you to deploy your code to production-ready API endpoints in minutes, and [Netlify](https://www.netlify.com/products/functions/) is making it easy to take your serverless functions and deploy them alongside your front-end applications.
+On the developer experience front, many providers and tools are building higher level abstractions to make it easier for developers to _just ship code_. The aforementioned Serverless framework allows you to deploy your code to production-ready API endpoints in minutes, and [Netlify](https://www.netlify.com/products/functions/) is making it easy to take your serverless functions and deploy them alongside your front-end applications.
 
 Platforms like [Cloudflare Workers](https://workers.dev/)\* are finding that by picking the right architectural constraints can have vast implications for performance—by building directly on Google’s V8 JavaScript engine instead of Node, Workers functions start instantly and execute on an “edge” server, located geographically close to the user. This means that your functions execute and return data to your users closer to 100ms rather than 10s.
 
 \* Disclaimer: I [work at Cloudflare](https://blog.cloudflare.com/author/kristian/) as the developer advocate for Workers.
 
-The other frontier in serverless worth exploring right now is how it can be used to build improvements on past cloud abstractions. Storage remains a big in-progress problem, with tools like [Aurora Serverless](https://aws.amazon.com/rds/aurora/serverless/) and [Cloudflare Durable Objects](https://blog.cloudflare.com/introducing-workers-durable-objects/) innovating on what it means to have highly-available and scalable storage available in your serverless functions. Security, whether basic authorization in an API or [working with identity management platforms like Auth0](https://dev.to/cloudflareworkers/how-to-build-a-serverless-jamstack-application-with-authentication-cloudflare-workers-auth0-1aa) can drastically simplify your application using serverless, without porting *everything* to it.
+The other frontier in serverless worth exploring right now is how it can be used to build improvements on past cloud abstractions. Storage remains a big in-progress problem, with tools like [Aurora Serverless](https://aws.amazon.com/rds/aurora/serverless/) and [Cloudflare Durable Objects](https://blog.cloudflare.com/introducing-workers-durable-objects/) innovating on what it means to have highly-available and scalable storage available in your serverless functions. Security, whether basic authorization in an API or [working with identity management platforms like Auth0](https://dev.to/cloudflareworkers/how-to-build-a-serverless-jamstack-application-with-authentication-cloudflare-workers-auth0-1aa) can drastically simplify your application using serverless, without porting _everything_ to it.
 
 ## **🙋‍♀️ Who to know**
 

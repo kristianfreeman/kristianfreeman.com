@@ -1,16 +1,14 @@
 ---
 title: "14 Great VSCode Resources - Dev Setups, Quickstart Videos, Courses, and Deep Dives"
 description: ""
-pubDate: 'Jan 08 2021'
+pubDate: "Jan 08 2021"
 tags:
   - archive
-  - bytesized
 ---
-
 
 **VSCode is the [most popular](https://www.software.com/src/ranking-the-top-5-code-editors-2019) text editor in the world.**
 
-That’s a remarkable stat on its own, but even more so when you consider how *new* it is: the first release was in April 2015.
+That’s a remarkable stat on its own, but even more so when you consider how _new_ it is: the first release was in April 2015.
 
 ## Setups
 

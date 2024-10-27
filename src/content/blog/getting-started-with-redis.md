@@ -4,7 +4,6 @@ description: ""
 pubDate: "Feb 09 2021"
 tags:
   - archive
-  - bytesized
 ---
 
 **Redis is a powerful key-value database, perfect for caching and in-memory (ephemeral) storage of data.**

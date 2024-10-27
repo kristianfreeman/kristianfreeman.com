@@ -4,7 +4,6 @@ description: ""
 pubDate: "Jan 12 2021"
 tags:
   - archive
-  - bytesized
 ---
 
 **Vim** (Vi IMproved) was first released in 1991 by [Bram Moolenaar](https://www.moolenaar.net/). It started as a clone of `vi`, a Unix text editor initially released in 1976.

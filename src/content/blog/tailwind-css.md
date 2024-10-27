@@ -1,18 +1,16 @@
 ---
-title: 'Get started with Tailwind CSS, the utility-first CSS framework'
+title: "Get started with Tailwind CSS, the utility-first CSS framework"
 description: ""
-pubDate: 'Feb 02 2021'
+pubDate: "Feb 02 2021"
 tags:
   - archive
-  - bytesized
 ---
 
+[Tailwind](https://tailwindcss.com/) is a utility-first CSS framework. Unlike comprehensive frameworks like [Bootstrap](https://getbootstrap.com/) or [Foundation](https://get.foundation/), which provide solutions for things like _cards_, _forms_, and _buttons_, Tailwind allows you to _compose_ your UI out of smaller classes: for instance, the `p-4` class applies a padding of `1rem`, and the `flex` class sets up a basic flexbox layout by setting `display: flex`.
 
-[Tailwind](https://tailwindcss.com/) is a utility-first CSS framework. Unlike comprehensive frameworks like [Bootstrap](https://getbootstrap.com/) or [Foundation](https://get.foundation/), which provide solutions for things like *cards*, *forms*, and *buttons*, Tailwind allows you to *compose* your UI out of smaller classes: for instance, the `p-4` class applies a padding of `1rem`, and the `flex` class sets up a basic flexbox layout by setting `display: flex`.
+Tailwind offers a _very_ different approach to writing CSS. That approach is controversial (more on that later), but for the most part, many developers find moving to a utility-first CSS framework makes it easier to _own_ your CSS, instead of working under the constraints of CSS that’s given to you.
 
-Tailwind offers a *very* different approach to writing CSS. That approach is controversial (more on that later), but for the most part, many developers find moving to a utility-first CSS framework makes it easier to *own* your CSS, instead of working under the constraints of CSS that’s given to you.
-
-Let’s look at Tailwind from a few angles – first, a few video introductions to Tailwind, templates and starter kits, tools and cheat sheets, and some deep dives into the *how* and the *why* of Tailwind.
+Let’s look at Tailwind from a few angles – first, a few video introductions to Tailwind, templates and starter kits, tools and cheat sheets, and some deep dives into the _how_ and the _why_ of Tailwind.
 
 ## Video introductions to Tailwind
 
@@ -56,15 +54,15 @@ Jay Elaraj’s cheat sheet is a great interactive site for looking at all of the
 
 ### [awesome-tailwindcss](https://github.com/aniftyco/awesome-tailwindcss)
 
-This GitHub repo is a collection of tutorials, starter kits, open-source projects, and basically *anything* built with or about Tailwind CSS. It’s open-source, and you can contribute to it yourself, so if you find a missing resource, make sure to add it!
+This GitHub repo is a collection of tutorials, starter kits, open-source projects, and basically _anything_ built with or about Tailwind CSS. It’s open-source, and you can contribute to it yourself, so if you find a missing resource, make sure to add it!
 
 ## How and why it works
 
 ### [CSS Utility Classes and “Separation of Concerns”](https://adamwathan.me/css-utility-classes-and-separation-of-concerns/)
 
-Adam Wathan’s original post on Tailwind CSS, where he first announced the framework, also serves as a great introduction to the *why* of CSS utility frameworks. In the post, he argues that CSS utility class frameworks offer better consistency, less premature abstractions, and more consistent designs:
+Adam Wathan’s original post on Tailwind CSS, where he first announced the framework, also serves as a great introduction to the _why_ of CSS utility frameworks. In the post, he argues that CSS utility class frameworks offer better consistency, less premature abstractions, and more consistent designs:
 
-> My experience is that building things utility-first leads to *more* consistent looking designs than working component-first, as unintuitive as it might sound at first.
+> My experience is that building things utility-first leads to _more_ consistent looking designs than working component-first, as unintuitive as it might sound at first.
 
 ### [Why Tailwind CSS](https://www.swyx.io/why-tailwind/)
 
@@ -77,4 +75,3 @@ Shawn Wang writes on why he changed his mind about Tailwind CSS:
 For a contrary point of view, check out Jared White’s blog post about his experience with Tailwind, and why he thinks it’s the wrong direction for CSS on the web:
 
 > I’ve gotten into more than one heated argument on the interwebs lately over Tailwind CSS. I’m not proud of this. I don’t like being at odds with anybody. I think the folks building Tailwind are talented and nice people. But at a pure technical level, I simply don’t like Tailwind. Whoever it was built for, **it was not built for me**.
-

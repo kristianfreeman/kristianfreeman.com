@@ -4,12 +4,11 @@ description: ""
 pubDate: "Mar 09 2021"
 tags:
   - archive
-  - bytesized
 ---
 
 ## 🎓 What is it?
 
-Exception monitoring provides insight into why your application is failing. Unlike normal metrics, *exception monitoring* worries about error states—often including support for line-by-line code errors, user information and context, and integrations with the tools you’re already using.
+Exception monitoring provides insight into why your application is failing. Unlike normal metrics, _exception monitoring_ worries about error states—often including support for line-by-line code errors, user information and context, and integrations with the tools you’re already using.
 
 Here’s Stackify on [why exception monitoring is important](https://stackify.com/exception-tracking-important/):
 

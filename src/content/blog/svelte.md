@@ -1,12 +1,10 @@
 ---
-title: 'A brief guide to understanding Svelte.js'
+title: "A brief guide to understanding Svelte.js"
 description: ""
-pubDate: 'Nov 10 2020'
+pubDate: "Nov 10 2020"
 tags:
   - archive
-  - bytesized
 ---
-
 
 ## **🎓 What is it?**
 
@@ -26,7 +24,7 @@ Frontend applications are really complex. To meet this complexity and try to mit
 
 [Compilers are the new frameworks](https://tomdale.net/2017/09/compilers-are-the-new-frameworks/). [Tom Dale](https://twitter.com/tomdale) posits that the compilers are where we should focus our efforts to see compounding returns in frontend performance:
 
-> *My current “investment thesis” is that what we call web frameworks are transforming from runtime libraries into optimizing compilers. When it comes to eking performance out of hand-authored JavaScript and accompanying runtime libraries, we’ve reached the point of diminishing returns.*
+> _My current “investment thesis” is that what we call web frameworks are transforming from runtime libraries into optimizing compilers. When it comes to eking performance out of hand-authored JavaScript and accompanying runtime libraries, we’ve reached the point of diminishing returns._
 
 ## **📌 Right now**
 
@@ -42,11 +40,11 @@ The `.svelte` file used by Svelte applications allows you to mix modern JavaScri
 
 [Ryan Atkinson](https://twitter.com/ryanatkn) summarizes this approach and how Svelte feels different in [“Why Svelte”](https://github.com/feltcoop/why-svelte):
 
-> *Svelte components are a thin layer over the DOM and naturally expose the web platform. Coding in Svelte feels like I’m moving with the grain of the web. React abstracts the DOM with functionally pure declarative rendering and provides escape hatches back to mutable imperative DOM land.*
+> _Svelte components are a thin layer over the DOM and naturally expose the web platform. Coding in Svelte feels like I’m moving with the grain of the web. React abstracts the DOM with functionally pure declarative rendering and provides escape hatches back to mutable imperative DOM land._
 
-That being said, compilers aren’t necessarily a magic bullet. Compilers are themselves a complex software project, and even if it simplifies your frontend application, there’s still complexity *somewhere*. From the same article as above:
+That being said, compilers aren’t necessarily a magic bullet. Compilers are themselves a complex software project, and even if it simplifies your frontend application, there’s still complexity _somewhere_. From the same article as above:
 
-> *Compilers may appear to magically eliminate complexity, but that’s an illusion — they shift it. The compiler architecture moves complexity from the runtime and source code to build time and tools. Behind Svelte’s simple APIs sits a beefy compiler.*
+> _Compilers may appear to magically eliminate complexity, but that’s an illusion — they shift it. The compiler architecture moves complexity from the runtime and source code to build time and tools. Behind Svelte’s simple APIs sits a beefy compiler._
 
 ## **📈 What’s next?**
 
@@ -64,7 +62,7 @@ I’m excited and interested in Svelte because I think that it presents a really
 
 ## **🙋‍♀️ Who to know**
 
-- [@rich\_harris](https://twitter.com/Rich_Harris)
+- [@rich_harris](https://twitter.com/Rich_Harris)
 - [@lihautan](https://twitter.com/lihautan)
 - [@evilpingwin](https://twitter.com/evilpingwin)
 - [@antony](https://twitter.com/antony)

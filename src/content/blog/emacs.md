@@ -4,7 +4,6 @@ description: ""
 pubDate: "Jan 19 2021"
 tags:
   - archive
-  - bytesized
 ---
 
 **[Emacs](https://www.gnu.org/software/emacs/) is an incredibly customizable text editor built on top of Lisp.** It has an infamous reputation among programmers and writers as being one of the most daunting tools you can pick up in the programming world, and for good reason: from top to bottom, every single piece of the editor is customizable and extensible to your liking.
