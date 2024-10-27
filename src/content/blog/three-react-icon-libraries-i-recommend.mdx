@@ -1,0 +1,79 @@
+---
+title: Recommended Icon Libraries
+description: A rundown of three icon libraries I recommend for React/webdev projects.
+pubDate: "Oct 27 2024"
+tags:
+  - webdev
+---
+
+I use a variety of icons in my projects, and after a lot of churn, I've settled on a few free icon libraries that I like, both in how they look, as well as developer experience. 
+
+Here's a quick rundown of the three I recommend, as well as how to use them in React:
+
+## Lucide
+
+[Lucide](https://lucide.dev) is my base icon library. The React library is easy to use (code sample below), and the icon set is well-designed and consistent. I first learned of it through [shadcn/ui](/brief-shadcnui-review), and I've been using it since.
+
+```sh
+$ npm install @lucide/react
+```
+
+Here's how you use it in React:
+
+```jsx
+import { ChevronDown } from "lucide-react";
+
+export default function MyComponent() {
+  return <ChevronDown />;
+}
+```
+
+The library is tree-shakable, so you can import the icons you need and save bundle space. They look great, and at time of writing, there's 1500+ icons to choose from.
+
+## Simple Icons
+
+[Simple Icons](https://simpleicons.org) is a set of SVG icons for popular brands. They look somewhat similar to Lucide, so they work well in tandem with it.
+
+The [primary library](https://github.com/simple-icons/simple-icons) has a weird import structure that I don't like:
+
+```jsx
+import { siSimpleicons } from "simple-icons";
+console.log(siSimpleicons);
+/*
+{
+    title: 'Simple Icons',
+    slug: 'simpleicons',
+    hex: '111111',
+    source: 'https://simpleicons.org/',
+    svg: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">...</svg>',
+    path: 'M12 12v-1.5c-2.484 ...',
+    guidelines: 'https://simpleicons.org/styleguide',
+    license: {
+        type: '...',
+        url: 'https://example.com/'
+    }
+}
+*/
+```
+
+I guess you can use the `svg` property there to render the icon, but I prefer to use the [`icons-pack`](https://github.com/icons-pack/react-simple-icons) package, which is a bit more convenient:
+
+```sh
+$ npm install @icons-pack/react-simple-icons
+```
+
+This package has an easier to understand import structure, similar to Lucide:
+
+```jsx
+import { SiReact } from '@icons-pack/react-simple-icons';
+
+function BasicExample() {
+  return <SiReact color='#61DAFB' size={24} />;
+}
+```
+
+## Heroicons
+
+[Heroicons](https://heroicons.com) is an icon set designed by the creators of Tailwind CSS. It explicitly doesn't have a React library, so it's better for one-off use cases. To grab an icon, you go to the website and copy the SVG or JSX code. There's not a ton of icons available, but I like supporting the Tailwind team as I use their framework heavily. This is a minimal option for devs who don't want to import a whole library.
+
+This icon set doesn't seem to have many releases (there's just two listed on the site over a few years), so I'm not 100% sure on the maintenance status of the project. I've been using it for a while, and it's been great.
