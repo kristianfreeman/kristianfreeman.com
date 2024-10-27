@@ -4,10 +4,8 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
-
-import {
-  transformerMetaHighlight
-} from '@shikijs/transformers'
+import { transformerMetaHighlight } from '@shikijs/transformers'
+import cloudflareRedirects from 'astro-cloudflare-redirects';
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,14 +13,9 @@ export default defineConfig({
     clientPrerender: true,
   },
 
-  integrations: [
-    mdx(),
-    react(),
-    sitemap(),
-    tailwind({
-      applyBaseStyles: false,
-    }),
-  ],
+  integrations: [mdx(), react(), sitemap(), tailwind({
+    applyBaseStyles: false,
+  }), cloudflareRedirects()],
 
   markdown: {
     shikiConfig: {
