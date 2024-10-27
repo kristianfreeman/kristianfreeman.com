@@ -9,7 +9,7 @@ const currentYear = new Date().getFullYear();
 
 let posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+).filter(post => !post.data.draft);
 
 let firstPostYear = posts[posts.length - 1].data.pubDate.getFullYear();
 let tags = [

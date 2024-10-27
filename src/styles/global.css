@@ -11,11 +11,12 @@
     --littlefoot-button-text: var(--text-foreground);
     --littlefoot-button-active-bg: #45475a;
     --littlefoot-button-active-text: #f5e0dc;
-    --littlefoot-popover-bg: #1e1e2e;
+    --littlefoot-popover-bg: hsl(var(--background));
     --littlefoot-popover-border: 1px solid #6c7086;
     --littlefoot-popover-text: var(--text-foreground);
     --littlefoot-popover-shadow: 0 0 8px rgba(24, 24, 37, 0.3);
     --littlefoot-popover-scroll-indicator: #74c7ec;
+    --popover-font-family: "Atkinson Hyperlegible", sans-serif;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -24,7 +25,7 @@
       --littlefoot-button-text: #444;
       --littlefoot-button-active-bg: #444;
       --littlefoot-button-active-text: #222;
-      --littlefoot-popover-bg: #000;
+      --littlefoot-popover-bg: hsl(var(--background));
       --littlefoot-popover-border: 1px solid #ccc;
       --littlefoot-popover-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
       --littlefoot-popover-scroll-indicator: #3273dc;
