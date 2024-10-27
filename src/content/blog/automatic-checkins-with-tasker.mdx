@@ -40,14 +40,9 @@ Now that you have this, we can set up the actual Tasker system.
 - For the "Path", use **/v2/checkins/add**.
 - For the "Data/File", make two lines: a `venueId=%par1` and `oauth_token=TOKEN` (TOKEN, of course, being our previously saved token)
 
-<img src="/images/tasker_api.png" />
-<small>Notice the `%par1`? We're going to keep this modular by allowing parameters to be passed in on a network-by-network basis, so that different places can initiate different checkins.</small>
-
 Make a profile for your location, and use the "State" of "Wifi Connected", specifying your SSID for your specific network.
 
 Make another task for that profile, and use the action "Perform Task", with your general checkin task selected. Specify your venue ID as the parameter (`%par1`) - you can find this usually on the URL for the venue on Foursquare's website.
-
-<img src="/images/tasker_checkin.png" />
 
 Now when you connect to that wifi network, you'll automatically check in to the specified venue on Foursquare. Add as many of these for different profiles, specifying a new venue ID for each. You may want to set an alert or some sort of notification as a sign of completion: I'm quite fond of the "Notify LED" action.
 
