@@ -28,19 +28,40 @@ _GraphQL is typed._ Everything you query in GraphQL has a definite type, like `S
 
 GraphQL queries and mutations are handled by \***\*resolvers\*\***. These are functions that are handled by your [GraphQL server](https://graphql.org/code/) and look up the corresponding data that you’re requesting.
 
-## **⌛ The past**
+## ⌛ The past
 
 GraphQL was built by Facebook as they built their News Feed feature. Per [Brenda Clark](https://levelup.gitconnected.com/what-is-graphql-87fc7687b042):
 
-> _The main problem with Facebook’s News Feed implementation on mobile: it wasn’t as simple as retrieving a story, who wrote it, what it says, the list of comments, and who liked the post. Each story was interconnected, nested, and recursive. The existing APIs weren’t designed to allow developers to expose a rich, news feed-like experience on mobile. They didn’t have a hierarchical nature, let developers select what they needed, or the capability to display a list of heterogeneous feed stories._
+> _The main problem with Facebook's News Feed implementation on mobile: it wasn’t as simple as retrieving a story, who wrote it, what it says, the list of comments, and who liked the post. Each story was interconnected, nested, and recursive. The existing APIs weren’t designed to allow developers to expose a rich, news feed-like experience on mobile. They didn't have a hierarchical nature, let developers select what they needed, or the capability to display a list of heterogeneous feed stories._
 
 As tools like React and other powerful frontend user interface tools make it easier to build compelling, interactive applications, existing [REST APIs](https://www.smashingmagazine.com/2018/01/understanding-using-rest-api/) are increasingly a performance liability. Given the News Feed example above, a REST API might make requests for a story, the comments, and profiles of the accounts who commented on the story:
 
-GET /stories/1 GET /stories/comments GET /users/1 GET /users/2 GET /users/3
+```
+GET /stories/1 
+GET /stories/comments 
+GET /users/1 
+GET /users/2
+GET /users/3
+```
 
 With GraphQL, developers could just query for the story, and _everything_ else they needed to render the News Feed components:
 
-GET /graphql Body: { story(id: 1) { text url comments { body user { name avatar } } } }
+```
+GET /graphql 
+Body: { 
+  story(id: 1) { 
+    text 
+    url 
+    comments { 
+      body 
+      user { 
+        name 
+        avatar 
+      } 
+    } 
+  } 
+}
+```
 
 From Brenda Clark’s above article:
 
