@@ -16,7 +16,7 @@ $ npm create cloudflare@latest workflows-starter -- --template "cloudflare/workf
 
 Inside the `workflows-starter` directory, `src/index.ts` defines two top-level exports: the workflow _entrypoint_, as well as a default module that handles HTTP requests:
 
-```ts title="src/index.ts"
+```ts title="src/index.ts" collapse={66-88}
 import { WorkflowEntrypoint, WorkflowStep, WorkflowEvent } from 'cloudflare:workers';
 
 type Env = {
@@ -81,12 +81,31 @@ export class MyWorkflow extends WorkflowEntrypoint<Env, Params> {
   }
 }
 
-// Fetch handler
 export default {
   async fetch(req: Request, env: Env): Promise<Response> {
-    // Fetch handler code...
-  }
-}
+    let url = new URL(req.url);
+
+    if (url.pathname.startsWith('/favicon')) {
+      return Response.json({}, { status: 404 });
+    }
+
+    // Get the status of an existing instance, if provided
+    let id = url.searchParams.get('instanceId');
+    if (id) {
+      let instance = await env.MY_WORKFLOW.get(id);
+      return Response.json({
+        status: await instance.status(),
+      });
+    }
+
+    // Spawn a new instance and return the ID and status
+    let instance = await env.MY_WORKFLOW.create();
+    return Response.json({
+      id: instance.id,
+      details: await instance.status(),
+    });
+  },
+};
 ```
 
 ## What is a workflow?
@@ -144,10 +163,11 @@ await step.do(
 
 So far, we've looked at the default code used in Cloudflare's workflow template. Now, we'll build our own workflow.
 
-Imagine that we want to build a workflow that fetches analytics for a SaaS product we're building. It will then take those analytics and report them to a private Slack channel. We can break this down into two steps:
+Imagine that we want to build a workflow that fetches analytics for a SaaS product we're building. It will then take those analytics and report them to a private Slack channel. We can break this down into three steps:
 
 1. Fetch analytics from our SaaS product
-2. Report those analytics to a private Slack channel
+2. Transform/format those analytics
+3. Report those analytics to a private Slack channel
 
 That workflow can be defined like this:
 
@@ -206,7 +226,7 @@ export default {
 
 Where does `env.REPORT_ANALYTICS_WORKFLOW` come from? It's defined in `wrangler.toml`:
 
-```toml title="wrangler.toml"
+```toml title="wrangler.toml" {10-13}
 #:schema node_modules/wrangler/config-schema.json
 name = "workflows-starter"
 main = "src/index.ts"
@@ -226,8 +246,20 @@ By defining the workflow in `wrangler.toml`, we can access it from our code.
 
 It's useful to call workflows manually, but we can also call them using a `scheduled` trigger. For an analytics workflow, we may want to run it every day at a certain time. We can do this by defining a `triggers` block in `wrangler.toml`:
 
-```toml title="wrangler.toml"
-# Rest of the config
+```toml title="wrangler.toml" collapse={1-8} {15-17}
+#:schema node_modules/wrangler/config-schema.json
+name = "workflows-starter"
+main = "src/index.ts"
+compatibility_date = "2024-10-22"
+
+[observability]
+enabled = true
+head_sampling_rate = 1 # optional. default = 1.
+
+[[workflows]]
+name = "report-analytics"
+binding = "REPORT_ANALYTICS_WORKFLOW"
+class_name = "ReportAnalyticsWorkflow"
 
 [triggers]
 # Run the workflow every day at 12:00 AM
@@ -236,10 +268,12 @@ crons = ["0 * * * *"]
 
 With the cron trigger enabled, we can add a new function `scheduled` to our `src/index.ts` file:
 
-```ts title="src/index.ts"
+```ts title="src/index.ts" collapse={2-6}
 export default {
-  // Existing code
-  async fetch(req: Request, env: Env): Promise<Response> {},
+  async fetch(req: Request, env: Env): Promise<Response> {
+    const channelId = req.url.searchParams.get('channelId') || 'C123456789';
+    await env.REPORT_ANALYTICS_WORKFLOW.create({ channelId });
+  }
 
   async scheduled(event, env, ctx) {
     ctx.waitUntil(

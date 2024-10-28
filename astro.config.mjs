@@ -8,6 +8,7 @@ import { transformerMetaHighlight } from '@shikijs/transformers'
 import cloudflareRedirects from 'astro-cloudflare-redirects';
 
 import expressiveCode from 'astro-expressive-code';
+import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
 
 // https://astro.build/config
 export default defineConfig({
@@ -18,6 +19,7 @@ export default defineConfig({
   integrations: [
     expressiveCode({
       defaultProps: { wrap: true },
+      plugins: [pluginCollapsibleSections()],
       themes: ['catppuccin-mocha'],
     }),
     mdx(),
