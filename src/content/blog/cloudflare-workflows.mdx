@@ -34,7 +34,7 @@ type Params = {
 export class MyWorkflow extends WorkflowEntrypoint<Env, Params> {
   async run(event: WorkflowEvent<Params>, step: WorkflowStep) {
     // Can access bindings on `this.env`
-    // Can access params on `event.params`
+    // Can access params on `event.payload`
 
     const files = await step.do('my first step', async () => {
       // Fetch a list of files from $SOME_SERVICE
@@ -196,7 +196,7 @@ export class ReportAnalyticsWorkflow extends WorkflowEntrypoint<Env, Params> {
       const resp = await fetch('https://slack.com/api/chat.postMessage', {
         method: 'POST',
         body: JSON.stringify({
-          channel: event.params.channelId,
+          channel: event.payload.channelId,
           text: JSON.stringify(formatted),
         }),
       });
