@@ -17,7 +17,8 @@ export default defineConfig({
 
   integrations: [
     expressiveCode({
-      themes: ['catppuccin-mocha']
+      defaultProps: { wrap: true },
+      themes: ['catppuccin-mocha'],
     }),
     mdx(),
     react(),
