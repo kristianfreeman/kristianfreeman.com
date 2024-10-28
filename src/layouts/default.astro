@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseHead from "@/components/BaseHead.astro";
+import Footnotes from "@/components/Footnotes.tsx";
 import Header from "@/components/Header.tsx";
 import Footer from "@/components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
@@ -20,14 +21,15 @@ const tags = await getCollection("tag");
     />
   </head>
 
-  <body class="bg-base px-4 md:px-0">
-    <CommandMenu client:only="react" posts={posts} tags={tags} />
-    <div class="container mx-auto space-y-8">
-      <Header url={Astro.url} />
+  <body class="bg-base px-4 w-full">
+    <Header url={Astro.url} />
+    <div class="max-w-screen-lg mx-auto space-y-8">
       <main class={fullWidth ? "max-w-full prose" : "prose"}>
         <slot />
       </main>
       <Footer />
     </div>
+    <Footnotes client:only="react" />
+    <CommandMenu client:only="react" posts={posts} tags={tags} />
   </body>
 </html>

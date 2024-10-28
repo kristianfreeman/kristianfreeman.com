@@ -30,10 +30,9 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
     <script src="https://platform.twitter.com/widgets.js"></script>
   </head>
 
-  <body>
-    <CommandMenu client:only="react" posts={posts} tags={allTags} />
-    <div class="container mx-auto space-y-8 px-2 md:px-0">
-      <Header post={Astro.props} url={Astro.url} />
+  <body class="bg-base px-4 w-full">
+    <Header post={Astro.props} url={Astro.url} />
+    <div class="max-w-screen-lg mx-auto space-y-8">
       <main>
         <article>
           <div class="prose">
@@ -42,7 +41,7 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
                 {title}
               </h1>
 
-              {description && <h2>{description}</h2>}
+              {description && <h2 class="font-normal">{description}</h2>}
 
               <div class="flex items-center gap-3">
                 <img
@@ -74,11 +73,13 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
                   )
                 }
               </div>
+
+              {hasWarning && <WarningBanner {...hasWarning.data.warning} />}
+
+              <div class="slide-enter-content">
+                <slot />
+              </div>
             </div>
-
-            {hasWarning && <WarningBanner {...hasWarning.data.warning} />}
-
-            <slot />
             <hr />
           </div>
         </article>
@@ -86,5 +87,6 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
       <Footer />
     </div>
     <Footnotes client:only="react" />
+    <CommandMenu client:only="react" posts={posts} tags={allTags} />
   </body>
 </html>

@@ -30,7 +30,9 @@ const { Content } = await props.render();
     </BlogPost>
   ) : (
     <Default {...props.data}>
-      <Content />
+      <div class="slide-enter-content">
+        <Content />
+      </div>
     </Default>
   )
 }
