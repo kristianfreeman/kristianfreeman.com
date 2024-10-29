@@ -1,7 +1,6 @@
 ---
 title: Workers Entrypoints
-description: Defining multiple entry points for a single Workers application is quite cool!
-draft: true
+description: A Cloudflare Workers application can have multiple entry points, allowing for different usage patterns.
 pubDate: 'October 29 2024'
 tags:
   - webdev
@@ -39,7 +38,7 @@ This module is the primary _entrypoint_ for a Workers application. But it turns 
 Yesterday, I wrote about [Cloudflare Workflows](/cloudflare-workflows):
 
 > Workflows are a new feature in Cloudflare’s developer platform. You can use workflows to safely execute a series of steps as defined by code.
-> Inside the `workflows-starter` directory, ``src/index.ts` defines two top-level exports: the workflow entrypoint, as well as a default module that handles HTTP requests.
+> Inside the `workflows-starter` directory, `src/index.ts` defines two top-level exports: the workflow entrypoint, as well as a default module that handles HTTP requests.
 
 To define a workflow, you can export a class that extends `WorkflowEntrypoint`. The module that is exported by default still allows `fetch`, `scheduled`, and other events to access the Worker:
 
@@ -111,7 +110,7 @@ This is super legit. It's microservice architecture without needing to care abou
 
 ## Conclusion
 
-Sure, I work at CF - but I don't have any particular insight into how entrypoints will evolve on the Workers platform. 
+Sure, I work at Cloudflare - but I don't have any particular insight into how entrypoints will evolve on the Workers platform. 
 
 As a long-time user, I'm quite happy to see how entrypoints have evolved into a way to access the same application and core logic through different strategies - not just HTTP requests, but workflows, RPC calls, and (I imagine) even more ways in the future.
 
