@@ -1,0 +1,120 @@
+---
+title: Workers Entrypoints
+description: Defining multiple entry points for a single Workers application is quite cool!
+draft: true
+pubDate: 'October 29 2024'
+tags:
+  - webdev
+---
+import { Tweet } from 'astro-embed';
+
+Cloudflare Workers traditionally has allowed definition of a single _entrypoint_ for a Workers application. The initial version of Workers did this via an event listener:
+
+```js
+const handleRequest = request => {
+  return new Response('Hello world!')
+}
+
+addEventListener('fetch', event => {
+  event.respondWith(handleRequest(event.request))
+})
+```
+
+In the last few years, most developers have migrated to the "module" syntax for Workers, as we've standardized on it in our tooling:
+
+```js
+export default {
+  async fetch(request, env, ctx) {
+    return new Response('Hello world!')
+  }
+}
+```
+
+This means that your Workers code, for instance, defined in `index.js`, has a _default export_. That export is a _module_ with a collection of functions representing different events - `fetch`, to handle HTTP requests, or `scheduled`, to trigger on a [cron trigger](https://developers.cloudflare.com/workers/configuration/cron-triggers).
+
+This module is the primary _entrypoint_ for a Workers application. But it turns out that you can define other entrypoints to serve other purposes.
+
+## Workflows
+
+Yesterday, I wrote about [Cloudflare Workflows](/cloudflare-workflows):
+
+> Workflows are a new feature in Cloudflare’s developer platform. You can use workflows to safely execute a series of steps as defined by code.
+> Inside the `workflows-starter` directory, ``src/index.ts` defines two top-level exports: the workflow entrypoint, as well as a default module that handles HTTP requests.
+
+To define a workflow, you can export a class that extends `WorkflowEntrypoint`. The module that is exported by default still allows `fetch`, `scheduled`, and other events to access the Worker:
+
+```ts title="src/index.ts" collapse={3-9, 14-16}
+// Workflow entrypoint
+export class MyWorkflow extends WorkflowEntrypoint<Env, Params> {
+  async run(event: WorkflowEvent<Params>, step: WorkflowStep) {
+    await step.sleep('wait on something', '1 minute');
+
+    await step.do('test step', async () => {
+      return 'OK, done!';
+    });
+  }
+}
+
+// Module entrypoint
+export default {
+  async fetch(req: Request, env: Env): Promise<Response> {
+    return new Response('Hello world!');
+  }
+};
+```
+
+This is an interesting model! It allows you to define multiple entry points for a single Workers application. 
+
+## Workers RPC
+
+In an upcoming release of [workers-graphql-server](https://github.com/cloudflare/workers-graphql-server), I've added preliminary support for _Workers RPC_. Workers RPC allows you to access Workers application _from one another_. Let's look at how that works.
+
+You can arbitrarily export any number of classes from your Workers application, as long as they extend the `WorkersEntrypoint` class. For example, a `MoviesService` that connects to a D1 database[^1]. That's right - more entrypoints!
+
+```ts title="src/index.ts"
+import { WorkerEntrypoint } from "cloudflare:workers";
+
+export class MoviesService extends WorkerEntrypoint {
+  async getMovies() {
+    const query = "select * from movies";
+    const { results: movies } = await this.env.DB
+      .prepare(query)
+      .all();
+    return movies;
+  };
+}
+
+// Rest of HTTP-based handlers
+```
+
+In any project, you can then import this class via service bindings:
+
+```toml title="wrangler.toml"
+name = "workers-graphql-server"
+
+[[services]]
+binding = "MOVIES"
+entrypoint = "MoviesService"
+service = "d1-movie-example"
+```
+
+That binding `MOVIES` connects to the `MoviesService` class inside of `d1-movie-example`. You can use it like any other function, but it is a genuine different application, imported somewhat magically:
+
+```ts title="src/index.ts"
+function getBestMovies(env) {
+  const movies = await env.MOVIES.getMovies()
+  return movies.sort((a, b) => b.rating - a.rating)
+}
+```
+
+This is super legit. It's microservice architecture without needing to care about deployments, scaling, or any of that other stuff. Really impressive!
+
+## Conclusion
+
+Sure, I work at CF - but I don't have any particular insight into how entrypoints will evolve on the Workers platform. 
+
+As a long-time user, I'm quite happy to see how entrypoints have evolved into a way to access the same application and core logic through different strategies - not just HTTP requests, but workflows, RPC calls, and (I imagine) even more ways in the future.
+
+<Tweet id="https://x.com/kristianf_/status/1849536448627609603" />
+
+[^1]: This example is derived from my [d1-movie-example repo](https://github.com/kristianfreeman/d1-movie-example).
