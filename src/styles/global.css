@@ -11,45 +11,19 @@
     @apply bg-background text-foreground;
   }
 
-  :root {
-    --littlefoot-button-bg: #313244;
-    --littlefoot-button-text: var(--text-foreground);
-    --littlefoot-button-active-bg: #45475a;
-    --littlefoot-button-active-text: #f5e0dc;
-    --littlefoot-popover-bg: hsl(var(--background));
-    --littlefoot-popover-border: 1px solid #6c7086;
-    --littlefoot-popover-text: var(--text-foreground);
-    --littlefoot-popover-shadow: 0 0 8px rgba(24, 24, 37, 0.3);
-    --littlefoot-popover-scroll-indicator: #74c7ec;
-    --popover-font-family: "Atkinson Hyperlegible", sans-serif;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --littlefoot-button-bg: #444;
-      --littlefoot-button-text: #444;
-      --littlefoot-button-active-bg: #444;
-      --littlefoot-button-active-text: #222;
-      --littlefoot-popover-bg: hsl(var(--background));
-      --littlefoot-popover-border: 1px solid #ccc;
-      --littlefoot-popover-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-      --littlefoot-popover-scroll-indicator: #3273dc;
-    }
-  }
-
   /* h/t https://github.com/antfu/antfu.me */
   @keyframes slide-enter {
     0% {
       transform: translateY(10px);
-      opacity: 0
+      opacity: 0;
     }
-  
+
     to {
       transform: translateY(0);
-      opacity: 100
+      opacity: 1;
     }
   }
-  
+
   @media (prefers-reduced-motion:no-preference) {
     [slide-enter],
     .slide-enter,
@@ -59,6 +33,12 @@
       --enter-initial: 0ms;
       animation: slide-enter 1s both 1;
       animation-delay: calc(var(--enter-initial) + var(--enter-stage) * var(--enter-step));
+    }
+
+    /* if child has span.littlefoot inside of it, it can't be animated */
+    .slide-enter-content > *:has(.littlefoot) {
+      animation: none;
+      opacity: 0;
     }
 
     .slide-enter-content > *:nth-child(1) { --enter-stage: 1; }
@@ -429,5 +409,14 @@ header nav {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+}
+
+.littlefoot {
+  --button-background-color: hsl(var(--accent));
+  --button-text-color: hsl(var(--accent-foreground));
+  --popover-background-color: hsl(var(--background));
+  --popover-border: 1px solid hsl(var(--border));
+  --popover-text-color: hsl(var(--foreground));
+  --popover-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
 }
 
