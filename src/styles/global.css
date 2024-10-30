@@ -5,6 +5,9 @@
     @apply border-border;
     animation-fill-mode: forwards;
     -webkit-animation-fill-mode: forwards;
+
+    --font-main: "Atkinson Hyperlegible", -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+    --font-mono: "JetBrains Mono", Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
   }
 
   body {
@@ -133,7 +136,7 @@ footer {
 }
 
 .highlight, .code {
-  font-family: var(--monospace-font);
+  font-family: var(--font-mono);
   padding: 0.1rem 1.5rem;
   background-color: var(--code-background-color);
   color: var(--code-color);
@@ -185,6 +188,7 @@ ul.blog-posts li span time {
   --popover-text-color: var(--littlefoot-popover-text);
   --popover-shadow: var(--littlefoot-popover-shadow);
   --popover-scroll-indicator-color: var(--littlefoot-popover-scroll-indicator);
+  --popover-font-family: var(--font-main);
 }
 
 /* Catppuccin colors */

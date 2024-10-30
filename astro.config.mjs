@@ -20,6 +20,10 @@ export default defineConfig({
     expressiveCode({
       defaultProps: { wrap: true },
       plugins: [pluginCollapsibleSections()],
+      styleOverrides: {
+        codeFontFamily: 'var(--font-mono)',
+        uiFontFamily: 'var(--font-main)',
+      },
       themes: ['catppuccin-mocha'],
     }),
     mdx(),

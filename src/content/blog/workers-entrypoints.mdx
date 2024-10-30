@@ -9,7 +9,7 @@ import { Tweet } from 'astro-embed';
 
 Cloudflare Workers traditionally has allowed definition of a single _entrypoint_ for a Workers application. The initial version of Workers did this via an event listener:
 
-```js
+```js title="src/index.ts"
 const handleRequest = request => {
   return new Response('Hello world!')
 }
@@ -21,7 +21,7 @@ addEventListener('fetch', event => {
 
 In the last few years, most developers have migrated to the "module" syntax for Workers, as we've standardized on it in our tooling:
 
-```js
+```js title="src/index.ts"
 export default {
   async fetch(request, env, ctx) {
     return new Response('Hello world!')
@@ -42,8 +42,7 @@ Yesterday, I wrote about [Cloudflare Workflows](/cloudflare-workflows):
 
 To define a workflow, you can export a class that extends `WorkflowEntrypoint`. The module that is exported by default still allows `fetch`, `scheduled`, and other events to access the Worker:
 
-```ts title="src/index.ts" collapse={3-9, 14-16}
-// Workflow entrypoint
+```ts title="src/index.ts" collapse={13-15}
 export class MyWorkflow extends WorkflowEntrypoint<Env, Params> {
   async run(event: WorkflowEvent<Params>, step: WorkflowStep) {
     await step.sleep('wait on something', '1 minute');
@@ -70,7 +69,7 @@ In an upcoming release of [workers-graphql-server](https://github.com/cloudflare
 
 You can arbitrarily export any number of classes from your Workers application, as long as they extend the `WorkersEntrypoint` class. For example, a `MoviesService` that connects to a D1 database[^1]. That's right - more entrypoints!
 
-```ts title="src/index.ts"
+```ts title="src/index.ts" collapse={15-21}
 import { WorkerEntrypoint } from "cloudflare:workers";
 
 export class MoviesService extends WorkerEntrypoint {
@@ -83,7 +82,17 @@ export class MoviesService extends WorkerEntrypoint {
   };
 }
 
-// Rest of HTTP-based handlers
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    if (url.pathname === "/movies") {
+      const { results: movies } = await this.env.DB
+        .prepare(query)
+        .all();
+      return new Response(JSON.stringify(movies));
+    }
+  }
+}
 ```
 
 In any project, you can then import this class via service bindings:
@@ -99,7 +108,7 @@ service = "d1-movie-example"
 
 That binding `MOVIES` connects to the `MoviesService` class inside of `d1-movie-example`. You can use it like any other function, but it is a genuine different application, imported somewhat magically:
 
-```ts title="src/index.ts"
+```ts title="src/index.ts" {2}
 function getBestMovies(env) {
   const movies = await env.MOVIES.getMovies()
   return movies.sort((a, b) => b.rating - a.rating)
