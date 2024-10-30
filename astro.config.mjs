@@ -24,7 +24,7 @@ export default defineConfig({
         codeFontFamily: 'var(--font-mono)',
         uiFontFamily: 'var(--font-main)',
       },
-      themes: ['catppuccin-mocha'],
+      themes: ['vesper', 'github-light'],
     }),
     mdx(),
     react(),

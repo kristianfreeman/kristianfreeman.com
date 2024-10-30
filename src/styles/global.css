@@ -178,98 +178,6 @@ ul.blog-posts li span time {
   }
 }
 
-.littlefoot {
-  --button-background-color: var(--littlefoot-button-bg);
-  --button-text-color: var(--littlefoot-button-text);
-  --button-active-background-color: var(--littlefoot-button-active-bg);
-  --button-active-text-color: var(--littlefoot-button-active-text);
-  --popover-background-color: var(--littlefoot-popover-bg);
-  --popover-border: var(--littlefoot-popover-border);
-  --popover-text-color: var(--littlefoot-popover-text);
-  --popover-shadow: var(--littlefoot-popover-shadow);
-  --popover-scroll-indicator-color: var(--littlefoot-popover-scroll-indicator);
-  --popover-font-family: var(--font-main);
-}
-
-/* Catppuccin colors */
-.hll {
-  background-color: #f5e0dc !important;
-}
-
-.c, .ch, .cm, .cpf, .c1, .cs {
-  color: #94e2d5 !important;
-  font-style: italic !important;
-}
-
-.err, .gd, .gr, .gt, .s, .sa, .sb, .sc, .dl, .sd, .s2, .sh, .s1 {
-  color: #f38ba8 !important;
-}
-
-.k, .kc, .kd, .kn, .kr, .nt, .ow, .sx {
-  color: #89b4fa !important;
-  font-weight: 700 !important;
-}
-
-.o, .m, .mb, .mf, .mh, .mi, .mo, .bp {
-  color: #585b70 !important;
-}
-
-.cp, .se {
-  color: #fab387 !important;
-  font-weight: 700 !important;
-}
-
-.gh, .gp, .nd, .ow {
-  color: #74c7ec !important;
-  font-weight: 700 !important;
-}
-
-.gi, .na {
-  color: #a6e3a1 !important;
-}
-
-.go {
-  color: #7f849c !important;
-}
-
-.gu, .si, .sr {
-  color: #f5c2e7 !important;
-  font-weight: 700 !important;
-}
-
-.nc, .nf, .nn {
-  color: #cba6f7 !important;
-  font-weight: 700 !important;
-}
-
-.no {
-  color: #eba0ac !important;
-}
-
-.ni {
-  color: #9399b2 !important;
-  font-weight: 700 !important;
-}
-
-.nl {
-  color: #f9e2af !important;
-}
-
-.vc, .vg, .vi, .vm {
-  color: #b4befe !important;
-}
-
-.w {
-  color: #bac2de !important;
-}
-
-/* nav link styles */
-header nav {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
 /* Notice styles */
 .notice {
   padding: 1.5rem;
@@ -416,11 +324,18 @@ header nav {
 }
 
 .littlefoot {
-  --button-background-color: hsl(var(--accent));
+  --button-background-color: hsl(var(--muted-foreground));
   --button-text-color: hsl(var(--accent-foreground));
+  --popover-font-family: var(--font-main);
   --popover-background-color: hsl(var(--background));
   --popover-border: 1px solid hsl(var(--border));
   --popover-text-color: hsl(var(--foreground));
   --popover-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+}
+
+@media (prefers-color-scheme: dark) {
+  .littlefoot {
+    --button-background-color: hsl(var(--accent));
+  }
 }
 
