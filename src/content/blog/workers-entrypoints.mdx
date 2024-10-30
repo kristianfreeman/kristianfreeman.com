@@ -65,7 +65,7 @@ This is an interesting model! It allows you to define multiple entry points for 
 
 ## Workers RPC
 
-In an upcoming release of [workers-graphql-server](https://github.com/cloudflare/workers-graphql-server), I've added preliminary support for _Workers RPC_. Workers RPC allows you to access Workers application _from one another_. Let's look at how that works.
+In an upcoming release of [workers-graphql-server](https://github.com/cloudflare/workers-graphql-server), I've added preliminary support for _Workers RPC_. Workers RPC allows you to access Workers applications _from one another_. Let's look at how that works.
 
 You can arbitrarily export any number of classes from your Workers application, as long as they extend the `WorkersEntrypoint` class. For example, a `MoviesService` that connects to a D1 database[^1]. That's right - more entrypoints!
 
