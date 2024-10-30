@@ -37,20 +37,23 @@ const postsGroupedByYear = posts.reduce(
     <div class="flex flex-col gap-12 slide-enter-content">
       {
         postsGroupedByYear[currentYear].map((post) => (
-          <div class="flex flex-col gap-2">
+          <a 
+            class="flex flex-col gap-2 no-underline hover:no-underline"
+            href={`/${post.slug}`}
+          >
             <h2 class="leading-6 m-0">
-              <a href={`/${post.slug}`}>{post.data.title}</a>
+              {post.data.title}
             </h2>
             <p class="m-0">{post.data.description}</p>
             <p class="m-0 text-foreground/80">
               <FormattedDate date={post.data.pubDate} />
             </p>
-          </div>
+          </a>
         ))
       }
     </div>
 
-    <div class="flex flex-col gap-6 mt-6 slide-enter-content">
+    <div class="flex flex-col gap-6 mt-8 slide-enter-content">
       {
         Object.keys(postsGroupedByYear)
           .sort((a, b) => Number(b) - Number(a))
@@ -60,10 +63,6 @@ const postsGroupedByYear = posts.reduce(
               <div class="flex flex-col gap-2">
                 <h2 class="leading-6 text-lg m-0 flex items-center gap-2">
                   <a href={`/${post.slug}`}>{post.data.title}</a>
-                  <span class="hidden md:block m-0 font-normal text-foreground/80">
-                    {" "}
-                    - <FormattedDate date={post.data.pubDate} />
-                  </span>
                 </h2>
               </div>
             ))
