@@ -31,7 +31,9 @@ const postsGroupedByYear = posts.reduce(
 <Default fullWidth title="Blog">
   <h1 class="font-bold">Blog</h1>
 
-  <h2>{posts.length} posts that I've written since {firstPostYear}.</h2>
+  <h2 class="font-normal">
+    {posts.length} posts that I've written since {firstPostYear}.
+  </h2>
 
   <section class="mt-16 w-full">
     <div class="flex flex-col gap-12 slide-enter-content">

@@ -6,19 +6,21 @@ import FormattedDate from "@/components/FormattedDate.astro";
 
 const { tag: slug } = Astro.params;
 
-const tag = await getEntry("tag", slug)
+const tag = await getEntry("tag", slug);
 const { Content } = await tag.render();
 
-let posts = (await getCollection("blog", ({ data }) => data.tags.map(({ slug }) => slug).includes(slug)))
+let posts = await getCollection("blog", ({ data }) =>
+  data.tags.map(({ slug }) => slug).includes(slug),
+);
 
-posts = posts.sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-).filter(post => !post.data.draft);
+posts = posts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .filter((post) => !post.data.draft);
 
-const tags = await getCollection("tag")
+const tags = await getCollection("tag");
 
 export async function getStaticPaths() {
-  let tags = await getCollection("tag")
+  let tags = await getCollection("tag");
 
   return tags.map((tag) => ({
     params: { tag: tag.slug },
@@ -29,19 +31,20 @@ export async function getStaticPaths() {
 
 <Default title={titleize(tag.data.name)}>
   <h1>{tag.data.name}</h1>
-  <Content />
+
+  <div class="*:font-normal">
+    <Content />
+  </div>
 
   <section class="mt-16 w-full">
     <div class="flex flex-col gap-12 slide-enter-content">
       {
         posts.map((post) => (
-          <a 
+          <a
             class="flex flex-col gap-2 no-underline hover:no-underline"
             href={`/${post.slug}`}
           >
-            <h2 class="leading-6 m-0">
-              {post.data.title}
-            </h2>
+            <h2 class="leading-6 m-0">{post.data.title}</h2>
             <p class="m-0">{post.data.description}</p>
             <p class="m-0 text-foreground/80">
               <FormattedDate date={post.data.pubDate} />

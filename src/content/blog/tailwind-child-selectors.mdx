@@ -1,0 +1,50 @@
+---
+title: "Tailwind Child Selectors"
+description: "How to use child selectors in Tailwind CSS 3.1+"
+pubDate: "Oct 31, 2024"
+tags:
+  - tip
+  - webdev
+---
+
+On my tag pages (e.g. [/tags/webdev](/tags/webdev)), I have an `<h2>` tag that is rendered using one of Astro's built-in components, `<Content />`:
+
+```astro
+<Default>
+  <h1>{tag.data.name}</h1>
+  <Content />
+</Default>
+```
+
+In my case, the `<Content />` tag is used to render an `<h2>` tag with a piece of subtitle-style text. We can assume that the final HTML will look something like:
+
+```astro ins={3}
+<Default>
+  <h1>{tag.data.name}</h1>
+  <h2>{subtitle}</h2>
+</Default>
+```
+
+Because the `<Content />` tag doesn't accept any props, I can't style anything inside of it. I have no control over the rendering, and the content is coming from Markdown, so I don't want to write HTML in the Markdown file just to style the tag.
+
+To solve this, I elected to use [**Tailwind child selectors**](https://tailwindcss.com/docs/hover-focus-and-other-states#styling-direct-children), which allows me to wrap the `<Content />` tag in a `<div>`, and then style the child elements of that `<div>`:
+
+```astro {4-6}
+<Default>
+  <h1>{tag.data.name}</h1>
+
+  <div class="*:font-normal">
+    <Content />
+  </div>
+</Default>
+```
+
+Now, all child elements inside that `<div>` will have the `font-normal` class applied to them. The generated selector on the `<h2>` tag looks like this:
+
+```css
+.\*\:font-normal > * {
+  font-weight: 400;
+}
+```
+
+There's a lot more you can do with Tailwind's comprehensive [modifiers](https://tailwindcss.com/docs/hover-focus-and-other-states). A lot of it goes over my head as an OK-but-not-amazing CSS user, but it's cool to see how the framework continues to evolve.
