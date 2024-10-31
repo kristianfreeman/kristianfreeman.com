@@ -1,0 +1,51 @@
+---
+title: How I Record Videos
+description: "A description of my process for recording videos for software developers, in 2024."
+pubDate: 'Oct 31 2024'
+tags:
+  - tech
+  - webdev
+---
+
+> Quick note: This post is a draft. It might feel a little sparse as I fill in various details. If you have any questions, [reach out to me on 𝕏](https://twitter.com/kristianf_).
+
+I've produced a lot of videos over the last ten years. Between my [personal YouTube channel](https://kristianf.dev/youtube) and the [Cloudflare Developers channel](https://www.youtube.com/@CloudflareDevelopers), I've recorded probably over a hundred hours of content, and spent many more than that editing.
+
+I've constantly experimented with different setups, and I can say with confidence that my current setup is the best I've found. It may not work for everyone, but for my taste and style, it's really effective. It also is pretty easy to make high-quality recordings, without too much trouble!
+
+## Hardware
+
+- Camera: Sony FX30
+- Lens: Sony FE 35mm F1.4 GM
+- Microphone: Shure SM7dB
+- Light: Amaran 100d
+
+This setup is pretty legit. Like... it's expensive. It took me about four years to get all of this together. And it looks great! The FX30 can act as a webcam over USB-C, so in addition to being an incredible camera, it looks unreal in meetings.
+
+## Software
+
+I am fully on-board with [Screen Studio](https://www.screen.studio/). It's a great tool for recording and editing videos. I've used it for a few years now, and it's been a huge time-saver. It has _incredible_ transition and callout features built-in to the software. If you leave this post with one takeaway, it's that you should just use Screen Studio for most videos.
+
+That being said, sometimes you have to record full "talking head"-style clips. In a long video, you might want to introduce a concept before you jump into a screencast. Screen Studio doesn't support editing non-screencast content, like a talking head clip (yet - I think it's coming), so you need to edit with something else, too.
+
+I use [DaVinci Resolve](https://www.blackmagicdesign.com/products/davinciresolve) for this. It's free, and it works like a standard linear video editor - like Premiere or Final Cut. I'll cut together the screencast from Screen Studio with the talking head clips in Resolve, and I can get a pretty good edit in roughly 1x the length of the clip.
+
+## Audio/Flow
+
+I also edit my audio in Resolve. My audio editing process is basically:
+
+1. Low-pass filter (1-2kHz) to remove any desk thumping, low-end noise, etc.
+2. Fairly aggressive compression to give it that "professional" sound. I've done this _way_ too aggressively in the past. Now, I'll compress to what sounds good to me, and then roll it back 10-20%.
+3. Final mix - mic audio + any background music at around -6dB. Usually, I'll use a limiter or boost the gain in the compressor to hit that level.
+
+I care a lot about audio. I actually think that good audio is significantly more important than good video. You can have a very mediocre looking screencast, but if the audio is good, the video can still be awesome. Bad audio, on the other hand, is a show stopper. More devs making video content should invest _first_ in the mic and learn to mix audio somewhat decently - the camera can come much further down the line.
+
+This gets me a great draft in Resolve. The last thing I'll do is cut silence. This professionalizes the video. I use [Recut](https://getrecut.com/) for this. It's awesome, and it doesn't cost too much ($129). The amount of time it saves is _immense_. You can basically edit everything together in Resolve, without having to care too much about timing, and then rely on Recut to glue everything together.
+
+The only thing you should know is that Recut is, obviously, not great with music in videos. In that case, you'll need to do the "flow cut" (removing silence, getting the feel right) _before_ importing to Resolve. Either way is fine, but YMMV depending on your video style.
+
+## Conclusion
+
+This process has changed a lot. I've used OBS, actual hardware muxers like the Blackmagic Atem Mini, and a variety of editing tools, cameras, and microphones. I'm really happy with the setup I have now, and I would put my content up against anyone in the industry for quality. I love the way my videos look and sound, and they aren't too much trouble to put together, thanks to helpful software that does a lot of the work for me.
+
+I'll be very curious to see how AI evolves this process. Much of what I do in editing and mixing is very friendly to automation. Tools like [Descript](https://www.descript.com/) will probably be the future of small-scale editing like my process. They aren't quite there yet, but in a few years, I suspect I could just dump all of these files into an app and get a reasonable approximation of what I do manually, in just a few minutes. Exciting times!
