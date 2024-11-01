@@ -6,7 +6,7 @@ tags:
   - cloudflare
   - webdev
 ---
-import { Stream } from "@cloudflare/stream-react";
+import StreamVideo from "@/components/StreamVideo";
 
 I've been working on updating the [`workers-graphql-server`](https://github.com/kristianfreeman/workers-graphql-server) project.
 
@@ -22,9 +22,4 @@ The [new v2 release](https://github.com/cloudflare/workers-graphql-server/releas
 
 I made a video showing how the new version works. Check it out!
 
-<Stream
-  client:only="react"
-  controls
-  defaultTextTrack="en"
-  src="8e7113ab230ea2e352270dba1101b5f3"
-/>
+<StreamVideo client:only="react" src="8e7113ab230ea2e352270dba1101b5f3" />
