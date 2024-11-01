@@ -12,11 +12,11 @@ export default function StreamVideo({ src }: { src: string }) {
   }, []);
 
   if (!animationDelayComplete) {
-    return <Skeleton className="h-[400px] rounded-none w-full" />
+    return <Skeleton className="md:h-[400px] rounded-none w-full" />
   };
 
   return (
-    <div className="h-[400px] w-full">
+    <div className="md:h-[400px] w-full">
       <Stream
         controls
         defaultTextTrack="en"
