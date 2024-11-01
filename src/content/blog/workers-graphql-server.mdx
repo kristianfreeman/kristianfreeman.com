@@ -1,0 +1,25 @@
+---
+title: Workers GraphQL Server v2
+description: Showing off some updates to my workers-graphql-server project.
+pubDate: 'Nov 01 2024'
+tags:
+  - cloudflare
+  - webdev
+---
+import { Stream } from "@cloudflare/stream-react";
+
+I've been working on updating the [`workers-graphql-server`](https://github.com/kristianfreeman/workers-graphql-server) project.
+
+Five years ago, it was one of the first things I built after joining [Cloudflare](https://cloudflare.com). Since then, the way that we write Workers has changed a lot.
+
+The [new v2 release](https://github.com/cloudflare/workers-graphql-server/releases/tag/2.0.0-alpha) is a complete rewrite. Some big changes:
+
+1. Supports Wrangler v2 (better local dev, deployment, bindings, etc.)
+2. Written as a module Worker (modern syntax for writing Workers)
+3. Built on top of [Hono](https://honojs.dev/)
+4. Examples for integrating external data sources, and service bindings
+5. Updated implementation of the [Workers KV](https://developers.cloudflare.com/kv/) cache
+
+I made a video showing how the new version works. Check it out!
+
+<Stream client:only="react" controls src="8e7113ab230ea2e352270dba1101b5f3" />
