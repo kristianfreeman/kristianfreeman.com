@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "check": "rm -rf dist && astro check",
+    "playwright:install": "sudo npx playwright install-deps && sudo npx playwright install",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
