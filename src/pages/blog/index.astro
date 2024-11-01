@@ -36,7 +36,7 @@ const postsGroupedByYear = posts.reduce(
   </h2>
 
   <section class="mt-16 w-full">
-    <div class="flex flex-col gap-12 slide-enter-content">
+    <div class="flex flex-col gap-12">
       {
         postsGroupedByYear[currentYear].map((post) => (
           <a 
@@ -55,7 +55,7 @@ const postsGroupedByYear = posts.reduce(
       }
     </div>
 
-    <div class="flex flex-col gap-6 mt-8 slide-enter-content">
+    <div class="flex flex-col gap-6 mt-8">
       {
         Object.keys(postsGroupedByYear)
           .sort((a, b) => Number(b) - Number(a))

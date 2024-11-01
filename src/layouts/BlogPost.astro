@@ -65,9 +65,7 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
 
               {hasWarning && <WarningBanner {...hasWarning.data.warning} />}
 
-              <div class="slide-enter-content">
-                <slot />
-              </div>
+              <slot />
             </div>
             <hr />
           </div>
