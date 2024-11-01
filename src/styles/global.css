@@ -70,6 +70,21 @@
   a:hover { @apply underline; }
   ul, ol { @apply list-disc list-inside; }
 
+  hr {
+    @apply text-foreground/80;
+  }
+
+  .prose {
+    p, ol, li {
+      @apply text-foreground/80;
+    }
+
+    a {
+      @apply text-foreground;
+    }
+  }
+
+
   .prose .astro-tweet-theme img {
     @apply mt-0 mb-0;
   }

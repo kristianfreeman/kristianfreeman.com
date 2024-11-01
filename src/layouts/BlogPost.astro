@@ -43,15 +43,15 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
 
               {description && <h2 class="font-normal">{description}</h2>}
 
-              <div class="flex items-center flex-wrap gap-4">
-                <div class="flex items-center gap-2">
+              <div class="flex flex-wrap gap-4 items-center pb-4">
+                <div class="flex gap-2 items-center text-foreground/80">
                   <Calendar size={16} />
                   <FormattedDate date={pubDate} />
                 </div>
 
                 {
                   tags.length > 0 && (
-                    <span class="flex items-center gap-2">
+                    <span class="flex gap-2 items-center text-foreground/80">
                       <Tag size={16} />
                       <span class="space-x-2">
                         {tags.map((tag) => (
