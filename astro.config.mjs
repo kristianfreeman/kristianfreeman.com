@@ -1,14 +1,17 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
-import sitemap from '@astrojs/sitemap';
-import react from '@astrojs/react';
-import tailwind from '@astrojs/tailwind';
-import { transformerMetaHighlight } from '@shikijs/transformers'
-import cloudflareRedirects from 'astro-cloudflare-redirects';
-
-import expressiveCode from 'astro-expressive-code';
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
+import { transformerMetaHighlight } from '@shikijs/transformers'
+
+import cloudflareRedirects from 'astro-cloudflare-redirects';
+import expressiveCode from 'astro-expressive-code';
+import mdx from '@astrojs/mdx';
+import react from '@astrojs/react';
+import remarkMermaid from 'remark-mermaidjs';
+import sitemap from '@astrojs/sitemap';
+import tailwind from '@astrojs/tailwind';
+
+import { remarkDeruntify } from './config/remark.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -38,6 +41,10 @@ export default defineConfig({
   ],
 
   markdown: {
+    remarkPlugins: [
+      remarkDeruntify,
+      remarkMermaid,
+    ],
     shikiConfig: {
       theme: 'catppuccin-mocha',
       transformers: [

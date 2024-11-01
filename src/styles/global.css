@@ -79,6 +79,9 @@
       @apply text-foreground/80;
     }
 
+    /* Disable for mermaid */
+    svg p { @apply text-inherit; }
+
     a {
       @apply text-foreground;
     }
@@ -87,6 +90,11 @@
 
   .prose .astro-tweet-theme img {
     @apply mt-0 mb-0;
+  }
+
+  /* any svg that has an id that starts with "mermaid" should be white */
+  svg[id^="mermaid"] {
+    @apply bg-white text-black;
   }
 }
 
