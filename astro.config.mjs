@@ -7,7 +7,6 @@ import cloudflareRedirects from 'astro-cloudflare-redirects';
 import expressiveCode from 'astro-expressive-code';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
-import remarkMermaid from 'remark-mermaidjs';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 
@@ -43,7 +42,6 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [
       remarkDeruntify,
-      remarkMermaid,
     ],
     shikiConfig: {
       theme: 'catppuccin-mocha',
