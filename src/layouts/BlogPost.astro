@@ -34,7 +34,7 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
     <Header post={Astro.props} url={Astro.url} />
     <div class="max-w-screen-lg mx-auto space-y-8">
       <main>
-        <article>
+        <article class="flex gap-4">
           <div class="prose">
             <div class="space-y-4">
               <h1 class="tracking-wider">
@@ -69,6 +69,8 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
             </div>
             <hr />
           </div>
+
+          <slot name="toc" />
         </article>
       </main>
       <Footer />

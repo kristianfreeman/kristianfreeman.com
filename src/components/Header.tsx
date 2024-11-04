@@ -8,7 +8,7 @@ type BlogPost = CollectionEntry<'blog'>['data'];
 
 export default ({ post, url }: { post?: BlogPost, url: URL }) => {
   return (
-    <header className="space-y-4 py-8 lg:p-8 w-full">
+    <header className="space-y-4 py-8 max-w-screen-lg mx-auto w-full">
       <nav className="flex items-center gap-4">
         <div className="flex-1">
           <a className={clsx("text-foreground font-bold flex-1 hover:no-underline")} href="/">

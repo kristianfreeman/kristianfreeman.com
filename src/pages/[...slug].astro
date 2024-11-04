@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import BlogPost from "@/layouts/BlogPost.astro";
 import Default from "@/layouts/default.astro";
+import TOC from "@/components/TOC.tsx";
 
 export async function getStaticPaths() {
   const pages = await getCollection("page");
@@ -20,13 +21,23 @@ export async function getStaticPaths() {
 }
 
 const props = Astro.props;
-const { Content } = await props.render();
+const { Content, headings } = await props.render();
+let filteredHeadings = headings.filter(heading =>
+  heading.text !== "Footnotes"
+)
 ---
 
 {
   props.collection === "blog" ? (
     <BlogPost {...props.data}>
       <Content />
+      {filteredHeadings.length > 0 && (
+        <TOC 
+          client:only="react" 
+          headings={filteredHeadings} 
+          slot="toc"
+        />
+      )}
     </BlogPost>
   ) : (
     <Default {...props.data}>
