@@ -57,7 +57,7 @@ I made a video showing how the new version works. Check it out!
 
 Note the usage of the `client:only` attribute. This is a [feature of Astro](https://docs.astro.build/en/guides/partial-hydration/) that allows you to only hydrate the component on the client-side. This is important because the Stream component will try to create a new `<video>` tag on the client, so if it tries to render on the server, the video content won't show up.
 
-## Extra features
+## Captions
 
 A recent feature that Stream added is the ability to add captions. The cool part is that it can use [Workers AI](https://ai.cloudflare.com) to generate the captions automatically.
 
