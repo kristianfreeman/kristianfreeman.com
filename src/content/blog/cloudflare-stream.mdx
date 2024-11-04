@@ -1,0 +1,101 @@
+---
+title: Cloudflare Stream
+description: How to use Cloudflare Stream to host videos for your website.
+pubDate: 'Nov 04 2024'
+tags:
+  - cloudflare
+  - webdev
+---
+import { Image } from "astro:assets";
+import streamCaptions from "@/images/stream-captions.png";
+
+[Cloudflare Stream](https://cloudflare.com/products/stream/) is a service that allows you to host videos for your website. It can be purchased as part of a $10/month plan that includes [Cloudflare Images](https://cloudflare.com/products/images/), with up to 1k minutes of video hosting and 5k minutes of video _delivery_ included.
+
+In my [Workers GraphQL Server](/workers-graphql-server) post, I included a video walkthrough of how to use the project. It's hosted with Stream.
+
+## Integration
+
+Here's how I integrated it into my site:
+
+1. Upload the video to Stream
+2. Get the video ID
+3. Install the [Cloudflare Stream React component](https://github.com/cloudflare/stream-react): 
+
+```bash
+$ npm install @cloudflare/stream-react
+```
+
+4. Import the component into the blog post and use it (MDX supports JSX components):
+
+```mdx title="blog/workers-graphql-server.mdx" collapse={1-8,10-21}
+---
+title: Workers GraphQL Server v2
+description: Showing off some updates to my workers-graphql-server project.
+pubDate: 'Nov 01 2024'
+tags:
+  - cloudflare
+  - webdev
+---
+import StreamVideo from "@/components/StreamVideo";
+
+I've been working on updating the [`workers-graphql-server`](https://github.com/kristianfreeman/workers-graphql-server) project.
+
+Five years ago, it was one of the first things I built after joining [Cloudflare](https://cloudflare.com). Since then, the way that we write Workers has changed a lot.
+
+The [new v2 release](https://github.com/cloudflare/workers-graphql-server/releases/tag/2.0.0-alpha) is a complete rewrite. Some big changes:
+
+1. Supports Wrangler v2 (better local dev, deployment, bindings, etc.)
+2. Written as a module Worker (modern syntax for writing Workers)
+3. Built on top of [Hono](https://honojs.dev/)
+4. Examples for integrating external data sources, and service bindings
+5. Updated implementation of the [Workers KV](https://developers.cloudflare.com/kv/) cache
+
+I made a video showing how the new version works. Check it out!
+
+<StreamVideo client:only="react" src="8e7113ab230ea2e352270dba1101b5f3" />
+```
+
+Note the usage of the `client:only` attribute. This is a [feature of Astro](https://docs.astro.build/en/guides/partial-hydration/) that allows you to only hydrate the component on the client-side. This is important because the Stream component will try to create a new `<video>` tag on the client, so if it tries to render on the server, the video content won't show up.
+
+## Extra features
+
+A recent feature that Stream added is the ability to add captions. The cool part is that it can use [Workers AI](https://ai.cloudflare.com) to generate the captions automatically.
+
+<Image src={streamCaptions} alt="Stream Captions UI" width={400} />
+
+Selecting this option will generate captions for the video in just a few minutes. Once the captions are generated, you can use them by providing a `defaultTextTrack` prop to the `<Stream>` component that matches the language of the captions:
+
+```tsx ins={6}
+import { Stream } from "@cloudflare/stream-react";
+
+<Stream 
+  client:only="react" 
+  controls 
+  defaultTextTrack="en"
+  src="$videoId" 
+/>
+```
+
+If you're like me, you may be a little disappointed with the caption quality. Since Stream uses AI, it's not perfect. Instead, generating your own caption _locally_, so you have the ability to easily tweak it, might be a good option.
+
+To do this, I used [MacWhisper](https://goodsnooze.gumroad.com/l/macwhisper) to use a higher-quality Whisper AI model to generate a first pass of the captions. Then I opened the `.vtt` file in Vim and fixed some of the references to technical terms. The captions still aren't perfect, but they're decent and legible. After creating those captions, I re-uploaded them and replaced the generated captions inside of Stream.
+
+## My component
+
+I created a component that I can use in my blog posts to make it easier to include a video. It allows me to style and space the video component to fit the design of my site. Here's the code for `components/StreamVideo.tsx`:
+
+```tsx title="components/StreamVideo.tsx"
+import { Stream } from "@cloudflare/stream-react";
+
+export default function StreamVideo({ src }: { src: string }) {
+  return (
+    <div className="mt-4">
+      <Stream
+        controls
+        defaultTextTrack="en"
+        src={src}
+      />
+    </div>
+  );
+}
+```
