@@ -304,6 +304,8 @@ ul.blog-posts li span time {
   --popover-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
 }
 
+.littlefoot__popover { z-index: 2; }
+
 @media (prefers-color-scheme: dark) {
   .littlefoot {
     --button-background-color: hsl(var(--accent));
