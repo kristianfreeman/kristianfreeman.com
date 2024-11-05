@@ -1,0 +1,39 @@
+---
+title: Install fonts with Homebrew
+pubDate: 'Nov 5 2024'
+description: "How to install most fonts in a single command, using Homebrew."
+tags:
+  - tip
+---
+
+One of the best parts about [Homebrew](https://brew.sh/) is [Homebrew Cask](https://github.com/Homebrew/homebrew-cask). Cask allows you to install GUI apps for macOS using the standard `brew` commands. It used to be a separate installation, but now it is included in Homebrew itself.
+
+Most people are familiar with Cask for installing GUI apps, but you may not know that it also allows you to install fonts. Installing fonts is usually an annoying process:
+
+1. Download the font family
+2. Unzip the archive
+3. Open every font and click "Install" in Font Book
+
+With Homebrew Cask, you can do this in a single command:
+
+```bash
+$ brew install font-$fontname
+```
+
+Let's install [Atkinson Hyperlegible](https://fonts.google.com/specimen/Atkinson+Hyperlegible), the font I use on this site.
+
+You can also search for any font by using `brew search`. This will show the exact cask name that you need to install the font:
+
+```bash
+$ brew search atkinson
+==> Casks
+font-atkinson-hyperlegible
+```
+
+Now I can run:
+
+```bash
+$ brew install font-atkinson-hyperlegible
+```
+
+Now it's on my machine. Great!
