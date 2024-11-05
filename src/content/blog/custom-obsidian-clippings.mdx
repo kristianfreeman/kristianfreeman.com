@@ -1,0 +1,71 @@
+---
+title: Effective web clipping with Obsidian
+description: How to make custom clipping templates with Obsidian Web Clipper
+pubDate: 'Nov 5 2024'
+tags:
+  - obsidian
+---
+import { Image } from 'astro:assets'
+import PubmedConfig from '@/images/pubmed-clip.png'
+import PubmedContent from '@/images/pubmed-content.png'
+
+I'm experimenting with [Obsidian](https://obsidian.md/)'s new-ish [Web Clipper](https://obsidian.md/clipper) to capture web pages into my Obsidian vault.
+
+It has a great feature where you can create a template for a "type" of web page, and use it to clip that web page in a specific format.
+
+Here's an example. If you clip a [PubMed](https://pubmed.ncbi.nlm.nih.gov/) article, you can create a template for it like this:
+
+<Image src={PubmedConfig} alt="PubMed Clipping Template" />
+
+One neat trick: by putting the PMID field as an [note alias](https://help.obsidian.md/Linking+notes+and+files/Aliases), it will automatically recognize other documents and notes that reference that PMID, and put them as "Unlinked mentions". This is great if an 𝕏 post mentions "PMID: $ID", and I clip it into Obsidian with [Readwise](https://readwise.io/).
+
+In this example, I'm grabbing the title, authors, and PMID from the page, using meta tags[^1]. By default, grabbing the actual content of the page happens automatically, but you can also customize how the content looks as well:
+
+<Image src={PubmedContent} alt="PubMed Content Example" />
+
+The Web Clipper uses the `triggers` field to determine which web pages to capture. If I run the extension on a URL that starts with `https://pubmed.ncbi.nlm.nih.gov`, it will use my "PubMed" template to clip the page.
+
+You can export any of these templates to JSON, meaning you can import/export them to share with others. If you want my PubMed template, you can grab it below:
+
+```json
+{
+	"schemaVersion": "0.1.0",
+	"name": "PubMed",
+	"behavior": "create",
+	"noteContentFormat": "{{content}}\n\nPubMed ID: {{meta:name:citation_pmid}}",
+	"properties": [
+		{
+			"name": "pubmed_id",
+			"value": "{{meta:name:citation_pmid}}",
+			"type": "text"
+		},
+		{
+			"name": "pubmed_title",
+			"value": "{{meta:name:citation_title}}",
+			"type": "text"
+		},
+		{
+			"name": "pubmed_authors",
+			"value": "{{meta:name:citation_authors|split:\\\",\\\"}}",
+			"type": "multitext"
+		},
+		{
+			"name": "url",
+			"value": "{{url}}",
+			"type": "text"
+		},
+		{
+			"name": "aliases",
+			"value": "{{meta:name:citation_pmid}}",
+			"type": "multitext"
+		}
+	],
+	"triggers": [
+		"https://pubmed.ncbi.nlm.nih.gov"
+	],
+	"noteNameFormat": "{{title|split:\" - \"|first}}",
+	"path": "Sources/PubMed"
+}
+```
+
+[^1]: Meta tags are usually embedded in the `<head>` of a web page, and are formatted like `<meta name="citation_authors" content="Smith, John, Doe, Jane">`.
