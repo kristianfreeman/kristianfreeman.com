@@ -9,6 +9,7 @@ import Footer from "@/components/Footer.tsx";
 import Footnotes from "@/components/Footnotes.tsx";
 import FormattedDate from "@/components/FormattedDate.astro";
 import Header from "@/components/Header.tsx";
+import Repo from "@/components/Repo.tsx";
 import WarningBanner from "@/components/WarningBanner.astro";
 
 type Props = CollectionEntry<"blog">["data"];
@@ -16,7 +17,7 @@ type Props = CollectionEntry<"blog">["data"];
 const allTags = await getCollection("tag");
 const posts = await getCollection("blog");
 
-const { title, description, pubDate, tags } = Astro.props;
+const { title, description, pubDate, repo, tags } = Astro.props;
 const blogPostTags = await getCollection("tag", ({ slug }) => {
   return tags.map(({ slug }) => slug).includes(slug);
 });
@@ -64,6 +65,8 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
               </div>
 
               {hasWarning && <WarningBanner {...hasWarning.data.warning} />}
+
+              {repo && <Repo client:only="react" repo={repo} />}
 
               <slot />
             </div>

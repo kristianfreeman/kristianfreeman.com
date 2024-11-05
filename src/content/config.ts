@@ -8,6 +8,10 @@ const blog = defineCollection({
     draft: z.boolean().optional(),
     pubDate: z.coerce.date(),
     tags: z.array(reference("tag")),
+    repo: z.object({
+      path: z.string(),
+      status: z.enum(["active", "archived"]).default("active"),
+    }).optional(),
   }),
 });
 
