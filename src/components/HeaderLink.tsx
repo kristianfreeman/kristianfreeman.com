@@ -11,11 +11,10 @@ type HeaderLinkProps = {
 const HeaderLink = ({ active, children, href, ...props }: HeaderLinkProps) => {
   const className = useMemo(() => {
     return clsx(
-      props.className, 
+      props.className,
       'flex items-center gap-2',
-      'hover:no-underline transition-colors', 
-      `${active ? 'text-foreground' : 'text-foreground/60'}`, 
-      `${active ? 'hover:text-primary' : 'hover:text-foreground/80'}`
+      'hover:no-underline hover:text-primary transition-colors',
+      `${active ? 'text-foreground' : 'text-foreground/60'}`
     )
   }, [active, props.className]);
 
