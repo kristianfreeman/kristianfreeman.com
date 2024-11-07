@@ -1,0 +1,73 @@
+---
+title: Message of the Day
+description: "Different ways to implement the 'Message of the Day' in Unix machines"
+pubDate: "Nov 7 2024"
+tags:
+  - tech
+---
+
+A "Message of the Day" is a message that shows up any time a user logs in to a Unix machine.
+
+This can be useful if you SSH into a variety of machines throughout the day, and want to leave yourself a note with special information about the machine.
+
+There are actually a ton of different ways to implement this pattern in Unix machines. This blog post will cover some of the ones I know about, as well as the pros and cons of each approach.
+
+## /etc/motd
+
+Unix has a built-in handler for outputting the contents of the `/etc/motd` file. You can confirm this utility is installed by running `man motd`.
+
+Since this is located in /etc, it is only accessible by root. This is a good place to put a message that you want to display to all users:
+
+```bash
+sudo echo "Welcome to my machine!" > /etc/motd
+```
+
+Support for this file is included in most Unix/Linux distros without any additional config, which is a plus. But this approach is not _by-user_ specific: the same message will be displayed to all users. The next approach will be more useful if you want to display per-user messages.
+
+## Shell profile
+
+While not technically a "Message of the Day", you can also put a message in your shell's profile. This is a file that is executed when you start a new shell. You can confirm this by running `echo $PS1` in a shell.
+
+```bash
+$ echo "Welcome to my machine!" > ~/.profile
+```
+
+You could even replicate the functionality of `/etc/motd` by creating `~/.motd` and then adding the following to your `~/.profile`:
+
+```bash title="~/.profile"
+if [ -f ~/.motd ]; then
+  cat ~/.motd
+fi
+```
+
+This approach is _by-user_, so it's useful if you are logging into different users on the same machine. If you switch shells or overwrite your profile file, you will lose this, so you need to keep track of it. Although it's manual, it's not super heavy-handed.
+
+## SSH banner
+
+An SSH banner is a file that is displayed when you SSH into a machine. This is a great way to display a message that you want to show to all users.
+
+To set this up, you need to create a file called `~/.ssh/banner` and add the following to it:
+
+```txt title="~/.ssh/banner"
+Welcome to my machine!
+```
+
+In your global SSH config, you can then match per user and set a banner:
+
+```txt title="/etc/ssh/sshd_config"
+Match User ubuntu
+	Banner /home/ubuntu/.ssh/banner
+```
+
+Finally, restart your SSH server to apply the changes:
+
+```bash
+sudo systemctl restart sshd
+```
+
+This will display the contents of the `~/.ssh/banner` file when you SSH into the machine.
+
+```bash
+$ ssh ubuntu@my-machine
+Welcome to my machine!
+```
