@@ -1,0 +1,160 @@
+---
+title: Just enough Obsidian
+description: "More about my Obsidian process: themes, plugins, styling, best practices."
+pubDate: 'Nov 8 2024'
+tags:
+  - obsidian
+---
+import { Image } from "astro:assets";
+import SeriousPeople from "@/images/serious-people.webp";
+
+The march towards [a big, awesome Obsidian vault](/obsidian-success) continues.
+
+I'm just about to reach 150 notes in [Obsidian](https://obsidian.md). I'm having an excellent time writing and capturing ideas on all sorts of concepts.
+
+I'm also starting to feel a shift in how I compile information. I'm becoming more comprehensive. After the 2024 election, I decided to go back and document some of the policy positions of the candidates. As I did that, I felt a natural pull to go back into the last fifty years of US history and document different transitionary periods of US legislature. I'm enjoying documenting this and learning about it on my own terms - not through the media, but digging through papers, doing my own research, and writing about it.
+
+Here's a few notes and high-level concepts that I'm thinking about as I build out my vault. This isn't an Obsidian tutorial: just my honest opinion on where my vault is at, and what I'm thinking about as I continue to build it.
+
+## Temporal notes
+
+One interesting thing I've experimenting with is _temporality in Obsidian_. What I mean is - I can document something that happened in the year 1999. I can say "This happened in December of 1999." That's a valuable insight - but what if we actually tagged that year as a note in itself? For instance, here's a non-controversial (e.g. not US politics) doc I'm writing on Tim Duncan:
+
+```md
+Tim Duncan is widely considered to be the greatest basketball player of all-time for the [[San Antonio Spurs]]. He is also considered the best [[Power forward]] of all time, and one of the [[Best NBA players]] by most basketball analysts.
+
+He was drafted in [[1997]]. He retired in [[2016]].
+
+He won the [[NBA Most Valuable Player Award]] two times:
+
+- [[2002-2003 NBA season]]
+- [[2003-2004 NBA Season]]
+```
+
+Each year is a note itself! And because Obsidian is great at finding _unlinked_ mentions, having a doc called `1997` will organically find any notes that have the text "1997" in them, so I can link them as needed.
+
+I'm still experimenting with this. It does feel like something that could be fixed with a plugin, but I'm hesitant to introduce additional process just for this (see "Plugins" later on). Right now, there is a lot of extra pages being generated in the Graph View, particularly for years that I haven't made real pages for, yet. Luckily, you can turn off rendering these "empty pages" in the Graph View, which makes it easier for me to understand how my information is actually managed.
+
+## Graph View
+
+I am developing a nuanced opinion on Obsidian's Graph View. I think most people use it as a way to try and flex on other people on Reddit or 𝕏. This is a stupid way to think about your own learning. The amount of data, or notes in your vault, is not particularly relevant or interesting. I'm impressed by two things:
+
+1) The rate of growth - how many new notes are you creating? e.g. _are you learning_
+2) The rate of connectivity - are you generating connected ideas?
+
+I like these metrics because they highlight what Obsidian is quite good at: backlinking, and relating ideas. Organic discovery of connections. And being an awesome place to capture ideas without too much friction.
+
+The Graph View is becoming a very interesting way to identify bottlenecks in this process, particularly on connectivity.
+
+A few times, even just in my first week of capturing ideas again in Obsidian, I've used the Graph View as a way to identify orphaned notes. Concepts that I was clearly interested enough in to add them to the vault, but not enough yet that I've expanded on the ideas in it. That's an actual useful feature, beyond the dick-measuring contest of "look how big my graph is".[^2]
+
+## Themes
+
+I think the [Minimal theme](https://github.com/kepano/obsidian-minimal) is a great starting point for basically every Obsidian user. The two plugins that are an offshoot of it - [Minimal Theme Settings](https://github.com/kepano/obsidian-minimal-settings) and [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) - make it easy to dial in any config you want.
+
+One thing that Minimal does well that most other themes don't appear to do is _flat header styles_. I really don't like when an `<h1>` or `<h2>` header is _massive_ compared to the standard body text. Minimal keeps things flat, just using tasteful spacing as needed.
+
+I use [Atkinson Hyperlegible](https://fonts.google.com/specimen/Atkinson+Hyperlegible) for all text in my vault, and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code. It's formatted... just like this website! And I think it looks pretty good.
+
+There is a real problem in the community with aesthetics. Simply put: **it doesn't fucking matter.** How your vault looks **is not important**. The design or styling of the vault should be unobtrusive. And if someone is spending a ton of time adding Notion-style graphics to their Obsidian pages... I don't trust that you're actually doing valuable work capturing ideas and learning. Sorry!
+
+<figure>
+  <Image src={SeriousPeople} alt="Logan on the average Obsidian subreddit user" />
+  <figcaption>Logan on the average Obsidian subreddit user</figcaption>
+</figure>
+
+## Plugins
+
+It's very easy to get overloaded with plugins in Obsidian. There are a lot of very good ones. I only add plugins when I think they're going to genuinely be useful to me _every day_. Otherwise, I can get by manually. 
+
+That includes some of the most common ones - things like daily notes, for instance, I actually don't like daily notes, and don't find them useful. I would bet 80-90% of Obsidian setups have that plugin installed, and the vast majority of them don't use it. Plugins like that add a ton of clutter to your command list (⌘+P), your sidebar, and with the default config, it will actually generate notes automatically for you, even if you don't fill them out. What a mess!
+
+The Template plugin is another one. I don't template my notes. Maybe I will in the future, but I know that I would get _deep_ into making templates... for the sake of making templates. Very silly.
+
+Here's the list of community plugins I'm using:
+
+- Copy Block Link
+- Dataview
+- Hider
+- Homepage
+- Linter
+- Minimal Theme Settings
+- Readwise Official
+- Style Settings
+- Update modified date
+
+## Linting
+
+This is a recent discovery I've made. The [Linter plugin](https://github.com/platers/obsidian-linter) is a great way to automate linting your notes. This enforces consistency across your notes, which can make reading and editing notes a lot easier.
+
+I installed it and set it up to run on save. The main thing is does is very aggressively set spacing across my notes. For instance, the below note:
+
+```md
+# My note
+## My sub header
+Some text
+## Another sub header
+Some additional text
+```
+
+Would be linted to:
+
+```md
+# My note
+
+## My sub header
+
+Some text
+
+## Another sub header
+
+Some additional text
+```
+
+It's quite useful once you have it set up. This has been a big game changer for my vault. As a programmer, I rely on linting _all the time_ in my Neovim config. The idea of linting my notes is a no-brainer!
+
+## Dataview
+
+I am very cautiously exploring [Dataview](https://github.com/blacksmithgu/obsidian-dataview). I know a lot of people in the community are very enthusiastic about it. I think it is very cool - but easy to over-invest time and energy into.
+
+I don't want my notes to be programatically generated. Anything I'm writing in my notes should be organic, at least to a reasonable extent[^1], and _automating_ note output isn't particularly useful to me.
+
+One exception is "index"-style pages. With the [Homepage](https://github.com/mirnovov/obsidian-homepage) plugin, you can create a default page that opens when you launch Obsidian, or when you close other notes. I use this "Index" page to show how many notes I've created, as well as a listing of the most recently created and updated notes:
+
+````md
+Entry point to my Vault.
+
+**Total notes in Vault:** `$= dv.pages().length`
+
+# Recently Updated
+
+```dataview
+LIST WHERE file.name != this.file.name 
+SORT modified DESC
+LIMIT 10
+```
+
+# Recently Created
+
+```dataview
+LIST WHERE file.name != this.file.name 
+SORT created DESC
+LIMIT 10
+```
+````
+
+## Automation
+
+Every page I write has two automatically updated pieces of YAML frontmatter: `created` and `updated`. While Obsidian has this functionality already, it is based on the timestamps of the actual Markdown file. I suspect that depending on your sync setup, this is not a desirable way to implement these timestamps.
+
+Instead, I use the ["Update frontmatter modified date" plugin](https://github.com/alangrainger/obsidian-frontmatter-modified-date) for this. It automatically updates the frontmatter for any file as you create and save it. This is just enough automation to be useful to me, without being too heavy-handed.
+
+## Conclusion
+
+My Obsidian setup keeps changing. As I dump more info into it, I want it to remain flexible and light. I want to be able to capture all the information I care about, and make use of features like "Unlinked mentions" to organically discover connections between content.
+
+I'm really enjoying using Obsidian. I've tried it many times, but this might really be the first time it is _heavily_ clicking for me.
+
+[^1]: An exception to this is if I'm chatting with AI about a topic. I will include the prompt, and the output, as a "primary source" for whatever I'm writing about. But I'll still write a summary in my own words, and that's the valuable part. I'm very confused why people are excited to generate AI text as a note in Obsidian. It seems counter-productive to the idea of building a second brain, if you aren't even creating the output yourself. How are you supposed to remember it or internalize it?
+
+[^2]: Yes, I did include a GIF in [my previous Obsidian post](/obsidian-success) of my graph. But by all metrics, it was not a particularly impressive or large one. As I mentioned in this post, I'm excited about growth and connectivity, which that GIF showcases, _not_ size of the vault.
