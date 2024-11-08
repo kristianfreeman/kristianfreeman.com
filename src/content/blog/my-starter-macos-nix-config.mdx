@@ -1,0 +1,181 @@
+---
+title: "My starter macOS Nix Config"
+description: "What I used on a new macOS machine to write and publish this post."
+pubDate: "Nov 8 2024"
+tags:
+  - tech
+  - unix
+---
+
+import { Tweet } from "astro-embed";
+
+I understand what [Nix](https://nixos.org) is. But I barely know how to use it. Earlier this week, I shared that I was interested in trying it on my new macOS machine, after [upgrading to the new M4 MacBook Pro](/m4-macs).
+
+<Tweet id="https://x.com/kristianf_/status/1853256799442362793" theme="dark" />
+
+It arrived earlier today, and I got started setting up Nix. I still don't 100% feel comfortable in it, but I learned enough that I was able to get it up and running in about an hour. Here's what I did to get it running.
+
+## Installation
+
+_This guide assumes a **brand new** macOS install. Skip steps as needed if you're using an existing machine._
+
+First, you need to install the built-in Command Line Tools:
+
+```bash
+$ xcode-select --install
+```
+
+This is macOS' `build-essential`-equivalent. A bunch of tools for compiling and building software. If you are a dev on an existing Mac setup, you already have this installed.
+
+There's a number of ways to install Nix. I chose to use [Determinate System's installer](https://determinate.systems/nix-installer/), which does a bunch of nifty stuff with separating the Nix config into a separate drive, and a bunch of sane defaults that I probably don't even know I need:
+
+```bash
+$ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --determinate
+```
+
+## Setup
+
+With Nix installed, we can install [nix-darwin](https://github.com/LnL7/nix-darwin), which has a bunch of Mac-specific defaults.
+
+I used [the Nixcademy blog post "Setting up Nix on macOS"](https://nixcademy.com/posts/nix-on-macos/) here to get an initial file to work off ot. The important part is to run these commands:
+
+```bash
+$ mkdir nix-darwin-config
+$ cd nix-darwin-config
+$ nix flake init -t nix-darwin
+```
+
+_Where_ you put that directory doesn't seem particularly important. I stuck mine in `~/Developer/nix`.
+
+You'll get `flake.nix`, which is your Nix config. You can read the Nixcademy blog post above to learn more about how to customize it.
+
+With everything set up, you can run the main command to re-init your Nix config:
+
+```bash
+$ nix run nix-darwin -- switch --flake .
+```
+
+## The fun stuff
+
+Now, it's time to configure. Here's my full Nix config that got me from start to finish with this repo, the one for the website you're reading. That means installing Neovim, Zellij, and Node.js, as well as Homebrew. My username on my machine is `kristian` and the hostname for my machine is `bilbo`, so change as needed:
+
+```nix
+{
+  description = "Darwin system flake";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nix-darwin.url = "github:LnL7/nix-darwin";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
+  };
+
+  outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew, homebrew-core, homebrew-cask }:
+
+  let
+    configuration = { pkgs, ... }: {
+      # List packages installed in system profile. To search by name, run:
+      # $ nix-env -qaP | grep wget
+      environment.systemPackages = [
+        pkgs.neofetch 
+        pkgs.neovim 
+        pkgs.nodejs_22
+        pkgs.zellij
+      ];
+
+      nix-homebrew = {
+        enable = true;
+        enableRosetta = true;
+        user = "kristian";
+
+        taps = {
+          "homebrew/homebrew-core" = homebrew-core;
+          "homebrew/homebrew-cask" = homebrew-cask;
+        };
+      };
+
+      homebrew = {
+        enable = true;
+        onActivation.cleanup = "uninstall";
+        taps = [];
+        brews = [];
+        casks = [ "1password" "kitty" "plexamp" ];
+      };
+
+      # Auto upgrade nix package and the daemon service.
+      services.nix-daemon.enable = true;
+      # nix.package = pkgs.nix;
+
+      # Necessary for using flakes on this system.
+      nix.settings.experimental-features = "nix-command flakes";
+
+      # Enable rosetta binaries
+      nix.extraOptions = ''
+        extra-platforms = x86_64-darwin aarch64-darwin
+      '';
+
+      # Enable alternative shell support in nix-darwin.
+      # programs.fish.enable = true;
+
+      # Set Git commit hash for darwin-version.
+      system.configurationRevision = self.rev or self.dirtyRev or null;
+
+      # Used for backwards compatibility, please read the changelog before changing.
+      # $ darwin-rebuild changelog
+      system.stateVersion = 5;
+
+      # The platform the configuration will be used on.
+      nixpkgs.hostPlatform = "aarch64-darwin";
+
+      # Enable Touch ID support
+      security.pam.enableSudoTouchIdAuth = true;
+
+      # System settings
+      system.defaults = {
+        finder.AppleShowAllExtensions = true;
+        finder.FXPreferredViewStyle = "clmv";
+        loginwindow.LoginwindowText = "REWARD IF LOST: kristian@kristianfreeman.com";
+        screencapture.location = "~/Pictures/Screenshots";
+        screensaver.askForPasswordDelay = 10;
+
+        # Dock
+        dock = {
+          autohide = true;
+          mru-spaces = false;
+          persistent-apps = [
+            "/Applications/Safari.app"
+          ];
+        };
+      };
+    };
+  in
+  {
+    # Build darwin flake using:
+    # $ darwin-rebuild build --flake .#bilbo
+    darwinConfigurations."bilbo" = nix-darwin.lib.darwinSystem {
+      modules = [ 
+        nix-homebrew.darwinModules.nix-homebrew
+        configuration 
+      ];
+    };
+
+    # Expose the package set, including overlays, for convenience.
+    darwinPackages = self.darwinConfigurations."bilbo".pkgs;
+  };
+}
+```
+
+There's some really interesting and impressive stuff here:
+
+- `system.defaults.dock` allows full Dock customization! You can programatically set which items are in your Dock, which is quite cool.
+- You can install Homebrew packages from within Nix. And with the `onActivation.cleanup = "uninstall"` config option, any packages you _remove_ will get installed. It's declarative Homebrew, which is super useful.
+
+There's sure to be a lot more I'll do here. I've heard [`home-manager`](https://github.com/nix-community/home-manager) is cool, and now that I'm home for the winter, I'm dual-working on my Mac Studio and this laptop, so syncing config between them is sure to be useful. Excited to dig into this more!
