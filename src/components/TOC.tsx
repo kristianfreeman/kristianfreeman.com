@@ -58,7 +58,7 @@ export default function TOC({ headings }: { headings: Heading[] }) {
 
   return (
     <div className="border-l border-l-text-foreground pl-4 ml-8 mt-4 top-32 h-fit overflow-y hidden lg:block sticky">
-      <p className="flex gap-2 items-center text-foreground/40 mb-2 select-none">
+      <p className="flex gap-2 items-center text-foreground/40 mb-2 cursor-default select-none">
         <Bookmark size={16} />
         Sections
       </p>
