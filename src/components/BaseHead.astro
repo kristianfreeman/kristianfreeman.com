@@ -62,12 +62,6 @@ const ogImage = new URL('/og-sm.jpg', Astro.url);
       document.documentElement.classList.add('cursor-halloween');
     }
 
-    // 10% of the time, set the cursor-8bit
-    const rand = Math.floor(Math.random() * 10);
-    if (rand === 0) {
-      document.documentElement.classList.add('cursor-8bit');
-    }
-
     const theme = localStorage.theme || 'dark'
     setTheme(theme)
 
