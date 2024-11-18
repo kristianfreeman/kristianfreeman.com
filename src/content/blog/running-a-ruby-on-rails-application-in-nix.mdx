@@ -99,10 +99,13 @@ The `shell.nix` file is where most of the setup happens. Here's what it does:
 2. Uses the `shellHook` function to set up a PostgreSQL database.
 3. Wraps all these steps in a `mkShell` function, which is a Nix-specific way of defining a shell environment.
 
-The `buildInputs` are packages from Nix's package repository. These are the packages that are installed when you run `nix-env -i <package>`. You can see the full list of packages [here](https://search.nixos.org/packages).
+The `buildInputs` are packages from Nix's package repository. These are the packages that are installed when you run `nix-env -i <package>`. You can see the full list of packages [here](https://search.nixos.org/packages). 
+
+The good part about this is that these packages are already pre-compiled for your system architecture, so they are extremely quick to install. If you need to build a package manually - for instance, if you have a library that you need to compile against on your machine - you can use `nativeBuildInputs` instead.[^2]
 
 Now, we can run `nix develop` to enter the shell. This will take a few minutes, as it's downloading all the dependencies. Once it's done, you should be able to run `bundle install` and `rails server` to get your app running.
 
 This was my minimal setup for running a Rails app locally in Nix. I haven't deployed this config to a server yet - in production, at least - so I'll cover that in a future post. But I enjoyed this approach because it declaratively sets up all the dependencies for my project, and due to the characteristics of Nix, the build is isolated from the other dependencies on my machine. Nice!
 
 [^1]: To be fair - this is something the Rails devs care about a lot. DHH has worked on [Omakub](https://omakub.org), a wrapper around Ubuntu that installs all the needed dependencies for a fully-functional dev environment. And [Kamal](https://kamal-deploy.org) is a new tool that makes it easy to deploy Docker containers on remote servers. There's a lot of work going on right now to improve the experience!
+[^2]: Man in the arena moment! I began by using `nativeBuildInputs` for all of the dependencies, and wondered why it was so slow, particularly to compile Ruby. It seemed strange. I went and looked at the Nix docs, and realized that instead of compiling it by hand, I can rely on Nix having a pre-compiled version for my `aarch64-darwin` architecture by using `buildInputs` instead.
