@@ -1,0 +1,109 @@
+---
+title: How to filter shell output with grep
+description: Embracing the Unix philosophy and some basic grep tricks to easily scan noisy logs.
+pubDate: 'Nov 18 2024'
+tags:
+  - tip
+---
+
+It pays to buy into the Unix philosophy. Knowing how to pipe commands and comfortability with Unix commands is a great investment of time as a developer.
+
+Here's an example. Imagine I have a command that is outputting an incredible amount of data, such as a noisy log output from a server:
+
+```bash
+$ tail -f noisy-log.log
+[2024-11-18 10:00:00] INFO: This is a noisy log message
+[2024-11-18 10:00:01] INFO: This is a noisy log message
+[2024-11-18 10:00:02] INFO: This is a noisy log message
+[2024-11-18 10:00:03] ERROR: An actual error we care about
+[2024-11-18 10:00:04] INFO: This is a noisy log message
+```
+
+If your log is outputting hundreds of lines a second, you're going to be overwhelmed, and miss the part that matters: the "ERROR" log line that was output in the middle of the log.
+
+You can pipe the output to `grep` to filter out the lines you don't care about:
+
+```bash
+$ tail -f noisy-log.log | grep ERROR
+[2024-11-18 10:00:03] ERROR: An actual error we care about
+```
+
+That works great, but what if you also have "DEBUG" lines that you want to see? For instance:
+
+```bash
+$ tail -f noisy-log.log
+[2024-11-18 10:00:05] INFO: This is a noisy log message
+[2024-11-18 10:00:06] INFO: This is a noisy log message
+[2024-11-18 10:00:07] INFO: This is a noisy log message
+[2024-11-18 10:00:08] ERROR: An actual error we care about
+[2024-11-18 10:00:09] DEBUG: A debug message we may want to see
+[2024-11-18 10:00:10] INFO: This is a noisy log message
+```
+
+Now, you're going to want to see the "DEBUG" lines as well. You can pipe the output to check for "DEBUG" or "ERROR" and then pipe that to `grep`:
+
+```bash
+$ tail -f noisy-log.log | grep -E "(DEBUG|ERROR)"
+[2024-11-18 10:00:09] DEBUG: A debug message we may want to see
+[2024-11-18 10:00:03] ERROR: An actual error we care about
+```
+
+This is a great way to filter out noisy log lines. You can also use `grep` to filter out lines that don't match a pattern, like this:
+
+```bash
+$ tail -f noisy-log.log | grep -v "DEBUG"
+[2024-11-18 10:00:00] INFO: This is a noisy log message
+[2024-11-18 10:00:01] INFO: This is a noisy log message
+[2024-11-18 10:00:02] INFO: This is a noisy log message
+[2024-11-18 10:00:04] INFO: This is a noisy log message
+```
+
+You can also use `grep` to filter out lines that match a pattern, like this:
+
+```bash
+$ tail -f noisy-log.log | grep -E "(DEBUG|ERROR)"
+```
+
+This will output all lines that match either "DEBUG" or "ERROR". But now, we're whitelisting every individual thing we want to see in the logs. This works, but you may want to filter out the things you_don't want to see: _excluding lines_ may be a more effective approach. We can do this with `grep -v`:
+
+```bash
+$ tail -f noisy-log.log | grep -v -E "(DEBUG|ERROR)"
+[2024-11-18 10:00:08] ERROR: An actual error we care about
+```
+
+This will output all lines that _don't_ match either "DEBUG" or "ERROR". This is a great way to filter out noisy log lines. You can also use `grep` to filter out lines that don't match a pattern, like this:
+
+```bash
+$ tail -f noisy-log.log | grep -v "DEBUG"
+[2024-11-18 10:00:00] INFO: This is a noisy log message
+[2024-11-18 10:00:01] INFO: This is a noisy log message
+[2024-11-18 10:00:02] INFO: This is a noisy log message
+[2024-11-18 10:00:04] INFO: This is a noisy log message
+```
+
+You can also use `grep` to filter out lines that match a pattern, like this:
+
+```bash
+$ tail -f noisy-log.log | grep -v "INFO"
+[2024-11-18 10:00:09] DEBUG: A debug message we may want to see
+[2024-11-18 10:00:03] ERROR: An actual error we care about
+```
+
+I use this pattern all the time. When running a Solana validator, it outputs a massive amount of metric logs:
+
+```bash
+$ tail -f validator.log
+[2024-11-18T16:55:35.295547140Z INFO  solana_metrics::metrics] datapoint: memory-stats total=1081882394624i swap_total=536866816i free_percent=10.699121835717522 used_bytes=308479754240i avail_percent=71.48675717685472 buffers_percent=0.11755169899423257 cached_percent=59.455016646938866 swap_free_percent=98.63280206910758
+[2024-11-18T16:55:35.295853795Z INFO  solana_metrics::metrics] datapoint: disk-stats reads_completed=0i reads_merged=0i sectors_read=0i time_reading_ms=0i writes_completed=43i writes_merged=2i sectors_written=384i time_writing_ms=7i io_in_progress=0i time_io_ms=8i time_io_weighted_ms=7i discards_completed=0i discards_merged=0i sectors_discarded=0i time_discarding=0i flushes_completed=0i time_flushing=0i num_disks=4i
+```
+
+I can filter out these lines to get just the stuff I care about:
+
+```bash
+$ tail -f validator.log | grep -v "solana_metrics"
+[2024-11-18T16:55:34.937409938Z INFO  yellowstone_grpc_geyser::grpc] client #577: removed
+[2024-11-18T16:55:35.295547140Z INFO  solana_metrics::metrics] datapoint: memory-stats total=1081882394624i swap_total=536866816i free_percent=10.699121835717522 used_bytes=308479754240i avail_percent=71.48675717685472 buffers_percent=0.11755169899423257 cached_percent=59.455016646938866 swap_free_percent=98.63280206910758
+[2024-11-18T16:55:35.448964367Z INFO  yellowstone_grpc_geyser::grpc] client #584: new
+```
+
+As you can see, this approach works really well for _structured logs_, or any logs that have a consistent format. Since all Solana validator log lines are classified by _where_ the logs are coming from, we can easily and effectively filter out log lines.
