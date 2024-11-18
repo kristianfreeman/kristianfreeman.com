@@ -1,0 +1,108 @@
+---
+title: Running a Ruby on Rails Application in Nix
+description: "A minimal configuration for running a Ruby on Rails application in Nix"
+pubDate: "Nov 17 2024"
+tags:
+  - webdev
+---
+
+I'm loving [Nix](https://nixos.org/). I [recently wrote](/my-starter-macos-nix-config) about how I use it to manage my new Mac, and I'm starting to wrap my head around how it can be used, not just for dotfile/package management, but individual application configurations as well.
+
+Ruby on Rails is somewhat famously complicated to get running, both locally, and in production. Many Rails developers just install every dependency - though Homebrew has certainly made this easier - and part of what made Heroku so popular was how easy it was to deploy a Rails app.[^1]
+
+I recently had to pull down one of my older Rails apps (my Shopify app [Reporty](https://reporty.com)) and try to get it running on my new Mac. I decided to try Nix to get it working. This config is good for me, but it's not necessarily a fully-featured, batteries-included approach to Rails on Nix. Hopefully you can take it and expand it as needed for your own projects.
+
+_Note: this assumes you already have Nix installed. Check out my [starter macOS Nix config](/my-starter-macos-nix-config) for some links to get started._
+
+First, we need to initialize a new flake. This is a Nix-specific way of organizing your project. Notably, it generates a lockfile much like `Gemfile.lock` for Ruby projects. Run this command:
+
+```bash
+$ nix flake init
+```
+
+This will create a `flake.nix` file in your project directory. This file is where you'll define your Nix configuration. Inside of the file, we'll set up a shell environment for our project. Here's what mine looks like:
+
+```nix title="flake.nix"
+{
+  description = "Rails app";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  };
+
+  outputs = { self, nixpkgs }: {
+    devShells = {
+      aarch64-darwin.default = import ./shell.nix {
+        pkgs = import nixpkgs { 
+          config.allowUnfree = true;
+          system = "aarch64-darwin"; 
+        };
+      };
+    };
+  };
+}
+```
+
+A few things worth noting here:
+
+- We're using the `aarch64-darwin` system, which is the architecture of my new Mac. You can change this to whatever architecture you're using.
+- We're using the `allowUnfree` flag. This is a flag that allows you to install packages that aren't in the NixOS package repository. This is useful for installing things like `ngrok`, which is a tool I use to test my app locally.
+
+Now, we can create a `shell.nix` file. This is where we'll define the environment for our project. Here's what mine looks like:
+
+```nix title="shell.nix"
+{ pkgs ? import <nixpkgs> {} }:
+with pkgs; 
+let 
+  postgresDataDir = "./pgdata";
+in mkShell {
+  buildInputs = [
+    bundler
+    ngrok
+    nodejs
+    redis
+    ruby_3_3
+    postgresql
+  ];
+
+  shellHook = ''
+    echo "Setting up PostgreSQL..."
+    export PGDATA=${postgresDataDir}
+    export PGHOST=localhost
+    export PGPORT=5432
+  
+    # Check if the data directory exists to avoid reinitialization
+    if [ ! -d "$PGDATA" ]; then
+      echo "Initializing PostgreSQL data directory at $PGDATA..."
+      initdb --locale=en_US.UTF-8 -D $PGDATA
+
+      echo "Starting PostgreSQL..."
+      pg_ctl -D $PGDATA -l logfile start
+
+      # Optionally create your database here
+      createdb reportydb
+
+      echo "Database setup is complete. PostgreSQL running."
+    else
+      echo "Starting existing PostgreSQL instance..."
+      pg_ctl -D $PGDATA -l logfile start
+    fi
+
+    echo "PostgreSQL setup is ready!"
+  '';
+}
+```
+
+The `shell.nix` file is where most of the setup happens. Here's what it does:
+
+1. Installs all needed dependencies, like `ruby`, `postgresql`, `redis`, and `nodejs`.
+2. Uses the `shellHook` function to set up a PostgreSQL database.
+3. Wraps all these steps in a `mkShell` function, which is a Nix-specific way of defining a shell environment.
+
+The `buildInputs` are packages from Nix's package repository. These are the packages that are installed when you run `nix-env -i <package>`. You can see the full list of packages [here](https://search.nixos.org/packages).
+
+Now, we can run `nix develop` to enter the shell. This will take a few minutes, as it's downloading all the dependencies. Once it's done, you should be able to run `bundle install` and `rails server` to get your app running.
+
+This was my minimal setup for running a Rails app locally in Nix. I haven't deployed this config to a server yet - in production, at least - so I'll cover that in a future post. But I enjoyed this approach because it declaratively sets up all the dependencies for my project, and due to the characteristics of Nix, the build is isolated from the other dependencies on my machine. Nice!
+
+[^1]: To be fair - this is something the Rails devs care about a lot. DHH has worked on [Omakub](https://omakub.org), a wrapper around Ubuntu that installs all the needed dependencies for a fully-functional dev environment. And [Kamal](https://kamal-deploy.org) is a new tool that makes it easy to deploy Docker containers on remote servers. There's a lot of work going on right now to improve the experience!
