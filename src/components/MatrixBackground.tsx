@@ -43,8 +43,8 @@ export default () => {
 
   return (
     <>
-      <div className="w-full h-16 mt-4 mb-64">
-        <svg id="matrix-bg"></svg>
+      <div className="w-full h-16 mt-4 mb-28">
+        <svg className="w-full" id="matrix-bg"></svg>
       </div>
     </>
   )
