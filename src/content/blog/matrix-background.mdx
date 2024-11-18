@@ -1,0 +1,64 @@
+---
+title: Recreating the Matrix Effect
+description: "How to build a Matrix-style background in pure HTML, CSS, and JavaScript."
+pubDate: "Nov 18 2024"
+tags:
+  - webdev
+---
+import MatrixBackground from "@/components/MatrixBackground.tsx";
+
+I build a neat Matrix-style background for a recent project. I don't think I'm going to launch the project, so I wanted to share the background code, because it looks quite cool!
+
+Here's how it works - first, create an SVG element, and then generate a set of row and column positions based on the width and height of the window. Then, for each row and column, create a text element, set its position, font size, font family, and using `requestAnimationFrame`, update the text content and fill color.
+
+It looks best as a full screen background, but you can see how it looks constrained to a small area below:
+
+<MatrixBackground client:only="react" />
+
+The full source code is available below:
+
+```html title="matrix-bg.html"
+<svg id="matrix-bg"></svg>
+
+<script>
+  const svg = document.getElementById('matrix-bg');
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const fontSize = 10;
+  const columns = Math.floor(width / fontSize);
+  const rows = Math.floor(height / fontSize);
+  const characters = [];
+
+  for (let i = 0; i < columns; i++) {
+    for (let j = 0; j < rows; j++) {
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('x', i * fontSize);
+      text.setAttribute('y', j * fontSize);
+      text.setAttribute('font-size', `${fontSize}px`);
+      text.setAttribute('font-family', 'IBM Plex Mono, monospace');
+      text.setAttribute('fill', `rgba(255, 255, 255, ${Math.random() * 0.2 + 0.1})`);
+      text.textContent = getRandomChar();
+      svg.appendChild(text);
+      characters.push(text);
+    }
+  }
+
+  function getRandomChar() {
+    return String.fromCharCode(33 + Math.floor(Math.random() * 94));
+  }
+
+  function updateMatrix() {
+    characters.forEach(char => {
+      if (Math.random() < 0.01) { // 1% chance to change each character
+        char.textContent = getRandomChar();
+        char.setAttribute('fill', `rgba(255, 255, 255, ${Math.random() * 0.2 + 0.1})`);
+      }
+    });
+    requestAnimationFrame(updateMatrix);
+  }
+
+  updateMatrix();
+</script>
+```
+
+As a further improvement, you could take the `fill` attributes and make it more colorful. The style I included in my source works for the design I was using, but for a "true" Matrix effect, you would want to use some CRT-style green colors.
