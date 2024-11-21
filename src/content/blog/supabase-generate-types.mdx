@@ -1,0 +1,65 @@
+---
+title: "How to Generate Types for a Supabase Project"
+description: "Learn how to generate types for a Supabase project using the Supabase CLI."
+pubDate: "Nov 21 2024"
+tags:
+  - tip
+  - webdev
+---
+You can generate types for a Supabase project using the Supabase CLI. This is useful when you make requests to your Supabase database and want to have types as part of your build process, and autocomplete in your editor.
+
+First, you'll need to find your project ID. You can find this in the Supabase dashboard. Then, run the following command in your terminal:
+
+```bash
+$ npx supabase gen types typescript --project-id $projectID > ./src/database.types.ts
+```
+
+You can add this to your `package.json` scripts:
+
+```json title="package.json"
+{
+  "scripts": {
+    "generate-types": "npx supabase gen types typescript --project-id $projectID > ./src/database.types.ts"
+  }
+}
+```
+
+This creates a types file in your `src` directory (change as needed). Now, you can import the types file and pass it as a type parameter to your Supabase client while you instantiate it:
+
+```typescript title="src/database.ts"
+import { createClient } from "@supabase/supabase-js";
+import { Database } from "./database.types";
+
+export const supabase = createClient<Database>(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_API_KEY!
+);
+```
+
+By doing this, every submethod and function in your Supabase client will now have types.
+
+Here's an example of the types generated for one of my projects, which has a table called `discord_users`:
+
+```typescript title="src/database.ts"
+async function getSupabaseUser(userId: string) {
+  const { data, error } = await supabase
+    .from("discord_users")
+    .select("*")
+    .eq("discord_user_id", userId);
+
+  if (error) {
+    console.error(error);
+    return null;
+  } else {
+    return data.length ? data[0] : null;
+  }
+}
+
+const user = await getSupabaseUser(user_id);
+
+if (user.notifications_active) { // 👈 TypeScript autocomplete, this field is a boolean
+  console.log("User has notifications enabled");
+}
+```
+
+For more details on how this works, check out [Supabase's docs](https://supabase.com/docs/guides/api/rest/generating-types).
