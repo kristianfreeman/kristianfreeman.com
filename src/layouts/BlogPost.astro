@@ -18,8 +18,8 @@ const allTags = await getCollection("tag");
 const posts = await getCollection("blog");
 
 const { title, description, pubDate, repo, tags } = Astro.props;
-const blogPostTags = await getCollection("tag", ({ slug }) => {
-  return tags.map(({ slug }) => slug).includes(slug);
+const blogPostTags = await getCollection("tag", ({ id }) => {
+  return tags.map(({ id }) => id).includes(id);
 });
 
 const hasWarning = blogPostTags.find((tag) => tag.data.warning);
@@ -56,7 +56,7 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
                       <Tag size={16} />
                       <span class="space-x-2">
                         {tags.map((tag) => (
-                          <a href={`/tags/${tag.slug}`}>#{tag.slug}</a>
+                          <a href={`/tags/${tag.id}`}>#{tag.id}</a>
                         ))}
                       </span>
                     </span>
