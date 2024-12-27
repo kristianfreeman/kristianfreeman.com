@@ -11,7 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "prepare": "husky",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "npm run build && npx wrangler@latest deploy"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
