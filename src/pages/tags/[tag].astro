@@ -1,34 +1,38 @@
 ---
 import Default from "@/layouts/default.astro";
 import { titleize } from "inflection";
-import { getCollection, getEntry } from "astro:content";
+import { getCollection, getEntry, render } from "astro:content";
 import FormattedDate from "@/components/FormattedDate.astro";
 
-const { tag: id } = Astro.params;
+const tags = await getCollection("tag");
 
-const tag = await getEntry("tag", id);
+const { tag: slug } = Astro.params;
+const tag = await getEntry("tag", slug);
+if (!tag) return Astro.redirect("/")
 
-if (!tag) {
-  return Astro.redirect("/")
+let Content;
+try {
+  const rendered = await render(tag);
+  Content = rendered.Content;
+} catch (e) {
+  console.error(e);
+  Content = null;
 }
 
-const { Content } = await tag.render();
-
 let posts = await getCollection("blog", ({ data }) =>
-  data.tags.map(({ id }) => id).includes(id),
+  // @ts-ignore
+  data.tags.map(({ id }) => id).includes(slug),
 );
 
 posts = posts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .filter((post) => !post.data.draft);
 
-const tags = await getCollection("tag");
-
 export async function getStaticPaths() {
   let tags = await getCollection("tag");
 
   return tags.map((tag) => ({
-    params: { tag: tag.id },
+    params: { tag: tag.slug },
     props: { tag },
   }));
 }
@@ -38,7 +42,7 @@ export async function getStaticPaths() {
   <h1>{tag.data.name}</h1>
 
   <div class="*:font-normal">
-    <Content />
+    {Content && <Content />}
   </div>
 
   <section class="mt-16 w-full">
@@ -64,8 +68,8 @@ export async function getStaticPaths() {
     <div class="flex flex-wrap gap-4">
       {
         tags.map((tag) => (
-          <a href={`/tags/${tag.id}`} class="text-sm">
-            #{tag.id}
+          <a href={`/tags/${tag.slug}`} class="text-sm">
+            #{tag.slug}
           </a>
         ))
       }
