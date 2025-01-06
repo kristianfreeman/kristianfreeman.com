@@ -1,7 +1,7 @@
 ---
 title: Misogi 2025
 description: "Reflections on my big, overarching goal for 2025"
-pubDate: "Jan 6 2024"
+pubDate: "Jan 6 2025"
 tags:
   - personal
 ---

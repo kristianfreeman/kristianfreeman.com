@@ -1,9 +1,18 @@
 ---
 interface Props {
   date: Date;
+  formatOverride?: Intl.DateTimeFormatOptions;
 }
 
-const { date } = Astro.props;
+const { date, formatOverride } = Astro.props;
+
+const defaultFormat: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+};
+
+const formatOptions: Intl.DateTimeFormatOptions = formatOverride || defaultFormat;
 ---
 
 <time
@@ -15,10 +24,6 @@ const { date } = Astro.props;
   })}
 >
   {
-    date.toLocaleDateString('en-us', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    })
+    date.toLocaleDateString('en-us', formatOptions)
   }
 </time>

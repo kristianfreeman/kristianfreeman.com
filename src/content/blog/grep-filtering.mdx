@@ -40,54 +40,22 @@ $ tail -f noisy-log.log
 [2024-11-18 10:00:10] INFO: This is a noisy log message
 ```
 
-Now, you're going to want to see the "DEBUG" lines as well. You can pipe the output to check for "DEBUG" or "ERROR" and then pipe that to `grep`:
+Now, you're going to want to see the "DEBUG" lines as well. You can provide a pattern to `grep`, to filter for "DEBUG" _or_ "ERROR":
 
 ```bash
 $ tail -f noisy-log.log | grep -E "(DEBUG|ERROR)"
 [2024-11-18 10:00:09] DEBUG: A debug message we may want to see
 [2024-11-18 10:00:03] ERROR: An actual error we care about
-```
-
-This is a great way to filter out noisy log lines. You can also use `grep` to filter out lines that don't match a pattern, like this:
-
-```bash
-$ tail -f noisy-log.log | grep -v "DEBUG"
-[2024-11-18 10:00:00] INFO: This is a noisy log message
-[2024-11-18 10:00:01] INFO: This is a noisy log message
-[2024-11-18 10:00:02] INFO: This is a noisy log message
-[2024-11-18 10:00:04] INFO: This is a noisy log message
-```
-
-You can also use `grep` to filter out lines that match a pattern, like this:
-
-```bash
-$ tail -f noisy-log.log | grep -E "(DEBUG|ERROR)"
 ```
 
 This will output all lines that match either "DEBUG" or "ERROR". But now, we're whitelisting every individual thing we want to see in the logs. This works, but you may want to filter out the things you_don't want to see: _excluding lines_ may be a more effective approach. We can do this with `grep -v`:
 
 ```bash
-$ tail -f noisy-log.log | grep -v -E "(DEBUG|ERROR)"
+$ tail -f noisy-log.log | grep -v "INFO"
 [2024-11-18 10:00:08] ERROR: An actual error we care about
 ```
 
-This will output all lines that _don't_ match either "DEBUG" or "ERROR". This is a great way to filter out noisy log lines. You can also use `grep` to filter out lines that don't match a pattern, like this:
-
-```bash
-$ tail -f noisy-log.log | grep -v "DEBUG"
-[2024-11-18 10:00:00] INFO: This is a noisy log message
-[2024-11-18 10:00:01] INFO: This is a noisy log message
-[2024-11-18 10:00:02] INFO: This is a noisy log message
-[2024-11-18 10:00:04] INFO: This is a noisy log message
-```
-
-You can also use `grep` to filter out lines that match a pattern, like this:
-
-```bash
-$ tail -f noisy-log.log | grep -v "INFO"
-[2024-11-18 10:00:09] DEBUG: A debug message we may want to see
-[2024-11-18 10:00:03] ERROR: An actual error we care about
-```
+This will output all lines that _don't_ match "INFO", leaving just "DEBUG" and "ERROR" lines. This is a great way to filter out noisy log lines.
 
 I use this pattern all the time. When running a Solana validator, it outputs a massive amount of metric logs:
 
