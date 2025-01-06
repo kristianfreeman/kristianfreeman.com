@@ -38,7 +38,7 @@ const postsGroupedByYear = posts.reduce(
   <section class="mt-16 w-full">
     <div class="flex flex-col gap-12">
       {
-        postsGroupedByYear[currentYear].map((post) => (
+        (postsGroupedByYear[currentYear] || []).map((post) => (
           <a 
             class="flex flex-col gap-2 no-underline hover:no-underline"
             href={`/${post.slug}`}
