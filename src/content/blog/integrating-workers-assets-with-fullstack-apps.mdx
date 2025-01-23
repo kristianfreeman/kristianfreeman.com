@@ -1,0 +1,145 @@
+---
+title: Integrating Workers Assets with Fullstack Apps
+description: "How to integrate Workers Assets, service bindings, and full-stack apps"
+pubDate: "Jan 23 2025"
+tags:
+  - astro
+  - cloudflare
+  - webdev
+---
+import { Tweet } from 'astro-embed';
+
+The Cloudflare team[^1] recently released Workers Assets, a feature that allows you to serve static assets from Workers. [More from the docs](https://developers.cloudflare.com/workers/static-assets/):
+
+> You can combine asset hosting with Cloudflare's data and storage products such as Workers KV, Durable Objects, and R2 Storage to build full-stack applications that serve both front-end and back-end logic in a single Worker.
+
+This is a great way to combine the power of Workers with the flexibility of a full-stack app. To use it, you just pass an `assets` directive to your `wrangler.json` file:
+
+```jsonc title="wrangler.json"
+{
+  "name": "saas-admin-template",
+  "main": "./src/index.js",
+  "assets": {
+    "directory": "./dist"
+  }
+  // ...remainder of file
+}
+```
+
+The `src/index.js` file is just a traditional Workers application. You can use it to serve requests for specific paths, and depending on your [Assets configuration](https://developers.cloudflare.com/workers/static-assets/routing/#routing-configuration), it will call the Workers app conditionally, based on the presence of an asset:
+
+```js title="src/index.js"
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    if (url.pathname.startsWith("/api/")) {
+      return new Response("Ok");
+    }
+    // Passes the incoming request through to the assets binding.
+    // No asset matched this request, so this will evaluate `not_found_handling` behavior.
+    return env.ASSETS.fetch(request);
+  },
+};
+```
+
+By doing this, you can serve your assets from the `dist` directory, and your code from the `src` directory. If an asset is found in the `dist` directory, it will be served, otherwise, your code will execute.
+
+## Integrating with Fullstack Apps
+
+I've been working over the past few weeks on a SaaS admin template built on Astro and D1, Cloudflare's SQL database. 
+
+<Tweet id="https://x.com/kristianf_/status/1871324065509851255" theme="dark" />
+
+It uses the [Cloudflare integration for Astro](https://docs.astro.build/en/guides/integrations-guide/cloudflare/) to compile the app into a bunch of JS bundles that get dynamically served by Workers. These integrations with full-stack frameworks work by essentially hijacking all requests to your app, and routing them to the appropriate bundle.
+
+Out of the box, Workers Assets plays well with these frameworks, with just a bit of extra work. For Astro, you can update the `main` directive in `wrangler.json` to point to the `index.js` file inside of Astro's compiled `_worker.js` bundle. `dist` still remains the default directory for serving assets:
+
+```jsonc title="wrangler.json"
+{
+  "name": "saas-admin-template",
+  "main": "./dist/_worker.js/index.js",
+  "assets": {
+    "directory": "./dist"
+  }
+  // ...remainder of file
+}
+```
+
+## Integrating with Cloudflare primitives
+
+This will work for serving assets correctly for full-stack frameworks like Astro. But by doing this, you're losing the ability to integrate with any Cloudflare primitives that must be defined as additional classes. This includes things like [Cloudflare Workflows](/cloudflare-workflows), as well as traditional [Service Bindings](https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/).[^3]
+
+In my [saas-admin-template project](https://github.com/kristianfreeman/saas-admin-template), I have a Cloudflare Workflow ([read my Workflows intro](/cloudflare-workflows)) that can be ran for any customer. Because it doesn't get compiled into the Astro bundle, Wrangler[^2] doesn't know how to find it in the source bundle. This means that the standard Workflow configuration, seen below, will fail:
+
+```json title="wrangler.json"
+{
+  "name": "saas-admin-template",
+  "main": "./dist/index.js",
+  "assets": {
+    "directory": "./dist"
+  },
+  "workflows": [
+    {
+      "name": "saas-admin-template-customer-workflow",
+      "binding": "CUSTOMER_WORKFLOW",
+      "class_name": "CustomerWorkflow"
+    }
+  ],
+  // ...remainder of file
+}
+```
+
+## Building a custom wrapper
+
+How do we fix this? For now, we can build a custom wrapper that imports everything we need, both from the Astro bundle and the Cloudflare Workflow. This imports all the code from Astro, the Cloudflare Workflow, and then exports them appropriately. This is totally manual - and a hack - but it works for now. I think we'll fix this, either at the platform or integration-level, in the future:
+
+```js title="src/workflows/wrapper.js"
+import astroEntry, { pageMap } from './_worker.js/index.js'
+import { CustomerWorkflow } from '../src/workflows/customer_workflow.js'
+
+export default astroEntry
+export { CustomerWorkflow, pageMap }
+```
+
+In build scripts, both for `dev` and `build`, we can copy the wrapper into the `dist` directory, and make it the main entry point:
+
+```json title="package.json"
+{
+  "scripts": {
+    "dev": "astro dev",
+    "wrangler:dev": "astro build && npm run wrangler:wrapper && npx wrangler dev",
+    "wrangler:wrapper": "cp src/workflows/wrapper.js dist/index.js",
+    "deploy": "astro build && npm run wrangler:wrapper && wrangler pages deploy",
+  },
+}
+```
+
+Note the difference between `wrangler:dev` and `dev`. `wrangler:dev` will build the Astro bundle, and then run the Wrangler dev server. `dev` will only build the Astro bundle and run it as a traditional Astro application. 
+
+The Cloudflare integration _does_ have the idea of a "platform proxy", which is supposed to natively run `wrangler` as part of the Astro `dev` process, but it does not currently support our wrapper integration, and thus any Workflows you may want to run as part of API requests won't be available.
+
+In our `wrangler.json`, we can now import our custom wrapper:
+
+```json title="wrangler.json"
+{
+  "name": "saas-admin-template",
+  "main": "./dist/index.js",
+  "assets": {
+    "directory": "./dist"
+  },
+  "workflows": [
+    {
+      "name": "saas-admin-template-customer-workflow",
+      "binding": "CUSTOMER_WORKFLOW",
+      "class_name": "CustomerWorkflow"
+    }
+  ],
+  // ...remainder of file
+}
+```
+
+With that, we can now use service bindings and Workflows in our Astro application, and have intelligent fallbacks to Workers Assets for the application's static assets. Like I mentioned earlier, this is a hack, and I expect us to make this process in the future. But if you're looking to build more complex applications using full-stack frameworks _and_ Workers Assets, this is a viable way to do it right now!
+
+[^1]: Disclosure: I work at Cloudflare as a Senior Developer Advocate.
+[^2]: Cloudflare's CLI tool, [Wrangler](https://github.com/cloudflare/wrangler).
+[^3]: Note that any bindings-based integrations, like KV or D1, do work without any addititional config. They get added to your request `env`, and you can access them inside of Astro endpoints ([example docs](https://docs.astro.build/en/guides/integrations-guide/cloudflare/#usage)).

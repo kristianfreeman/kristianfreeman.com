@@ -1,7 +1,7 @@
 ---
 title: "Recursively transcode FLAC files to MP3"
 description: "A quick script for recursively transcoding lossless FLAC files to MP3"
-pubDate: "Jan 100 2025"
+pubDate: "Jan 10 2025"
 tags:
   - tip
 ---
