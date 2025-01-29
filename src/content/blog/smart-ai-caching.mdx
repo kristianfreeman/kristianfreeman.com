@@ -1,0 +1,81 @@
+---
+title: "Caching Middleware with Deepseek and Workers"
+description: 'Building an AI-powered caching layer for "smarter" (this is questionable) content delivery'
+pubDate: "Jan 29 2025"
+tags:
+  - cloudflare
+  - ai
+---
+import { Tweet } from 'astro-embed';
+
+Deepseek's new reasoning models are the new hotness in the AI space. [We recently added the DeepSeek-R1-Distill-Qwen-32B model to Workers AI](https://x.com/CloudflareDev/status/1884324381155025017) - a distilled model based on R1 with reasoning built-in. 
+
+To experiment with it, I built a middleware for Cloudflare Workers that uses AI to make intelligent decisions about cache durations. Here's a video of it in action:
+
+<Tweet id="https://x.com/kristianf_/status/1884344684123938816" theme="dark" />
+
+## Why build this?
+
+I've been playing around with DeepSeek-R1-Distill-Qwen-32B, particularly interested in its reasoning capabilities. While caching is a solved problem (just set some sensible TTLs and call it a day), I thought it would be fun to see how an LLM would approach cache duration decisions.
+
+The idea is simple: instead of hardcoding cache durations, what if we let an AI analyze the content and decide? It's probably overkill for most use cases - you could just cache images for a week, HTML for an hour, and call it done. But it's an interesting experiment in seeing how well the model can reason about:
+
+- Content freshness requirements
+- Update patterns
+- Time sensitivity
+- The tradeoffs between cache hit rates and content staleness
+
+## The implementation
+
+The middleware is pretty straightforward. When a request comes in that isn't cached, we:
+1. Fetch from the origin
+2. Send the content to DeepSeek
+3. Ask it to think through an appropriate cache duration
+4. Cache using whatever duration it suggests
+
+Here's what the cache entries look like:
+
+```typescript
+interface CacheEntry {
+  content: string;
+  contentType: string;
+  timestamp: number;
+}
+```
+
+The interesting part is how DeepSeek reasons about cache durations. I prompt it to explain its thinking in a structured format:
+
+```
+<think>
+This appears to be a product page. While the price and stock status
+could change frequently, the core product details are relatively stable.
+A moderate cache duration would balance freshness with performance.
+</think>
+3600
+```
+
+It's fascinating to see how it weighs different factors. For static content like images, it confidently suggests long durations. For dynamic content, it gets more nuanced - considering things like whether outdated prices are worse than outdated blog comments.
+
+## What I learned
+
+The model is surprisingly good at understanding caching tradeoffs. It picks up on subtle signals like:
+- Currency symbols suggesting price data that needs freshness
+- Time references indicating news or time-sensitive content
+- Form elements suggesting user interaction that shouldn't be cached
+- Image content-types that can be cached aggressively
+
+But it also makes some weird decisions sometimes. It can be overly cautious with cache durations if it spots anything that looks remotely dynamic. And occasionally it goes completely off the rails and tries to explain caching theory instead of giving a duration. Generally, it also is too verbose - with our token limits on Workers AI, this leads it to not even be able to return any cache duration at all. It's too busy thinking! 🤦
+
+## The code
+
+The implementation is pretty simple - it's just a Cloudflare Workers middleware that:
+1. Checks the cache
+2. Fetches from origin if needed
+3. Gets an AI recommendation
+4. Caches with the suggested TTL
+
+I've open-sourced it if you want to try it yourself or just look at the code. It's a fun example of using LLMs for something they probably shouldn't be used for, but that makes it interesting to play with. [Check out the source here.](https://github.com/kristianfreeman/smart-cache)
+
+Is this practical for production? Probably not. The latency of making an AI call for cache decisions would defeat the purpose in most cases. But it's been a fun way to explore how LLMs reason about system design decisions. Sometimes the best way to learn about these models is to give them weird problems to solve.
+
+Let me know if you build anything equally impractical but interesting with it!
