@@ -51,7 +51,7 @@ export async function getStaticPaths() {
         posts.map((post) => (
           <a
             class="flex flex-col gap-2 no-underline hover:no-underline"
-            href={`/${post.id}`}
+            href={`/${post.slug}`}
           >
             <h2 class="leading-6 m-0">{post.data.title}</h2>
             <p class="m-0">{post.data.description}</p>
