@@ -1,0 +1,67 @@
+---
+title: San Marcos TX Life
+description: Building a local newsletter for San Marcos, TX.
+pubDate: "Jan 30 2025"
+tags:
+  - projects
+---
+import { Tweet } from "astro-embed"
+
+I started this year with the idea of rehabbing my old project, [Frontend Jobs](https://getfrontendjobs.com). It's a job board for frontend developers that I built around 2019.
+
+Job boards are basically a combo of two things - a job board (obviously) and a newsletter. The newsletter is the primary way to drive traffic to the job board. But the task of "job hunting" in 2025 is completely different than it was in 2019. Why? Because from both sides - the seekers and the employers - almost everything is mediated through AI.
+
+I decided pretty quickly this year - I don't want to be competing against AI. It's just not very fun. 
+
+But the newsletter side? Still love it. I think that we're going to see a newsletter resurgence in 2025. It's still one of the best ways to get attention from people fairly reliably. Case in point: my [Saturday Stuff](https://www.saturdaystuff.com) newsletter, where I share interesting links - has about a 40-50% open rate. Half of the people I send the email to reliably read it every time they receive it. The same can certainly not be said for 𝕏 or any other social media - at about 10.4k followers, I'm not expecting 5k of those to read every tweet I post.
+
+## Local newsletters
+
+I came across the idea of local newsletters via [this tweet](https://x.com/MikeyPesto/status/1866546385052454939). It was a presentation from Michael Kauffman, who built [Catskill Crew](https://catskillcrew.beehiiv.com), a local newsletter for the Catskills. It's basically a collection of events and news for the area. And the open rates and click rates are pretty great: certainly better than my grab bag newsletter, with the added advantage of helping you get plugged into the local community.
+
+I loved this idea! I moved to San Marcos a few years ago, and I'm always looking for ways to get plugged into the community. So I built [San Marcos TX Life](https://www.sanmarcostxlife.com), a local newsletter for San Marcos, TX.
+
+## The process
+
+There's basically two parallel loops going on each week for SMTX Life. Both are being iterated constantly, and most importantly: I think they're working:
+
+1. Creating content
+2. Outreach, marketing, promotion
+
+Both have to run in parallel from the beginning, otherwise it's kind of a waste of time. If no one reads the newsletter, why even write it? If we can't get good content, why would anyone read it?
+
+## Creating content
+
+Here's how I think about creating content for SMTX Life right now:
+
+1. Collect events using Facebook/good old-fashioned manual scraping of websites[^1]
+2. Generate a series of event listings in our format that serves as the bulk of the newsletter
+
+I'm using [Beehiiv](https://beehiiv.com) for my newsletter. It's great. Importantly, it is fairly Markdown-friendly, so my team and I can write the newsletter in a [Linear](/linear-switch) document and transfer it over without too much trouble. [Here's an example](https://smtxlife.com/p/san-marcos-tx-life-newsletter-c5bb94cbf3e9c2ec) of an issue of the newsletter, so you can see what it looks like.
+
+It takes about an hour to gather events, and an hour to generate an issue of the newsletter. So altogether, it's about two hours of work per week. Not too bad!
+
+The newsletter stats are pretty good, too. Click rate can fluctuate a bit, which is fairly dependent on if there's anything actually interesting in the newsletter. But the open rate is pretty awesome, especially considering the vast majority of subscribers are completely new to the newsletter itself:
+
+<Tweet id="https://x.com/kristianf_/status/1883702090251591877" theme="dark" />
+
+[^1]: This is begging to be automated with AI. I'm working on it. Will share more when it's done about how I tackled it.
+
+## Outreach, marketing, promotion
+
+Almost all growth from the newsletter currently has come from Facebook Ads. And they're actually working _really well_. 
+
+<Tweet id="https://x.com/kristianf_/status/1881741071585263785" theme="dark" />
+
+In less than three weeks, I'm at about 600 subscribers. That's about 20-30 subscribers per day. There's basically no reason to turn off the ad, unless the CPC stats going up because we run out of people to advertise to. I'll leave it on indefinitely until that happens.
+
+## Next steps
+
+There's a lot of things I can do to take the newsletter, which is growing _but burning money_, to profitability. I can run ads, sell products, etc. I'm not sure which direction to take yet, but fortunately I can spend money on it and grow it indefinitely because some of my other projects are already profitable. I'm going to keep sending newsletters every week for at least the next two months or so before I try and find a way to get to profitability: I would rather build trust and not worry too much about the ad spend, until I can really cash in on audience trust and engagement.
+
+I've also build a couple interesting things for the newsletter. Little software tools that I'm using inside of the newsletter to make the content more interesting. For instance, I built a web API that can generate weather forecasts as SVG, which I embed directly in the newsletter:
+
+<Tweet id="https://x.com/kristianf_/status/1883190888350003209" theme="dark" />
+
+Of course, I will continue to share more of that kind of stuff here on my blog as I build it. 
+
