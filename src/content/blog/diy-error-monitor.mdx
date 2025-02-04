@@ -10,7 +10,7 @@ tags:
 ---
 import { Tweet } from "astro-embed";
 
-After my previous exploration of [DeepSeek for smart AI caching](/smart-ai-caching), I wanted to experiment further with how AI models can analyze and reason about code. I built a proof of concept that combines Cloudflare's Tail Workers with AI-powered error analysis. Here's what I learned.
+After my previous exploration of [DeepSeek for smart AI caching](/smart-ai-caching), I wanted to experiment further with how AI models can analyze and reason about code. I built a proof of concept that combines Cloudflare's Tail Workers with AI-powered error analysis. The code is available on [GitHub](https://github.com/kristianfreeman/error-monitor) if you want to experiment with it yourself. Here's what I learned.
 
 <Tweet id="https://x.com/kristianf_/status/1886535083924054287" theme="dark" />
 
@@ -32,6 +32,20 @@ export default {
   }
 } satisfies ExportedHandler<Env>;
 ```
+
+One neat thing about Tail Workers is that they don't have any specific integration with the primary application itself. Instead, you just configure them as downstream consumers in the primary app's `wrangler.json` file:
+
+```json
+{
+  "tail_consumers": [
+    {
+      "service": "<TAIL_WORKER_NAME>"
+    }
+  ]
+}
+```
+
+This means that you can attach as many tail consumers as you want, and it doesn't require changing any code in your primary application. Super interesting!
 
 ## The AI Pipeline
 
@@ -65,6 +79,8 @@ ${analysisResponse.response}`
   }
 }
 ```
+
+In particular, the second model here is quite fast, so it doesn't add much latency to the overall process. This code runs async and isn't blocking the primary application, so it's a great fit for Tail Workers.
 
 ## DeepSeek's Code Understanding
 
@@ -121,4 +137,4 @@ This experiment highlighted a few interesting things:
 2. DeepSeek is very impressive with its ability to reason about context
 3. Chaining multiple AI models can help balance detailed analysis with practical summaries
 
-While this isn't meant to replace proper error monitoring in production, it's an interesting exploration of how these technologies could be combined. The code is available on [GitHub](https://github.com/kristianfreeman/error-monitor) if you want to experiment with it yourself.
+While this isn't meant to replace proper error monitoring in production, it's an interesting exploration of how these technologies could be combined.
