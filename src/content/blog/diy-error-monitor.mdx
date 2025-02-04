@@ -1,0 +1,124 @@
+---
+title: DIY Error Monitor
+description: Building a DIY error monitor for serverless applications using Cloudflare Tail Workers, DeepSeek, and Slack
+pubDate: 'Feb 4 2025'
+tags:
+  - ai
+  - cloudflare
+  - projects
+  - webdev
+---
+import { Tweet } from "astro-embed";
+
+After my previous exploration of [DeepSeek for smart AI caching](/smart-ai-caching), I wanted to experiment further with how AI models can analyze and reason about code. I built a proof of concept that combines Cloudflare's Tail Workers with AI-powered error analysis. Here's what I learned.
+
+<Tweet id="https://x.com/kristianf_/status/1886535083924054287" theme="dark" />
+
+## What are Tail Workers?
+
+[Tail Workers](https://developers.cloudflare.com/workers/observability/logs/tail-workers/) are a particular kind of Cloudflare Workers application that run after a Workers application services a request. Think of them as a stream of events you can tap into, giving you insights into your application's behavior.
+
+In this experiment, I used Tail Workers to capture error events and process them through an AI pipeline. Here's the basic setup:
+
+```typescript
+export default {
+  async tail(events, env) {
+    for (const event of events) {
+      if (event.outcome === "exception") {
+        const context = extractContext(event);
+        // Process with AI pipeline...
+      }
+    }
+  }
+} satisfies ExportedHandler<Env>;
+```
+
+## The AI Pipeline
+
+One of the interesting aspects of this project was using two different AI models in sequence to analyze errors. The first pass uses DeepSeek for deep analysis, followed by a more concise summary from Llama:
+
+```typescript
+async function generateErrorSummary(context, env) {
+  try {
+    // First pass: DeepSeek for detailed analysis
+    const analysisResponse = await env.AI.run('@cf/deepseek-ai/deepseek-r1-distill-qwen-32b', {
+      messages: [{
+        role: 'user',
+        content: createAIPrompt(context)
+      }]
+    });
+
+    // Second pass: Llama for concise summary
+    const summaryResponse = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
+      messages: [{
+        role: 'user',
+        content: `Create a clear, concise summary (2-3 sentences max) of this error analysis and the suggested fix. Focus on the key problem and likely cause:
+
+${analysisResponse.response}`
+      }]
+    });
+
+    return summaryResponse.response;
+  } catch (error) {
+    console.error('Error generating AI summary:', error);
+    return 'Unable to generate AI analysis';
+  }
+}
+```
+
+## DeepSeek's Code Understanding
+
+What's particularly interesting about using DeepSeek here is how it reasons about code context. In my [previous post about smart AI caching](/smart-ai-caching), I showed how DeepSeek could effectively analyze API responses. Here, it's doing something similar with error contexts:
+
+```typescript
+function createAIPrompt(context) {
+  return `Analyze this error and provide a concise summary explaining what went wrong and potential causes. Also think about what the developer could do to fix this error. Include any relevant context from the logs.
+
+Context:
+Script: ${context.scriptName}
+URL: ${context.url}
+Method: ${context.method}
+Time: ${context.timestamp}
+
+Exceptions:
+${context.exceptions}
+
+Logs:
+${context.logs}`;
+}
+```
+
+The model is quite good at understanding the relationships between different parts of the error context and suggesting potential fixes. It's not just pattern matching - it seems to understand causality in code execution.
+
+## Error Deduplication
+
+To make the experiment more practical, I added basic error deduplication using [Workers KV](https://developers.cloudflare.com/kv/):
+
+```typescript
+async function generateErrorHash(context) {
+  const errorDetails = {
+    scriptName: context.scriptName,
+    exceptions: context.exceptions,
+    url: context.url,
+    method: context.method
+  };
+
+  const text = JSON.stringify(errorDetails);
+  const msgBuffer = new TextEncoder().encode(text);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+```
+
+This prevents duplicate notifications within a configurable window (1 hour in this case). While there are more sophisticated approaches for production error monitoring, this simple hash-based approach works well for the proof of concept.
+
+## Key Learnings
+
+This experiment highlighted a few interesting things:
+
+1. Tail Workers provide a powerful way to tap into your Workers' runtime behavior
+2. DeepSeek is very impressive with its ability to reason about context
+3. Chaining multiple AI models can help balance detailed analysis with practical summaries
+
+While this isn't meant to replace proper error monitoring in production, it's an interesting exploration of how these technologies could be combined. The code is available on [GitHub](https://github.com/kristianfreeman/error-monitor) if you want to experiment with it yourself.
