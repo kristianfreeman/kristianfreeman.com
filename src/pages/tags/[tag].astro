@@ -21,8 +21,9 @@ try {
 
 let posts = await getCollection("blog", ({ data }) =>
   // @ts-ignore
-  data.tags.map(({ id }) => id).includes(slug),
+  data.tags.map(({ slug: sl }) => sl).includes(slug),
 );
+
 
 posts = posts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
