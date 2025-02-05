@@ -18,9 +18,10 @@ const allTags = await getCollection("tag");
 const posts = await getCollection("blog");
 
 const { title, description, pubDate, repo, tags } = Astro.props;
+console.log(tags);
 const blogPostTags = await getCollection("tag", ({ slug }) => {
   // @ts-ignore
-  return tags.map(({ id }) => id).includes(slug);
+  return tags.map(({ slug: sl }) => sl).includes(slug);
 });
 
 const hasWarning = blogPostTags.find((tag) => tag.data.warning);

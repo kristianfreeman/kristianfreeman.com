@@ -1,0 +1,43 @@
+---
+title: "Programatically generated weather SVGs"
+description: "Using Workers to generate weather SVGs for my newsletter"
+pubDate: "Feb 5 2025"
+repo:
+  path: kristianfreeman/weather-svg
+tags:
+  - cloudflare
+  - projects
+  - webdev
+---
+import { Image } from 'astro:assets'
+import WeatherSVG from "@/images/weather-svg.png";
+
+While building [San Marcos TX Life](/smtx-life), I wanted to add a little weather section to my newsletter. I wanted something that was easy to use, and that would be lightweight and fast. I built something and made it open-source - link above.
+
+<Image src={WeatherSVG} alt="Weather SVG" />
+
+_Example of what is generated. These SVGs are animated in the actual email, depending on the client!_
+
+## What it does
+
+The service is pretty straightforward - you give it a ZIP code and it gives you back a nice SVG showing the next 7 days of weather. Each day shows:
+
+- Temperature highs and lows
+- A little animated weather icon (the sun actually spins!)
+- Basic description like "Cloudy" or "Rain"
+
+## How it works
+
+I'm using Cloudflare Workers for this. There's a scheduled task that pre-generates forecasts for ZIP codes I care about, and an HTTP endpoint that serves them up.
+
+The interesting bit is how it figures out the weather icons. OpenWeather gives you stuff like cloud cover percentage and precipitation, so I wrote some logic to map that to weather conditions. Like if there's over 80% cloud cover, that's "Overcast" with a cloudy icon. Under 20% and you get a spinning sun.
+
+## Tech bits
+
+- TypeScript + Cloudflare Workers
+- OpenWeather API for the data
+- [KV storage](https://developers.cloudflare.com/kv) to cache the forecasts
+- SVG for the visuals (keeps it lightweight)
+- URL params let you tweak the size
+
+The SVGs work great in email (tested in the major clients) and they're super lightweight. Plus since it's all serverless, it costs basically nothing to run.
