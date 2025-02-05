@@ -2,6 +2,8 @@
 title: "Caching Middleware with Deepseek and Workers"
 description: 'Building an AI-powered caching layer for "smarter" (this is questionable) content delivery'
 pubDate: "Jan 29 2025"
+repo:
+  path: kristianfreeman/smart-cache
 tags:
   - cloudflare
   - ai
@@ -74,7 +76,7 @@ The implementation is pretty simple - it's just a Cloudflare Workers middleware 
 3. Gets an AI recommendation
 4. Caches with the suggested TTL
 
-I've open-sourced it if you want to try it yourself or just look at the code. It's a fun example of using LLMs for something they probably shouldn't be used for, but that makes it interesting to play with. [Check out the source here.](https://github.com/kristianfreeman/smart-cache)
+I've open-sourced it if you want to try it yourself or just look at the code. It's a fun example of using LLMs for something they probably shouldn't be used for, but that makes it interesting to play with.
 
 Is this practical for production? Probably not. The latency of making an AI call for cache decisions would defeat the purpose in most cases. But it's been a fun way to explore how LLMs reason about system design decisions. Sometimes the best way to learn about these models is to give them weird problems to solve.
 
