@@ -5,8 +5,6 @@ import type { CollectionEntry } from "astro:content";
 type Post = CollectionEntry<"blog">;
 import FormattedDate from "@/components/FormattedDate.astro";
 
-const currentYear = new Date().getFullYear();
-
 let posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 ).filter(post => !post.data.draft);
