@@ -3,7 +3,6 @@ import Default from "@/layouts/default.astro";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 type Post = CollectionEntry<"blog">;
-import FormattedDate from "@/components/FormattedDate.astro";
 
 let posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -36,26 +35,28 @@ const postsGroupedByYear = posts.reduce(
   </h2>
 
   <section class="mt-8 w-full">
-    <div class="flex flex-col gap-8">
+    <div class="flex flex-col">
       {Object.keys(postsGroupedByYear)
         .sort((a, b) => Number(b) - Number(a))
         .map((year) =>
           postsGroupedByYear[year].map((post) => (
           <a 
-            class="flex flex-col gap-2 no-underline hover:no-underline"
+            class="no-underline hover:no-underline rounded hover:bg-secondary/80 p-4 shadow-md"
             href={`/${post.slug}`}
           >
-            <h2 class="text-lg leading-6 m-0">
-              {post.data.title} 
-              <span class="font-medium m-0 text-foreground/80">
-                // <FormattedDate date={post.data.pubDate} />
+            <div class="leading-6 m-0 flex justify-between">
+              <span class="flex-1">
+                {post.data.title}
               </span>
-            </h2>
-            <p class="m-0">{post.data.description}</p>
+              <span class="font-medium m-0 text-foreground/80 flex-2">
+                {post.data.pubDate.toISOString().slice(0, 10)}
+              </span>
+            </div>
           </a>
         )))
       }
     </div>
+  </section>
 
   <section class="mt-12">
     <div class="flex flex-wrap gap-4">

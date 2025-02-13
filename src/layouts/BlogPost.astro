@@ -7,7 +7,6 @@ import BaseHead from "@/components/BaseHead.astro";
 import CommandMenu from "@/components/CommandMenu.tsx";
 import Footer from "@/components/Footer.tsx";
 import Footnotes from "@/components/Footnotes.tsx";
-import FormattedDate from "@/components/FormattedDate.astro";
 import Header from "@/components/Header.tsx";
 import Repo from "@/components/Repo.tsx";
 import WarningBanner from "@/components/WarningBanner.astro";
@@ -18,7 +17,6 @@ const allTags = await getCollection("tag");
 const posts = await getCollection("blog");
 
 const { title, description, pubDate, repo, tags } = Astro.props;
-console.log(tags);
 const blogPostTags = await getCollection("tag", ({ slug }) => {
   // @ts-ignore
   return tags.map(({ slug: sl }) => sl).includes(slug);
@@ -34,13 +32,15 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
   </head>
 
   <body class="bg-base px-4 w-full">
-    <Header post={Astro.props} url={Astro.url} />
+    <div class="border-b mb-8">
+      <Header post={Astro.props} url={Astro.url} />
+    </div>
     <div class="max-w-screen-md lg:max-w-screen-lg mx-auto space-y-8">
       <main>
         <article class="flex gap-4">
           <div class="prose">
             <div class="space-y-4">
-              <h1 class="tracking-wider font-lg">
+              <h1 class="tracking-wider">
                 {title}
               </h1>
 
@@ -49,7 +49,7 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
               <div class="flex flex-wrap gap-4 items-center pb-4">
                 <div class="flex gap-2 items-center text-foreground/80">
                   <Calendar size={16} />
-                  <FormattedDate date={pubDate} />
+                  {pubDate.toISOString().slice(0, 10)}
                 </div>
 
                 {
@@ -72,7 +72,6 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
 
               <slot />
             </div>
-            <hr />
           </div>
 
           <slot name="toc" />

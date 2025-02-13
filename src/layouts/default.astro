@@ -22,7 +22,9 @@ const tags = await getCollection("tag");
   </head>
 
   <body class="bg-base px-4 w-full">
-    <Header url={Astro.url} />
+    <div class="border-b mb-8">
+      <Header url={Astro.url} />
+    </div>
     <div class="max-w-screen-md lg:max-w-screen-lg mx-auto space-y-8">
       <main class={fullWidth ? "max-w-full prose" : "prose"}>
         <slot />
