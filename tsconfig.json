@@ -9,5 +9,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "exclude": ["worker"]
+  "exclude": ["worker", "worker.ts"]
 }

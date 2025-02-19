@@ -11,6 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "prepare": "husky",
+    "dev:wrangler": "npm run build && npx wrangler@latest dev",
     "deploy": "npm run build && npx wrangler@latest deploy"
   },
   "dependencies": {

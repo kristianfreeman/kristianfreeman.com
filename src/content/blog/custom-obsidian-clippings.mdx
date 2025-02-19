@@ -5,7 +5,6 @@ pubDate: 'Nov 5 2024'
 tags:
   - obsidian
 ---
-import { Image } from 'astro:assets'
 import PubmedConfig from '@/images/pubmed-clip.png'
 import PubmedContent from '@/images/pubmed-content.png'
 
@@ -15,13 +14,13 @@ It has a great feature where you can create a template for a "type" of web page,
 
 Here's an example. If you clip a [PubMed](https://pubmed.ncbi.nlm.nih.gov/) article, you can create a template for it like this:
 
-<Image src={PubmedConfig} alt="PubMed Clipping Template" />
+<img src={`/cgi-bin/watermark?url=${PubmedConfig.src}`} alt="PubMed Clipping Template" />
 
 One neat trick: by putting the PMID field as an [note alias](https://help.obsidian.md/Linking+notes+and+files/Aliases), it will automatically recognize other documents and notes that reference that PMID, and put them as "Unlinked mentions". This is great if an 𝕏 post mentions "PMID: $ID", and I clip it into Obsidian with [Readwise](https://readwise.io/).
 
 In this example, I'm grabbing the title, authors, and PMID from the page, using meta tags[^1]. By default, grabbing the actual content of the page happens automatically, but you can also customize how the content looks as well:
 
-<Image src={PubmedContent} alt="PubMed Content Example" />
+<img src={`/cgi-bin/watermark?url=${PubmedContent.src}`} alt="PubMed Content Example" />
 
 The Web Clipper uses the `triggers` field to determine which web pages to capture. If I run the extension on a URL that starts with `https://pubmed.ncbi.nlm.nih.gov`, it will use my "PubMed" template to clip the page.
 
