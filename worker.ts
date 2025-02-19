@@ -25,5 +25,6 @@ export default {
         return fetch(imageUrl);
       }
     }
+    return env.ASSETS.fetch(request);
   }
 }
