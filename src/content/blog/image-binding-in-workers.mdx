@@ -1,0 +1,107 @@
+---
+title: Image Binding in Workers
+pubDate: Feb 19 2025
+draft: true
+tags:
+  - cloudflare
+  - webdev
+---
+import Example from '@/images/example-for-watermark.png';
+
+You can now interact with [Cloudflare Images](https://developers.cloudflare.com/images/) from inside of a Workers application, using a new images binding. This allows you to load images, transform and manipulate them, and even generate watermarked images with just a few lines of code.
+
+In this post, I'll show you how I built a simple watermarking URL path in Workers on top of this site, my personal blog. It will automatically add a watermark to any image that passes through it. Here's an example of what it looks like:
+
+<img src={`/cgi-bin/watermark?url=${Example.src}`} alt="Example img" />
+
+```mdx title="example.mdx"
+import Example from '@/images/example-for-watermark.png';
+
+<img src={`/cgi-bin/watermark?url=${Example.src}`} alt="Example img" />
+```
+
+## Setup
+
+First, add the new `[images]` directive to your `wrangler.toml` file:
+
+```toml title="wrangler.toml"
+name = "kristianfreeman-astro"
+compatibility_date = "2024-10-22"
+main = "./worker.ts"
+
+[images]
+binding = "IMAGES"
+```
+
+## Defining the Workers function
+
+My site is built with [Workers Assets](/integrating-workers-assets-with-fullstack-apps). When `wrangler` deploys this site, it bundles up the `dist` folder and uploads it to Cloudflare. Additionally, you can define a Workers script that will run alongside the site. This allows you to define custom behavior.
+
+Below, I'll define a new `worker.ts` file in the root of my project. We can check the request URL and see if it matches the path we want to intercept. If it does, we'll fetch the image, and then watermark it.
+
+```ts title="worker.ts" {9,11,15,17,23,30}
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    if (url.pathname.startsWith("/cgi-bin/watermark")) {
+      const imagePath = url.searchParams.get("url");
+      const imageUrl = new URL(imagePath, request.url).href;
+
+      try {
+        // Load the image based on url search param
+        const imageResp = await env.SITE.fetch(new Request(imageUrl));
+        // Get the watermark image
+        const watermarkResp = await fetch("https://pub-b4e6ed9616414ace9314e84c0a5cd3e8.r2.dev/kf.jpg");
+
+        const response = (
+          // Take the image and begin processing it
+          await env.IMAGES.input(await imageResp.body)
+            // Draw the watermark on top of the image
+            .draw(
+              env.IMAGES.input(await watermarkResp.body)
+                .transform({ width: 100, height: 100 }),
+              { bottom: 10, right: 10, opacity: 0.75 }
+            )
+            // Output the final image as PNG
+            .output({ format: "image/png" })
+        ).response();
+
+        return response;
+      } catch (error) {
+        console.log(error);
+        // If something goes wrong, fall back directly to the image
+        return fetch(imageUrl);
+      }
+    }
+    return env.ASSETS.fetch(request);
+  }
+}
+```
+
+There's one wrinkle here specifically for any Workers-derived projects. You'll need to set up a service binding to correctly request a path on the same URL as your application. For instance, if you make a fetch request to `https://kristianfreeman.com/image.png` from inside a Workers app connected to that same website, it will try to make a request to the origin - which doesn't exist. You'll get a 522 status code back.
+
+To fix this, you can add a service binding to your `wrangler.toml` file:
+
+```toml title="wrangler.toml" collapse={2-4,8-17}
+name = "kristianfreeman-astro"
+compatibility_date = "2024-10-22"
+main = "./worker.ts"
+
+services = [
+  { binding = "SITE", service = "kristianfreeman-astro" }
+]
+
+[assets]
+binding = "ASSETS"
+directory = "./dist"
+html_handling = "drop-trailing-slash"
+not_found_handling = "404-page"
+
+[observability]
+enabled = true
+
+[images]
+binding = "IMAGES"
+```
+
+Now, any requests are made inside of the app, and will correctly resolve to the Workers Assets bundles or whatever other asset/path you're trying to retrieve.
