@@ -46,10 +46,10 @@ export async function getStaticPaths() {
   </div>
 
   <section class="mt-8 w-full">
-    <div class="flex flex-col">
+    <div class="flex flex-col gap-2">
       {posts.map((post) => (
         <a 
-          class="no-underline hover:no-underline rounded hover:bg-secondary/80 p-4 shadow-md"
+          class="no-underline hover:no-underline rounded hover:bg-secondary/80 p-4"
           href={`/${post.slug}`}
         >
           <div class="leading-6 m-0 flex justify-between">
@@ -57,7 +57,7 @@ export async function getStaticPaths() {
               {post.data.title}
             </span>
             <span class="font-medium m-0 text-foreground/80 flex-2">
-              {post.data.pubDate.toISOString().slice(0, 10)}
+              {post.data.pubDate.toISOString()}
             </span>
           </div>
         </a>

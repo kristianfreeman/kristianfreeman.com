@@ -4,7 +4,7 @@ import { SiGithub, SiRss, SiX } from "@icons-pack/react-simple-icons"
 
 const links = [
   { href: "https://x.com/kristianf_", icon: SiX },
-  { href: "https://github.com/kristianf", icon: SiGithub },
+  { href: "https://github.com/kristianfreeman", icon: SiGithub },
   { href: "https://kristianfreeman.com/rss.xml", icon: SiRss },
 ]
 

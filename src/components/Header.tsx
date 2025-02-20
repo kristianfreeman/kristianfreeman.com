@@ -1,7 +1,7 @@
 import type { CollectionEntry } from 'astro:content';
 import clsx from 'clsx';
 import HeaderLink from './HeaderLink.tsx';
-import { SITE_TITLE } from '../consts';
+import { SITE_BRAND } from '../consts';
 import { Newspaper, Paperclip, Search } from 'lucide-react';
 
 type BlogPost = CollectionEntry<'blog'>['data'];
@@ -11,12 +11,15 @@ export default ({ post, url }: { post?: BlogPost, url: URL }) => {
     <header className="space-y-4 py-6 max-w-screen-md lg:max-w-screen-lg mx-auto w-full">
       <nav className="flex items-center gap-4">
         <div className="flex-1">
-          <a className={clsx("text-foreground font-bold flex-1 hover:no-underline text-lg")} href="/">
-            {SITE_TITLE}
+          <a 
+            className={clsx("text-white flex-1 font-bold tracking-widest hover:no-underline text-lg bg-slate-900 rounded-md p-2 hover:bg-slate-700 transition-colors")}
+            href="/"
+          >
+            {SITE_BRAND}
           </a>
         </div>
 
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-8 uppercase tracking-wide">
           <HeaderLink active={url.pathname.startsWith("/blog") || !!post} href="/blog">
             <Newspaper size={14} />
             Blog
