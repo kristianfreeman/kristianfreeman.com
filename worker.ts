@@ -10,9 +10,9 @@ export default {
         const watermarkResp = await fetch("https://pub-b4e6ed9616414ace9314e84c0a5cd3e8.r2.dev/kf.jpg");
 
         const response = (
-          await env.IMAGES.input(await imageResp.body)
+          await env.IMAGES.input(imageResp.body)
             .draw(
-              env.IMAGES.input(await watermarkResp.body)
+              env.IMAGES.input(watermarkResp.body)
                 .transform({ width: 100, height: 100 }),
               { bottom: 10, right: 10, opacity: 0.75 }
             )
