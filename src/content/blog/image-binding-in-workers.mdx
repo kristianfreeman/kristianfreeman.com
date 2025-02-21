@@ -106,4 +106,4 @@ enabled = true
 binding = "IMAGES"
 ```
 
-Now, any requests are made inside of the app, and will correctly resolve to the Workers Assets bundles or whatever other asset/path you're trying to retrieve.
+Now, by making a `fetch` request _through that binding_, requests stay inside the app, and will correctly resolve to the Workers Assets bundles or whatever other asset/path you're trying to retrieve.
