@@ -1,6 +1,6 @@
 ---
 title: Image Binding in Workers
-pubDate: Feb 19 2025
+pubDate: Feb 21 2025
 draft: true
 tags:
   - cloudflare
@@ -13,6 +13,8 @@ You can now interact with [Cloudflare Images](https://developers.cloudflare.com/
 In this post, I'll show you how I built a simple watermarking URL path in Workers on top of this site, my personal blog. It will automatically add a watermark to any image that passes through it. Here's an example of what it looks like:
 
 <img src={`/cgi-bin/watermark?url=${Example.src}`} alt="Example img" />
+
+_See that little watermark in the bottom right? Neat!_
 
 ```mdx title="example.mdx"
 import Example from '@/images/example-for-watermark.png';
