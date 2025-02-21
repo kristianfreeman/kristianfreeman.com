@@ -8,7 +8,7 @@ import expressiveCode from 'astro-expressive-code';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from "@tailwindcss/vite";
 
 import { remarkDeruntify } from './config/remark.mjs';
 
@@ -31,9 +31,6 @@ export default defineConfig({
     mdx(),
     react(),
     sitemap(),
-    tailwind({
-      applyBaseStyles: false,
-    }),
     cloudflareRedirects({
       redirectsFile: './src/_redirects',
     })
@@ -64,4 +61,7 @@ export default defineConfig({
   },
   site: 'https://kristianfreeman.com',
   trailingSlash: 'never',
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });

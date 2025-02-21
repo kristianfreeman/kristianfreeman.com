@@ -44,11 +44,11 @@ const postsGroupedByYear = posts.reduce(
             class="no-underline hover:no-underline rounded hover:bg-secondary/80 p-4"
             href={`/${post.slug}`}
           >
-            <div class="leading-6 m-0 flex justify-between">
+            <div class="leading-6 m-0 flex">
               <span class="flex-1">
                 {post.data.title}
               </span>
-              <span class="font-medium m-0 text-foreground/60 flex-2">
+              <span class="font-medium m-0 text-foreground/60">
                 {post.data.pubDate.toISOString()}
               </span>
             </div>

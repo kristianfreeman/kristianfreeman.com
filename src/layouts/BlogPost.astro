@@ -35,7 +35,7 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
     <div class="mb-8">
       <Header post={Astro.props} url={Astro.url} />
     </div>
-    <div class="max-w-screen-md lg:max-w-screen-lg mx-auto space-y-8">
+    <div class="max-w-(--breakpoint-md) lg:max-w-(--breakpoint-lg) mx-auto space-y-8">
       <main>
         <article class="flex gap-4">
           <div class="prose flex-1 max-w-[initial]">

@@ -25,7 +25,7 @@ const tags = await getCollection("tag");
     <div class="mb-8">
       <Header url={Astro.url} />
     </div>
-    <div class="max-w-screen-md lg:max-w-screen-lg mx-auto space-y-8">
+    <div class="max-w-(--breakpoint-md) lg:max-w-(--breakpoint-lg) mx-auto space-y-8">
       <main class={fullWidth ? "max-w-full prose" : "prose"}>
         <slot />
       </main>
