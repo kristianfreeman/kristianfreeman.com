@@ -1,0 +1,64 @@
+---
+title: Redesigning
+description: Thoughts on application facelifts.
+pubDate: '2025-02-22'
+tags:
+  - webdev
+---
+import { Tweet } from "astro-embed"
+
+## Introduction
+
+I recently redesigned my largest side project, which is a business in the cryptocurrency space. It turned out great, and only took me a few days[^1].
+
+The app is a Ruby on Rails application, so I couldn't effectively use [shadcn/ui](/brief-shadcnui-review) for the design. I ended up using the free version of [Rails UI](https://railsui.com/) instead.
+
+The prior design was stupid simple. It was semantic HTML, wrapped with the [Tailwind typography plugin](https://github.com/tailwindlabs/tailwindcss-typography). Literally, a page would look like this:
+
+```html
+<h1>Page title</h1>
+<section>
+  <h2>Section title</h2>
+  <p>Section content</p>
+</section>
+
+<section>
+  <h2>Another section</h2>
+  <p>Another section content</p>
+</section>
+```
+
+I wrote this tweet a few days ago about the migration - design really doesn't matter that much when you're trying to build an MVP:
+
+<Tweet id="https://x.com/kristianf_/status/1892427883789869157" theme="dark" />
+
+## LLMs and redesigns
+
+It's a unique time to tackle application redesigns. LLMs make it really easy to rapidly build out code - you just have to have a direction you want to go in. Executive guidance over a very powerful code generator. This is probably what coding will look like in a decade.
+
+The process was: take the Rails UI components that I wanted to use - cards, navs, buttons - and drop them into a big Claude prompt. "Take this code (original code) and rewrite it like this (new code)". It was 80-90% accurate. Eventually, it lost context in minor ways - using `shadow-lg` when we had been using `shadow-md`. But nothing major.
+
+I am a heavy LLM user. I hit the Claude rate limit basically every single day. But I don't trust it to write application code - e.g. backend Rails models, controllers, etc - at least, without heavy supervision. It _is_ great for UI code. If I was a frontend developer, I would be slightly worried. But I'm a [full-stack dev](/fullstack), so I still have a lot of agency in how I drive behaviors of the actual system code. The UI part is a commodity.
+
+## Is it good?
+
+You can sit there and tweak every CSS param over and over again. Tailwind actually makes this very easy. Too easy, probably. Should every card be spaced via `gap-4`? `gap-6`?
+
+I'm not trying to win any awards for design. I just want my app to be easy to use. If you work at a big co and you're redesigning, you probably have big goals: accessibility, performance, etc. I'm not really thinking about that stuff, at least, not on my side projects. At any point of time, there's probably a dozen other things that I could easily make the case to myself are way more important.
+
+So as a side project developer, I think redesigns have two criteria:
+
+1. Do they make the app easier to use?
+2. There is no other criteria
+
+Now, if it looks better as an accidental side effect, great! Semantic HTML kinda looked like shit in my app, and stuffing everything into cards is an improvement. They lay out better in different screen widths. But by adding some information hierarchy and some structure, the app is now much better to use.
+
+So is it good? Yes. Because it's easier to use. Not because it looks better.
+
+## Conclusion
+
+I dread redesigns, mostly for the reasons I stated above. It is art, even if it's kind of a silly art, so it is subjective. You can't perfectly design something. You make compromises and leave things for later. And then you forget them. Or you go even more in the compromise direction, and forget what the original plan was to begin with. That's why all that matters is whether it is easier to use. Before, and after. We should have a GitHub PR bot that makes you say "Yes, this is easier to use" on merge. Everything else is window dressing.
+
+That being said, I'm happy with this redesign. As a maker of many side projects, I'm mostly happy that I didn't fall into the trap of redesign-as-work. It is sometimes necessary, but can be a huge distraction from the important stuff. I made it out alive this time...
+
+[^1]: There are less than a dozen pages on the site - it's a subscription to an API. Thus, redesigns aren't too difficult.

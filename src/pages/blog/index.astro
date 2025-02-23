@@ -49,7 +49,7 @@ const postsGroupedByYear = posts.reduce(
                 {post.data.title}
               </span>
               <span class="font-medium m-0 text-foreground/60">
-                {post.data.pubDate.toISOString()}
+                {post.data.pubDate.toISOString().slice(0, 10)}
               </span>
             </div>
           </a>

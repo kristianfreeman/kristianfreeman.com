@@ -38,18 +38,19 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
     <div class="max-w-(--breakpoint-md) lg:max-w-(--breakpoint-lg) mx-auto space-y-8">
       <main>
         <article class="flex gap-4">
-          <div class="prose flex-1 max-w-[initial]">
-            <div class="space-y-4">
-              <h1 class="tracking-wider">
+          <div class="prose flex-1 max-w-2xl">
+            <div>
+              <h1 class="tracking-wider mb-2">
                 {title}
               </h1>
 
-              {description && <h2 class="font-normal">{description}</h2>}
-
+              {description && <h2 class="text-foreground/80 font-normal mt-0">{description}</h2>}
+            </div>
+            <div class="space-y-4">
               <div class="flex flex-wrap gap-4 items-center pb-4">
                 <div class="flex gap-2 items-center text-foreground/80">
                   <Calendar size={16} />
-                  {pubDate.toISOString()}
+                  {pubDate.toISOString().slice(0, 10)}
                 </div>
 
                 {
