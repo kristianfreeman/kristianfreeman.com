@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
 import { transformerMetaHighlight } from '@shikijs/transformers'
 
+import llmsTxt from "./astro-llms-txt/register.js";
 import cloudflareRedirects from 'astro-cloudflare-redirects';
 import expressiveCode from 'astro-expressive-code';
 import mdx from '@astrojs/mdx';
@@ -19,6 +20,7 @@ export default defineConfig({
   },
 
   integrations: [
+    llmsTxt(),
     expressiveCode({
       defaultProps: { wrap: true },
       plugins: [pluginCollapsibleSections()],
