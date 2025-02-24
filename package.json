@@ -20,7 +20,6 @@
     "@astrojs/react": "^3.6.2",
     "@astrojs/rss": "^4.0.9",
     "@astrojs/sitemap": "^3.2.1",
-    "@astrojs/tailwind": "^5.1.2",
     "@cloudflare/stream-react": "^1.9.1",
     "@expressive-code/plugin-collapsible-sections": "^0.37.1",
     "@icons-pack/react-simple-icons": "^10.1.0",
