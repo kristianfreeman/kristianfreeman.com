@@ -1,8 +1,7 @@
 ---
 import Default from "@/layouts/default.astro";
+import BlogPostList from "@/components/BlogPostList.astro";
 import { getCollection } from "astro:content";
-import type { CollectionEntry } from "astro:content";
-type Post = CollectionEntry<"blog">;
 
 let posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -10,19 +9,7 @@ let posts = (await getCollection("blog")).sort(
 
 let firstPostYear = posts[posts.length - 1].data.pubDate.getFullYear();
 
-let tags = await getCollection("tag")
-
-const postsGroupedByYear = posts.reduce(
-  (acc: Record<string, Post[]>, post: Post) => {
-    const year = post.data.pubDate.getFullYear();
-    if (!acc[year]) {
-      acc[year] = [];
-    }
-    acc[year].push(post);
-    return acc;
-  },
-  {}
-);
+let tags = await getCollection("tag");
 ---
 
 <Default fullWidth title="Blog">
@@ -35,27 +22,7 @@ const postsGroupedByYear = posts.reduce(
   </h2>
 
   <section class="mt-8 w-full">
-    <div class="flex flex-col gap-2">
-      {Object.keys(postsGroupedByYear)
-        .sort((a, b) => Number(b) - Number(a))
-        .map((year) =>
-          postsGroupedByYear[year].map((post) => (
-          <a 
-            class="no-underline hover:no-underline rounded hover:bg-secondary/80 p-4"
-            href={`/${post.slug}`}
-          >
-            <div class="leading-6 m-0 flex">
-              <span class="flex-1">
-                {post.data.title}
-              </span>
-              <span class="font-medium m-0 text-foreground/60">
-                {post.data.pubDate.toISOString().slice(0, 10)}
-              </span>
-            </div>
-          </a>
-        )))
-      }
-    </div>
+    <BlogPostList posts={posts} groupByYear={true} />
   </section>
 
   <section class="mt-12">

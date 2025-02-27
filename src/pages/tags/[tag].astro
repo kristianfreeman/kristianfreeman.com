@@ -1,5 +1,6 @@
 ---
 import Default from "@/layouts/default.astro";
+import BlogPostList from "@/components/BlogPostList.astro";
 import { titleize } from "inflection";
 import { getCollection, getEntry, render } from "astro:content";
 
@@ -18,10 +19,21 @@ try {
   Content = null;
 }
 
-let posts = await getCollection("blog", ({ data }) =>
-  // @ts-ignore
-  data.tags.map(({ slug: sl }) => sl).includes(slug),
-);
+let posts = await getCollection("blog", ({ data }) => {
+  // Handle case where tags might not be properly defined
+  if (!data.tags || !Array.isArray(data.tags)) {
+    return false;
+  }
+  // Check if the tag slug is included in this post's tags
+  return data.tags.some(tag => {
+    if (typeof tag === 'string') {
+      return tag === slug;
+    } else if (tag && typeof tag === 'object' && 'id' in tag) {
+      return tag.id === slug;
+    }
+    return false;
+  });
+});
 
 
 posts = posts
@@ -36,33 +48,26 @@ export async function getStaticPaths() {
     props: { tag },
   }));
 }
+
+console.log(tag);
 ---
 
 <Default fullWidth title={titleize(tag.data.name)}>
   <h1>{tag.data.name}</h1>
 
-  <div class="*:font-normal">
+  <h2 class="font-normal m-0">
+    {tag.data.description && <span>{tag.data.description}</span>} 
+    <span class="inline-block {tag.data.description ? 'ml-1' : ''}">
+      {posts.length} post{posts.length !== 1 ? 's' : ''}{posts.length > 0 ? ` since ${posts[posts.length - 1].data.pubDate.getFullYear()}` : ''}.
+    </span>
+  </h2>
+
+  <div class="*:font-normal mt-4">
     {Content && <Content />}
   </div>
 
   <section class="mt-8 w-full">
-    <div class="flex flex-col gap-2">
-      {posts.map((post) => (
-        <a 
-          class="no-underline hover:no-underline rounded hover:bg-secondary/80 p-4"
-          href={`/${post.slug}`}
-        >
-          <div class="leading-6 m-0 flex justify-between">
-            <span class="flex-1">
-              {post.data.title}
-            </span>
-            <span class="font-medium m-0 text-foreground/80">
-              {post.data.pubDate.toISOString().slice(0, 10)}
-            </span>
-          </div>
-        </a>
-      ))}
-    </div>
+    <BlogPostList posts={posts} />
   </section>
 
   <section class="mt-12">

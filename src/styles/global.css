@@ -23,19 +23,19 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --foreground: 0 0% 0%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 0 0% 0%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
+    --secondary-foreground: 0 0% 0%;
     --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
+    --muted-foreground: 0 0% 25%;
     --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
+    --accent-foreground: 0 0% 0%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 89.8%;
@@ -51,19 +51,19 @@
 
   .dark {
     --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
+    --foreground: 0 0% 100%;
     --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card-foreground: 0 0% 100%;
     --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
     --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary-foreground: 0 0% 100%;
     --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
+    --muted-foreground: 0 0% 80%;
     --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14.9%;
@@ -81,32 +81,41 @@
     animation-fill-mode: forwards;
     -webkit-animation-fill-mode: forwards;
 
-    --font-main: "Atkinson Hyperlegible", -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
-    --font-mono: "JetBrains Mono", Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+    --font-main: "GeistSans", -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+    --font-mono: "GeistMono", "JetBrains Mono", Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
   }
 
   body {
     @apply bg-background text-foreground;
   }
 
-  a { @apply text-blue-500 no-underline; }
+  a { @apply text-primary no-underline; }
   a:hover { @apply underline; }
   ul, ol { @apply list-disc list-inside; }
 
   hr {
-    @apply text-foreground/80;
+    @apply text-muted-foreground;
   }
 
   .prose {
     p, ol, li {
-      @apply text-foreground/80;
+      @apply text-foreground;
     }
+
+    /* Improved headings for Geist font */
+    h1, h2, h3, h4, h5, h6 {
+      @apply font-medium tracking-tight;
+    }
+
+    h1 { @apply text-3xl md:text-4xl; }
+    h2 { @apply text-2xl md:text-3xl; }
+    h3 { @apply text-xl md:text-2xl; }
 
     /* Disable for mermaid */
     svg p { @apply text-inherit; }
 
     a {
-      @apply text-foreground;
+      @apply text-primary hover:text-primary/80 transition-colors duration-300;
     }
   }
 
@@ -142,22 +151,16 @@ hr {
 }
 
 .astro-code {
-  border: 1px solid var(--text-color);
-  border-radius: 0.5rem;
-  padding: 1.5rem;
+  @apply border border-border rounded-md p-6 text-sm font-mono;
+  line-height: 1.6;
 }
 
 .astro-code .highlighted {
-  background: rgba(137, 180, 250, 0.1);
-  display: inline-block;
-  width: 100%;
+  @apply bg-primary/10 inline-block w-full;
 }
 
 blockquote {
-  border-left: 1px solid #999;
-  color: var(--code-color);
-  padding-left: 1.5rem;
-  font-style: italic;
+  @apply border-l border-border pl-6 italic text-muted-foreground;
 }
 
 footer {
@@ -166,11 +169,11 @@ footer {
 }
 
 .title {
-  color: var(--text-color);
+  @apply text-foreground;
 }
 
 .title:hover {
-  text-decoration: none;
+  @apply no-underline;
 }
 
 .inline {
@@ -178,118 +181,94 @@ footer {
 }
 
 .highlight, .code {
-  font-family: var(--font-mono);
-  padding: 0.1rem 1.5rem;
-  background-color: var(--code-background-color);
-  color: var(--code-color);
-  border-radius: 0.1rem;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  overflow-x: auto;
+  @apply font-mono py-1 px-6 bg-muted text-muted-foreground rounded-sm my-4 overflow-x-auto text-sm leading-relaxed;
 }
 
 body.blog ul.blog-posts {
-  gap: 2rem;
+  @apply gap-8;
 }
 
 ul.blog-posts {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: unset;
+  @apply flex flex-col gap-4 p-0;
 }
 
 ul.blog-posts li {
-  display: flex;
-  list-style-type: none;
-  flex-direction: column-reverse;
+  @apply flex list-none flex-col-reverse;
 }
 
 ul.blog-posts li a:visited {
-  color: var(--visited-color);
+  @apply text-primary/70;
 }
 
 ul.blog-posts li span time {
-  font-family: var(--font-main);
-  font-style: normal;
+  @apply font-sans normal-case;
 }
 
 @media (max-width: 640px) {
   ul.blog-posts li span:first-child {
-    display: none;
+    @apply hidden;
   }
 }
 
 /* Notice styles */
 .notice {
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
-  color: #cdd6f4;
-  background-color: #1e1e2e;
-  border: 1px solid #45475a;
+  @apply p-6 rounded-md mb-4 bg-card text-card-foreground border border-border;
 }
 
 .notice strong {
-  color: inherit;
+  @apply text-inherit font-bold;
 }
 
 .notice h4 {
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  margin-top: 0;
+  @apply font-bold mb-2 mt-0;
 }
 
 .notice a {
-  color: #cba6f7;
-  text-decoration: underline;
-  transition: color 0.3s ease;
+  @apply text-primary underline transition-colors duration-300;
 }
 
 .notice a:hover {
-  color: #f5c2e7;
+  @apply text-primary/80;
 }
 
 .notice a:focus {
-  outline: 2px solid #89b4fa;
+  @apply outline-none ring-2 ring-ring ring-offset-2;
 }
 
 /* Info Notice */
 .notice-info {
-  background-color: #89dceb;
-  border-color: #74c7ec;
+  @apply bg-primary/10 border-primary;
 }
 
 .notice-info h4, 
 .notice-info p {
-  color: #11111b;
+  @apply text-foreground;
 }
 
 .notice-info a {
-  color: #313244;
+  @apply text-primary;
 }
 
 .notice-info a:hover {
-  color: #1e1e2e;
+  @apply text-primary/80;
 }
 
 /* Warning Notice */
 .notice-warning {
-  background-color: #fab387;
-  border-color: #f9e2af;
+  @apply bg-destructive/10 border-destructive;
 }
 
 .notice-warning h4, 
 .notice-warning p {
-  color: #11111b;
+  @apply text-foreground;
 }
 
 .notice-warning a {
-  color: #45475a;
+  @apply text-destructive;
 }
 
 .notice-warning a:hover {
-  color: #313244;
+  @apply text-destructive/80;
 }
 
 .sr-only {
@@ -305,20 +284,22 @@ ul.blog-posts li span time {
 }
 
 .littlefoot {
-  --button-background-color: hsl(var(--muted-foreground));
-  --button-text-color: hsl(var(--accent-foreground));
+  --button-background-color: hsl(var(--primary));
+  --button-text-color: hsl(var(--primary-foreground));
   --popover-font-family: var(--font-main);
-  --popover-background-color: hsl(var(--background));
+  --popover-background-color: hsl(var(--card));
   --popover-border: 1px solid hsl(var(--border));
-  --popover-text-color: hsl(var(--foreground));
-  --popover-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+  --popover-text-color: hsl(var(--card-foreground));
+  --popover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.littlefoot__popover { z-index: 2; }
+.littlefoot__popover { 
+  z-index: 50; 
+  @apply rounded-md;
+}
 
-@media (prefers-color-scheme: dark) {
-  .littlefoot {
-    --button-background-color: hsl(var(--accent));
-  }
+.dark .littlefoot {
+  --button-background-color: hsl(var(--primary));
+  --button-text-color: hsl(var(--primary-foreground));
 }
 

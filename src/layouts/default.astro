@@ -21,11 +21,11 @@ const tags = await getCollection("tag");
     />
   </head>
 
-  <body class="bg-gray-50 dark:bg-gray-950 px-4 w-full">
+  <body class="bg-background px-4 w-full">
     <div class="mb-8">
       <Header url={Astro.url} />
     </div>
-    <div class="max-w-(--breakpoint-md) lg:max-w-(--breakpoint-lg) mx-auto space-y-8">
+    <div class="max-w-md lg:max-w-lg mx-auto space-y-8">
       <main class={fullWidth ? "max-w-full prose" : "prose"}>
         <slot />
       </main>

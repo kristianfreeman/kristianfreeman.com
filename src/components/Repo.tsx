@@ -34,29 +34,29 @@ export default ({ repo }: { repo: { path: string, status: string } }) => {
 
   return (
     <a
-      className="border flex flex-col gap-2 justify-center hover:bg-secondary/80 items-center p-4 rounded-lg text-sm text-primary hover:no-underline no-underline transition-colors duration-300 shadow-md"
+      className="border border-border flex flex-col gap-4 justify-center hover:bg-secondary/80 items-center p-4 rounded-md text-sm text-primary hover:no-underline no-underline transition-colors duration-300 shadow-sm"
       href={repoData.html_url}
       target="_blank"
     >
-      <SiGithub size={24} />
+      <SiGithub size={20} />
       <div className="flex flex-col gap-2 items-center">
         <span className="font-bold">
           {repoData.owner.login} / {repoData.name}
         </span>
-        <span className="text-foreground/80">
+        <span className="text-foreground/70">
           View on GitHub
         </span>
       </div>
       {repoData.stargazers_count > STARS_THRESHOLD || repoData.forks_count > FORKS_THRESHOLD && (
-        <div className="flex gap-4 items-center text-foreground/60">
+        <div className="flex gap-4 items-center text-foreground/70">
           {repoData.stargazers_count > STARS_THRESHOLD && (
-            <span className="flex gap-1 items-center">
+            <span className="flex gap-2 items-center">
               <Star size={16} />
               {repoData.stargazers_count}
             </span>
           )}
           {repoData.forks_count > FORKS_THRESHOLD && (
-            <span className="flex gap-1 items-center">
+            <span className="flex gap-2 items-center">
               <GitFork size={16} />
               {repoData.forks_count}
             </span>

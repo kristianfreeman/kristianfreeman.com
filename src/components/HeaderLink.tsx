@@ -13,8 +13,8 @@ const HeaderLink = ({ active, children, href, ...props }: HeaderLinkProps) => {
     return clsx(
       props.className,
       'flex items-center gap-2',
-      'hover:no-underline hover:text-primary transition-colors',
-      `${active ? 'text-foreground' : 'text-foreground/60'}`
+      'hover:no-underline hover:text-primary transition-colors duration-300',
+      active ? 'text-foreground' : 'text-foreground/70'
     )
   }, [active, props.className]);
 

@@ -4,6 +4,10 @@ export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
+      maxWidth: {
+        'md': '42rem', // Use standard sizes instead of custom CSS variables
+        'lg': '48rem',
+      },
       typography: {
         DEFAULT: {
           css: {
@@ -90,8 +94,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Atkinson Hyperlegible", "sans-serif"],
-        mono: ["JetBrains Mono", "monospace"],
+        sans: ["GeistSans", "sans-serif"],
+        mono: ["GeistMono", "JetBrains Mono", "monospace"],
       },
     },
   },

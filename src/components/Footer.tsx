@@ -9,14 +9,14 @@ const links = [
 ]
 
 export default () => {
-  const iconClass = clsx("text-foreground/60 hover:text-primary transition-colors");
+  const iconClass = clsx("text-foreground/50 hover:text-primary transition-colors duration-300");
   const iconSize = 20;
   const today = new Date();
 
   return (
-    <footer className="flex items-center text-foreground/80 w-full">
+    <footer className="flex items-center text-foreground/70 w-full">
       <p className="flex-1">
-        &copy; 2012 - {today.getFullYear()} Kristian Freeman. All rights reserved. <a className="text-foreground underline" href="/colophon">Colophon</a>.
+        &copy; 2012 - {today.getFullYear()} Kristian Freeman. All rights reserved. <a className="text-foreground hover:text-primary transition-colors duration-300 hover:no-underline" href="/colophon">Colophon</a>.
       </p>
       <div className="hidden md:flex gap-4">
         {links.map(({ href, icon }) => (
@@ -25,6 +25,6 @@ export default () => {
           </a>
         ))}
       </div>
-    </footer >
+    </footer>
   )
 }

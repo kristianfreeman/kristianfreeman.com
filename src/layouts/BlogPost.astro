@@ -31,35 +31,35 @@ const hasWarning = blogPostTags.find((tag) => tag.data.warning);
     <script src="https://platform.twitter.com/widgets.js"></script>
   </head>
 
-  <body class="bg-gray-50 dark:bg-gray-950 px-4 w-full">
+  <body class="bg-background px-4 w-full">
     <div class="mb-8">
       <Header post={Astro.props} url={Astro.url} />
     </div>
-    <div class="max-w-(--breakpoint-md) lg:max-w-(--breakpoint-lg) mx-auto space-y-8">
+    <div class="max-w-md lg:max-w-lg mx-auto space-y-8">
       <main>
         <article class="flex gap-4">
           <div class="prose flex-1 max-w-2xl">
             <div>
-              <h1 class="tracking-wider mb-2">
+              <h1 class="tracking-tight mb-2 font-medium">
                 {title}
               </h1>
 
-              {description && <h2 class="text-foreground/80 font-normal mt-0">{description}</h2>}
+              {description && <h2 class="text-foreground/70 font-normal mt-0 text-xl">{description}</h2>}
             </div>
             <div class="space-y-4">
               <div class="flex flex-wrap gap-4 items-center pb-4">
-                <div class="flex gap-2 items-center text-foreground/80">
+                <div class="flex gap-2 items-center text-foreground/70">
                   <Calendar size={16} />
                   {pubDate.toISOString().slice(0, 10)}
                 </div>
 
                 {
                   blogPostTags.length > 0 && (
-                    <span class="flex gap-2 items-center text-foreground/80">
+                    <span class="flex gap-2 items-center text-foreground/70">
                       <Tag size={16} />
                       <span class="space-x-2">
                         {blogPostTags.map((tag) => (
-                          <a href={`/tags/${tag.slug}`}>#{tag.slug}</a>
+                          <a href={`/tags/${tag.slug}`} class="text-primary hover:text-primary/80 transition-colors duration-300">#{tag.slug}</a>
                         ))}
                       </span>
                     </span>

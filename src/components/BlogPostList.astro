@@ -1,0 +1,68 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  posts: CollectionEntry<"blog">[];
+  groupByYear?: boolean;
+}
+
+const { posts, groupByYear = false } = Astro.props;
+
+// Group posts by year if requested
+let postsToRender = posts;
+let postsGroupedByYear: Record<string, CollectionEntry<"blog">[]> = {};
+
+if (groupByYear) {
+  postsGroupedByYear = posts.reduce(
+    (acc: Record<string, CollectionEntry<"blog">[]>, post) => {
+      const year = post.data.pubDate.getFullYear();
+      if (!acc[year]) {
+        acc[year] = [];
+      }
+      acc[year].push(post);
+      return acc;
+    },
+    {}
+  );
+}
+---
+
+<div class="flex flex-col gap-2">
+  {!groupByYear ? (
+    posts.map((post) => (
+      <a
+        class="no-underline hover:no-underline rounded hover:bg-secondary/80 p-4"
+        href={`/${post.slug}`}
+      >
+        <div class="leading-6 m-0 flex justify-between">
+          <span class="flex-1">
+            {post.data.title}
+          </span>
+          <span class="font-medium m-0 text-foreground/70">
+            {post.data.pubDate.toISOString().slice(0, 10)}
+          </span>
+        </div>
+      </a>
+    ))
+  ) : (
+    Object.keys(postsGroupedByYear)
+      .sort((a, b) => Number(b) - Number(a))
+      .map((year) =>
+        postsGroupedByYear[year].map((post) => (
+          <a
+            class="no-underline hover:no-underline rounded hover:bg-secondary/80 p-4"
+            href={`/${post.slug}`}
+          >
+            <div class="leading-6 m-0 flex justify-between">
+              <span class="flex-1">
+                {post.data.title}
+              </span>
+              <span class="font-medium m-0 text-foreground/70">
+                {post.data.pubDate.toISOString().slice(0, 10)}
+              </span>
+            </div>
+          </a>
+        ))
+      )
+  )}
+</div>

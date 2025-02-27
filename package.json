@@ -7,6 +7,8 @@
     "start": "astro dev",
     "check": "rm -rf dist && astro check",
     "playwright:install": "sudo npx playwright install-deps && sudo npx playwright install",
+    "copy-fonts": "node scripts/copy-fonts.js",
+    "prebuild": "npm run copy-fonts",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -36,6 +38,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "geist": "^1.3.1",
     "inflection": "^3.0.0",
     "littlefoot": "^4.1.2",
     "lucide-react": "^0.453.0",
@@ -52,6 +55,7 @@
     "vite-plugin-cloudflare-redirect": "^0.1.2"
   },
   "devDependencies": {
+    "@anthropic-ai/claude-code": "^0.2.19",
     "@catppuccin/tailwindcss": "^0.1.6",
     "@shikijs/transformers": "^1.22.0",
     "@tailwindcss/typography": "^0.5.15",
