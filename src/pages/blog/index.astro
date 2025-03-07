@@ -3,13 +3,13 @@ import Default from "@/layouts/default.astro";
 import BlogPostList from "@/components/BlogPostList.astro";
 import { getCollection } from "astro:content";
 
-let posts = (await getCollection("blog")).sort(
+const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 ).filter(post => !post.data.draft);
 
 let firstPostYear = posts[posts.length - 1].data.pubDate.getFullYear();
 
-let tags = await getCollection("tag");
+const tags = await getCollection("tag");
 ---
 
 <Default fullWidth title="Blog">

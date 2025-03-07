@@ -2,6 +2,7 @@
 title: Kristian Freeman
 ---
 import { Image } from "astro:assets";
+import MostPopularTags from "@/components/MostPopularTags.astro";
 import Kristian from "@/images/kristian.jpg";
 
 # Hey, I'm Kristian Freeman.
@@ -16,7 +17,7 @@ I like to use code to build profitable businesses and apps. Here's what I'm work
 
 Previously, I was a Senior Software Engineer at [Product Hunt](https://producthunt.com) and simple.com, working with React, GraphQL, and Ruby on Rails.
 
-I write about [web dev](/tags/webdev), [health and fitness](/tags/health), [personal finance](/tags/finance), and [building side projects](/tags/projects). 
+<MostPopularTags />
 
 <Image
   src={Kristian}

@@ -48,8 +48,6 @@ export async function getStaticPaths() {
     props: { tag },
   }));
 }
-
-console.log(tag);
 ---
 
 <Default fullWidth title={titleize(tag.data.name)}>

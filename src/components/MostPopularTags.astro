@@ -1,0 +1,51 @@
+---
+// @ts-nocheck
+
+import { getCollection, getEntry } from "astro:content";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+).filter(post => !post.data.draft);
+
+// Get unique tag IDs and skip "archive"
+const uniqueTagIds = [...new Set(
+  posts.flatMap(post => post.data.tags || [])
+    .filter(tag => {
+      const tagId = typeof tag === 'object' ? tag.id : tag;
+      return tagId && tagId.toLowerCase() !== "archive";
+    })
+    .map(tag => typeof tag === 'object' ? tag.id : tag)
+)];
+
+// Get tag data and count posts for each tag
+const tagsWithCounts = await Promise.all(
+  uniqueTagIds.map(async (tagId) => {
+    const tagData = await getEntry("tag", tagId);
+    const count = posts.filter(post => 
+      post.data.tags && post.data.tags.some(t => 
+        (typeof t === 'object' ? t.id : t) === tagId
+      )
+    ).length;
+    
+    return {
+      id: tagId,
+      name: tagData.data.name,
+      count
+    };
+  })
+);
+
+// Get five most popular tags
+const popularTags = tagsWithCounts
+  .sort((a, b) => b.count - a.count)
+  .slice(0, 5);
+---
+
+<p>
+  Here's what I write about most often:
+  {popularTags.map((tag, i) => (
+    <>
+      <a href={`/tags/${tag.id}`}>{tag.name}</a>{i === popularTags.length - 2 ? " and " : i < popularTags.length - 2 ? ", " : i === popularTags.length - 1 ? "." : ""}
+    </>
+  ))}
+</p>
