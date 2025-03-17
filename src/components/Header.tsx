@@ -24,6 +24,14 @@ export default ({ post, url }: { post?: BlogPost, url: URL }) => {
             Blog
           </HeaderLink>
 
+          <HeaderLink active={url.pathname.startsWith("/about")} className="hidden md:flex" href="/about">
+            About
+          </HeaderLink>
+
+          <HeaderLink active={url.pathname.startsWith("/projects")} className="hidden md:flex" href="/projects">
+            Projects
+          </HeaderLink>
+
           <HeaderLink active={url.pathname.startsWith("/links")} className="hidden md:flex" href="/links">
             Links
           </HeaderLink>

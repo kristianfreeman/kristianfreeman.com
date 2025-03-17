@@ -41,11 +41,13 @@ const popularTags = tagsWithCounts
   .slice(0, 5);
 ---
 
-<p>
-  Here's what I write about most often:
-  {popularTags.map((tag, i) => (
-    <>
-      <a href={`/tags/${tag.id}`}>{tag.name}</a>{i === popularTags.length - 2 ? " and " : i < popularTags.length - 2 ? ", " : i === popularTags.length - 1 ? "." : ""}
-    </>
-  ))}
-</p>
+{popularTags.length > 0 ? (
+  <p>
+    Here's what I write about most often:
+    {popularTags.map((tag, i) => (
+      <>
+        <a href={`/tags/${tag.id}`}>{tag.name}</a>{i === popularTags.length - 2 ? " and " : i < popularTags.length - 2 ? ", " : i === popularTags.length - 1 ? "." : ""}
+      </>
+    ))}
+  </p>
+) : ""}
