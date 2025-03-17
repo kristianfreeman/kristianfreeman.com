@@ -28,13 +28,12 @@ let posts = await getCollection("blog", ({ data }) => {
   return data.tags.some(tag => {
     if (typeof tag === 'string') {
       return tag === slug;
-    } else if (tag && typeof tag === 'object' && 'id' in tag) {
-      return tag.id === slug;
+    } else if (tag && typeof tag === 'object' && 'slug' in tag) {
+      return tag.slug === slug;
     }
     return false;
   });
 });
-
 
 posts = posts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
