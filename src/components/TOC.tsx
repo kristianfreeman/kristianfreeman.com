@@ -9,6 +9,8 @@ type Heading = {
 };
 
 export default function TOC({ headings }: { headings: Heading[] }) {
+  if (headings.length < 2) return null;
+
   // Track active header via interaction observer and set a class based on it
   const [activeHeader, setActiveHeader] = useState<Heading | null>(null);
 
