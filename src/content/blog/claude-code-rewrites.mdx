@@ -1,0 +1,173 @@
+---
+title: Rewriting functionality with Claude Code
+description: "Claude Code's code agents"
+pubDate: "Apr 14 2025"
+tags:
+  - ai
+  - unix
+---
+import { YouTube } from "astro-embed";
+
+Claude Code is an awesome AI code agent that can inspect a local repository and add, remove, or modify code. It's great ([but expensive!](https://x.com/kristianf_/status/1895172054254817486)) and I've used it on my personal site a bit. I also produced a video for Cloudflare's Developers YouTube channel on how it works with Cloudflare projects:
+
+<YouTube id="xc0HCR-ZWYU" />
+
+Would I trust it for production code? Probably not. But I like it a lot for a wide swath of in-progress projects I'm working on that need quality-of-life improvements to make it a bit easier to work with.
+
+## Real-world example
+
+Back at the end of last year, I wrote about [my Nix config](/my-starter-macos-nix-config) and how I use it to manage my development environment across multiple machines. 
+
+Since my Nix config has grown, there's been a lot of code re-use. Each machine has a specific Nix configuration file, and since I use [nix-homebrew](https://github.com/zhaofengli/nix-homebrew), each machine started to grow a big config. Here's an example:
+
+```nix title="~/.config/nix/machines/my-machine.nix"
+{ config, pkgs, ... }:
+
+let 
+in
+{
+  environment.systemPackages = [
+    pkgs.consul
+  ];
+
+  homebrew.casks = [
+    "raycast"
+  ];
+}
+```
+
+This scales pretty well, but what happens when you start adding new casks across multiple machines? You'll have to add them to each machine's config. This is a lot of repetition, and it's easy to forget to add a new cask to a machine.
+
+I used Claude Code to help me automate this. I asked it to take a look at every machine, and extract a common config between each of them.
+
+The initial result didn't work, but after pasting in the error message a few times, Claude Code was ultimately able to figure out what was wrong. The final result was really well-structured, and importantly, gives me a good foundation for syncing these machines in the future.
+
+This first file is the new per-machine config. It also includes specific overrides per machine. For instance, this is my laptop, so I have some specific laptop-only packages here.
+
+```nix title="~/.config/nix/machines/my-machine.nix"
+{ config, pkgs, ... }:
+
+let 
+in
+{
+  # Import common macOS configuration
+  imports = [
+    ../darwin-common.nix
+    ../darwin-homebrew.nix
+    ../roles/development.nix
+    ../roles/media.nix
+  ];
+
+  # Host-specific overrides and additions
+  
+  # Host-specific additional Nix packages
+  environment.systemPackages = [
+    pkgs.consul
+  ];
+
+  # Host-specific additional Homebrew casks
+  homebrew.casks = [
+    "ledger-live"
+    "steam"
+  ];
+
+  # Host-specific additional Mac App Store apps
+  homebrew.masApps = {
+    MacFamilyTree = 1567970985;
+  };
+}
+```
+
+`darwin-homebrew.nix` is the base shared config for setting up Homebrew on macOS. It includes the shared casks, taps, and brews, as well as the Mac App Store apps, that get installed on all machines.
+
+```nix title=~/.config/nix/hosts/darwin-homebrew.nix
+# Common Homebrew configuration for macOS systems
+{ config, pkgs, ... }@args:
+
+{
+  # Install homebrew if not yet installed
+  nix-homebrew = {
+    enable = true;
+    enableRosetta = true;
+    user = "kristian";
+  };
+
+  # Common Homebrew configuration
+  homebrew = {
+    enable = true;
+    onActivation.cleanup = "uninstall";
+    taps = [
+      "homebrew/homebrew-core"
+      "homebrew/homebrew-cask"
+    ];
+    
+    # Common brews across all macs (can be overridden in host-specific configs)
+    brews = [];
+    
+    # Common casks across all macs
+    casks = [ 
+      "1password" 
+      "caffeine"
+      "flux"
+      "font-atkinson-hyperlegible"
+      "font-jetbrains-mono-nerd-font"
+      "jordanbaird-ice"
+      "loom"
+      "macwhisper"
+      "ollama"
+      "raycast"
+      "recut"
+      "the-unarchiver"
+    ];
+
+    # Common Mac App Store apps
+    masApps = {
+      Noir = 1592917505;
+      OnePasswordExtension = 1569813296;
+    };
+  };
+  
+  # Common Nix packages for all macOS hosts
+  environment.systemPackages = [
+    pkgs._1password-cli
+    pkgs.mas
+    pkgs.yt-dlp
+  ];
+}
+```
+
+I also added domain-specific configs. `media.nix` is for media management, players, etc. This is _additive_ to the base config, so I can add new packages and apps to it.
+
+```nix title="~/.config/nix/machines/media.nix"
+# Media machine role configuration
+{ config, pkgs, ... }:
+
+{
+  # Media tools via Homebrew
+  homebrew.casks = [
+    "audacity"
+    "calibre"
+    "macwhisper"
+    "plexamp"
+    "sonos"
+    "splice"
+    "spotify"
+    "transmission"
+    "ultimate-vocal-remover"
+    "vlc"
+  ];
+  
+  # Media-focused Mac App Store apps
+  homebrew.masApps = {
+    PixelmatorPro = 1289583905;
+  };
+  
+  # Media tools via Nix
+  environment.systemPackages = [
+    pkgs.ffmpeg
+    pkgs.imagemagick
+  ];
+}
+```
+
+This is the kind of stuff AI is so good at. I probably wouldn't have spent the time to figure this out myself, at least, not without an afternoon to work on it. But I could spend 5-10 minutes and get a really minor todo off of my list using Claude Code. Highly recommended!
