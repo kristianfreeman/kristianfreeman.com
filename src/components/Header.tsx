@@ -8,7 +8,7 @@ type BlogPost = CollectionEntry<'blog'>['data'];
 
 export default ({ post, url }: { post?: BlogPost, url: URL }) => {
   return (
-    <header className="space-y-4 py-6 max-w-md lg:max-w-lg mx-auto w-full">
+    <header className="space-y-4 py-6 max-w-2xl lg:max-w-4xl mx-auto w-full">
       <nav className="flex items-center gap-4">
         <div className="flex-1">
           <a 

@@ -1,0 +1,208 @@
+---
+title: Setting up TeslaMate with Docker and Proxmox
+description: Setting up TeslaMate 
+pubDate: 2025-04-17
+tags:
+  - unix
+---
+import { Image } from 'astro:assets'
+import TeslamateDash from '@/images/teslamate.png';
+import TeslamateDashboards from '@/images/teslamate-dashboards.png';
+import TeslamateRaycast from '@/images/teslamate-raycast.png';
+
+[TeslaMate](https://docs.teslamate.org/) is an open-source tool that allows you to monitor your Tesla vehicles. It's a great tool for keeping track of your vehicle's location, battery level, and other important information. I recently bought a Model Y, and I wanted to be able to monitor the car remotely. TeslaMate also tracks drives - where you started, where you ended, and the drive efficency - which will be a good way to track business travel.
+
+My home lab runs Proxmox. I wanted to be able to run TeslaMate on my home network, so I set up a Docker container. Here's how I did it. (And if you find this useful, or end up buying a Tesla... [use my referral code!](/tesla))
+
+## Create a container
+
+Whenever I want to deploy something in Proxmox, I start with the [Proxmox VE Helper-Scripts](https://community-scripts.github.io/ProxmoxVE/) repo. It has a collection of scripts for creating Proxmox containers.
+
+The [Docker script](https://community-scripts.github.io/ProxmoxVE/scripts?id=docker) sets up an LXC container (Debian under the hood) with Docker installed. You can run it in the Proxmox console:
+
+```bash
+$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/docker.sh)"
+```
+
+This sets up a new container called `docker`. It also has `docker-compose` installed by default.
+
+## Better defaults
+
+The LXC container that Proxmox creates is called `docker`. This isn't super helpful when running multiple containers in the same Proxmox instance. Each LXC container has a configuration file in `/etc/pve/lxc`, named after the container ID. Let's modify the file for our `docker` container:
+
+```
+arch: amd64
+cores: 2
+features: keyctl=1,nesting=1
+# Rename the container to something more useful
+hostname: teslamate
+memory: 2048
+net0: name=eth0,bridge=vmbr0,hwaddr=BC:24:11:85:3B:B5,ip=dhcp,type=veth
+onboot: 1
+ostype: debian
+rootfs: local-lvm:vm-105-disk-0,size=4G
+swap: 512
+tags: community-script;docker;tailscale
+# Add configuration to allow Tailscale to run
+unprivileged: 1
+lxc.cgroup.devices.allow: c 10:200 rwm
+lxc.mount.entry: /dev/net dev/net none bind,create=dir
+```
+
+Restart the container inside of the Proxmox UI before continuing.
+
+## Configuring the container
+
+Inside of the container, I set up a new directory for TeslaMate:
+
+```bash
+$ mkdir -p /etc/teslamate
+```
+
+I set up a `docker-compose.yml` file in that directory:
+
+```yaml
+services:
+  teslamate:
+    image: teslamate/teslamate:latest
+    restart: always
+    environment:
+      - ENCRYPTION_KEY=ENCRYPTION_KEY
+      - DATABASE_USER=teslamate
+      - DATABASE_PASS=mysecurepassword
+      - DATABASE_NAME=teslamate
+      - DATABASE_HOST=database
+      - MQTT_HOST=mosquitto
+    ports:
+      - 4000:4000
+    volumes:
+      - ./import:/opt/app/import
+    cap_drop:
+      - all
+
+  database:
+    image: postgres:17
+    restart: always
+    environment:
+      - POSTGRES_USER=teslamate
+      - POSTGRES_PASSWORD=mysecurepassword
+      - POSTGRES_DB=teslamate
+    volumes:
+      - teslamate-db:/var/lib/postgresql/data
+
+  grafana:
+    image: teslamate/grafana:latest
+    restart: always
+    environment:
+      - DATABASE_USER=teslamate
+      - DATABASE_PASS=mysecurepassword
+      - DATABASE_NAME=teslamate
+      - DATABASE_HOST=database
+    ports:
+      - 3000:3000
+    volumes:
+      - teslamate-grafana-data:/var/lib/grafana
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    restart: always
+    command: mosquitto -c /mosquitto-no-auth.conf
+    # ports:
+    #   - 1883:1883
+    volumes:
+      - mosquitto-conf:/mosquitto/config
+      - mosquitto-data:/mosquitto/data
+
+volumes:
+  teslamate-db:
+  teslamate-grafana-data:
+  mosquitto-conf:
+  mosquitto-data:
+```
+
+Obviously, change the `ENCRYPTION_KEY` and `DATABASE_PASS` values to something secure. Each instance of `mysecurepassword` needs to be the same password - these services are all connecting to the same database.
+
+TeslaMate is basically a collection of services - the database, a web server/UI, and a Grafana instance.
+
+## Starting up TeslaMate
+
+Now we can start up the containers:
+
+```bash
+$ docker-compose up -d
+```
+
+You can connect to the TeslaMate UI at `http://<your-proxmox-ip>:3000`. Use the login from the `docker-compose.yml` file.
+
+The Grafana UI contains most of the metrics you'll want to look at, as well as default dashboards. You can connect to it at `http://<your-proxmox-ip>:4000`. When you first login, you'll need to change the password.
+
+## Authenticating with Tesla
+
+You'll need to generate a Tesla API key. On macOS, I used [TeslaAuth](https://github.com/adriankumpf/tesla_auth) to do this. It's a CLI you can run locally that spins up a browser window and lets you log in to your Tesla account. Once you've authenticated, it will print out API and refresh tokens. You can paste that into TeslaMate to allow it to connect to your car via Tesla's API.
+
+## Set up Tailscale
+
+If we want to access the TeslaMate UI from outside of our network, we need to set up Tailscale. This is easy with this [add-tailscale-lxc script](https://community-scripts.github.io/ProxmoxVE/scripts?id=add-tailscale-lxc). Run this in the Proxmox console (not the LXC container), and select the `teslamate` container.
+
+```bash
+$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/add-tailscale-lxc.sh)"
+```
+
+Once Tailscale is setup, jump back into the LXC container console. You can start the Tailscale agent with:
+
+```bash
+$ sudo systemctl start tailscaled
+$ tailscale up
+```
+
+Once you've authenticated to your Tailscale network, you can access the TeslaMate UI easily from any other machine in your Tailscale network: `http://teslamate:3000` or `http://teslamate:4000`.
+
+## Dashboards
+
+There's a _ton_ of info in the default dashboards set up by TeslaMate. The "Drives" one is a good example, showing every drive I've taken in my car:
+
+<Image src={TeslamateDash} alt="TeslaMate Grafana dashboard" />
+
+There's a ton of other dashboards too, for tracking all sorts of information about the car:
+
+<Image src={TeslamateDashboards} alt="TeslaMate Grafana dashboard" />
+
+## Raycast extension
+
+A neat party trick is using the [TeslaMate extension](https://www.raycast.com/mSarheed/teslamate) for [Raycast](https://raycast.com/) to view your car info directly in Raycast. The only requirement is that your computer needs to be in the same Tailscale network as your TeslaMate instance.
+
+<Image src={TeslamateRaycast} alt="TeslaMate Raycast extension" />
+
+Note that a bunch of stuff here doesn't render correctly. It's on my list of things to look at - since all the extensions in Raycast are open source, I could contribute some bug reports or even fix them myself. For now, I care mostly about seeing the battery status - especially if I'm charging at work. It's awesome to have access to it from Raycast.
+
+There's a bit of setup needed for this extension to work. Using the instructions in the Raycast extension docs, you can set up a Service Account Token and datasource UID:
+
+```markdown
+How to create Service Account Token for Grafana
+
+1. Go to your Grafana instance
+2. In the left menubar click on Users and access
+3. Click on Service accounts
+4. Click on Add service account
+5. Choose any Display name for your service account
+6. Set service account role to Viewer
+7. Click on Create
+8. Click on Add service account token
+9. Choose any Display name for your service account token
+10. Set Expiration to No expiration
+11. Copy your token to the TeslaMate Raycast Extension 🎉
+
+How to get the UID of the datasource
+
+1. Go to your Grafana instance
+2. In the left menubar click on Connections -> Data sources
+3. Click on the DB TeslaMate PostgreSQL
+4. The URL should now show something like /connections/edit/Pxxxxxxxxx
+5. The Pxxxxxxxxx is the UID of your data source - copy it to the TeslaMate Raycast Extension 🎉
+```
+
+## Conclusion
+
+It's fun to have API access to your car. TeslaMate takes a lot of the raw data out of the car and makes it available in a nice series of dashboards. It also can be run for free, using off-the-shelf Docker Compose scripts and the computers you probably already have running at home.
+
+If you find this useful, or end up buying a Tesla... [use my referral code!](/tesla)
