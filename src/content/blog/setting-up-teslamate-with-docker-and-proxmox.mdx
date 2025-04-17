@@ -28,9 +28,9 @@ This sets up a new container called `docker`. It also has `docker-compose` insta
 
 ## Better defaults
 
-The LXC container that Proxmox creates is called `docker`. This isn't super helpful when running multiple containers in the same Proxmox instance. Each LXC container has a configuration file in `/etc/pve/lxc`, named after the container ID. Let's modify the file for our `docker` container:
+The LXC container that Proxmox creates is called `docker`. This isn't super helpful when running multiple containers in the same Proxmox instance. Each LXC container has a configuration file in `/etc/pve/lxc/<id>.conf`, named after the container ID. Let's modify the file for our `docker` container:
 
-```
+```conf title="/etc/pve/lxc/<id>.conf"
 arch: amd64
 cores: 2
 features: keyctl=1,nesting=1
@@ -61,7 +61,7 @@ $ mkdir -p /etc/teslamate
 
 I set up a `docker-compose.yml` file in that directory:
 
-```yaml
+```yaml title="/etc/teslamate/docker-compose.yml"
 services:
   teslamate:
     image: teslamate/teslamate:latest
