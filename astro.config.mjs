@@ -32,7 +32,14 @@ export default defineConfig({
     }),
     mdx(),
     react(),
-    sitemap(),
+    sitemap({
+      filter: (page) => {
+        if (page.includes('camera-box')) {
+          return false;
+        }
+        return true;
+      }
+    }),
     cloudflareRedirects({
       redirectsFile: './src/_redirects',
     })
