@@ -8,7 +8,12 @@
       "Bash(node:*)",
       "Bash(npm install:*)",
       "Bash(find:*)",
-      "Bash(rg:*)"
+      "Bash(rg:*)",
+      "Bash(npm run build:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(npm run deploy:*)"
     ],
     "deny": []
   }
