@@ -299,7 +299,7 @@ ul.blog-posts li span time {
 }
 
 .dark .littlefoot {
-  --button-background-color: hsl(var(--primary));
-  --button-text-color: hsl(var(--primary-foreground));
+  --button-background-color: hsl(var(--muted));
+  --button-text-color: hsl(var(--muted-foreground));
 }
 
