@@ -1,0 +1,95 @@
+---
+title: Four Ideas from Extensive Claude Code Usage
+pubDate: 2025-05-24
+tags:
+  - ai
+---
+import { Tweet } from "astro-embed";
+
+Since I learned a few weeks ago that [Claude Max offers free Claude Code usage][max], I've been heavily using it in my day-to-day development workflow. I've [written about Claude Code][claude-code] in the past here, but this week was the first time I've used it _as the default_ for coding. Before paying for Max, the usage cost was too much for it to feel justifiable[^1]. Now that I have essentially unlimited usage, I'm investing time and energy into making Claude Code work really well for me. Here's four ideas that I've developed about Claude Code over the last week: tips, guiding principles, whatever you want to call them.
+
+## 1. Plan first, execute second
+
+Most of the time I spend working with Claude Code is spent doing two things: waiting for it to complete a task, or writing long prompts that help it understand what I want it to do. 
+
+I don't usually give Claude Code a well-structured plan. When I'm doing UI development, I usually look at a page and see a collection of open todos. They're related, but they're not strictly orderable in any particular way.
+
+For instance - let's say that I inherit a page from a previous developer. It may have a mess of typography decisions, inconsistent spacing, or even fundamental data loading issues. All of these things are clearly related in some way; if we mapped them in a problem space, they would float around each other in the "frontend development" world. But which one should be tackled first? Are any of them downstream of each other? I don't particularly know the answers to these questions as I prompt Claude Code. Instead, I ask it to take a beat, and make a plan. And really, that is usually all I have to say. "Make a plan, and then execute it". This might be some AI to human trickery, but it does seem like it makes more effectively implementations when I ask it to do that.
+
+## 2. Use the tools
+
+Claude Code has a lot of tools built-in to it. The file operations and bash tools are what Claude Code will use most of the time, but there are actually many other tools available. Here's what Claude said when I asked it about tools:
+
+```sh
+> What tools do you have available? For instance, I know you have web search. What other things can you do?
+
+⏺ I have access to these tools:
+
+  File Operations:
+  - Read, Edit, MultiEdit, Write files
+  - Glob (pattern matching) and Grep (content search)
+  - LS (list directories)
+
+  Development:
+  - Bash (run commands, git operations, npm/build scripts)
+  - NotebookRead/Edit (Jupyter notebooks)
+
+  Web & Research:
+  - WebSearch (search the web)
+  - WebFetch (fetch and analyze web content)
+
+  Task Management:
+  - TodoRead/Write (plan and track tasks)
+
+  Advanced:
+  - Task (launch specialized agents for complex searches/analysis)
+```
+
+The `WebSearch` tool is very underrated. I find that Claude Code uses it automatically when we get really stuck on something - for instance, specific compiler errors or anything that requires more timely results - but it can be used much earlier in the process, like when planning an implementation. I'll often invoke the WebSearch tool manually by prompting Claude to find _idiomatic_ solutions to problems, meaning it will go do a bunch of homework about how we likely should express a solution in code, before actually outputting anything.
+
+## 3. Use _your_ tools
+
+Most developers using Claude Code still are coming from a background of, you know, _actually_ being a developer. Prior to this amazing tool coming out, we were schlepping around the code ourselves, using tools to make things easier. For instance, searching files using [the_silver_searcher](https://github.com/ggreer/the_silver_searcher) instead of raw `grep` commands. You can tell Claude Code to use specific tools that you have installed on your computer by storing in memory (more on that in a second):
+
+```sh
+> What did I say about developer relations last year in my blog post?
+
+⏺ Bash(rg -i "developer advocate|dev advocate" src/content/blog --type md)…
+  ⎿ src/content/blog/authenticity-and-producing-content-as-a-developer-advocate.mdx:title: Authenticity and producing content as a Developer Advocate
+    src/content/blog/authenticity-and-producing-content-as-a-developer-advocate.mdx:description: Some unstructured thoughts on working as a Developer Advocate in 2024.
+    … +8 lines (ctrl+r to expand)
+    src/content/blog/serverless.mdx:\* Disclaimer: I [work at Cloudflare](https://blog.cloudflare.com/author/kristian/) as the developer advocate for Workers.
+    src/content/blog/how-to-build-a-discord-notification-bot-for-new-ghost-members.mdx:[Cloudflare Workers](https://workers.dev/) is a serverless platform built on Cloudflare’s global network that makes it
+    super easy to deploy and manage JavaScript functions. (Disclaimer: I work as the developer advocate for Workers!)
+
+⏺ Read(src/content/blog/authenticity-and-producing-content-as-a-developer-advocate.mdx)…
+  ⎿  Read 36 lines (ctrl+r to expand)
+
+⏺ In your May 2024 blog post "Authenticity and producing content as a Developer Advocate," you discussed:
+
+  Key points about developer relations work:
+
+  1. Authenticity matters - People can detect inauthenticity, and it hurts your effectiveness in selling/educating as a DA
+  2. Good equipment ≠ good content - You criticized DAs spending $2k+ on gear without first developing content creation skills
+  3. Be yourself - You emphasized making content in your own style rather than copying others, noting you're fortunate at Cloudflare to make videos in your laid-back, off-the-cuff style
+
+  The post focused on the importance of authentic content creation in DA work and avoiding common pitfalls like over-investing in equipment or trying to be someone you're not.
+```
+
+You can also tell Claude Code to use git! This allows you to undo/redo changes as needed. Using git allows Claude to also rapidly compare changes between `HEAD` and the current state of your codebase. Using memory, you can tell it to make small, atomic commits as it works through a project. In some of my projects, it even began to co-author our commits, which was fascinating:
+
+<Tweet id="https://x.com/kristianf_/status/1925589333983072393" theme="dark" />
+
+## 4. Aggressively update memory, then clean it
+
+Prefixing any prompt with `#` in the Claude Code CLI stores it as a piece of memory. These are essentially long-term drivers of how you want Claude Code to work. A few that I like:
+
+- `# If relevant, make atomic git commits after implementing your changes`
+- `# When I ask you to make multiple changes at once, make a plan first, before proceeding`
+- `# When making a plan, use web search to derive idiomatic implementations to code changes`
+
+Memory can be stored in a variety of places. It can be project-specific, global, and with some recent changes, you can import shared memory files into multiple projects. It's quite powerful. If you use Claude Code as well, I'd love to see any cool memory tips you've come up with!
+
+[max]: https://support.anthropic.com/en/articles/11145838-using-claude-code-with-your-max-plan
+[claude-code]: https://kristianfreeman.com/claude-code-rewrites
+[^1]: For instance, $5-10 usage in a day. That being said, if I did the relative math, it would still probably be a worthwhile trade. It's a me psychology issue :)

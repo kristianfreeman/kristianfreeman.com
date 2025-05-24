@@ -14,7 +14,8 @@
     "astro": "astro",
     "prepare": "husky",
     "dev:wrangler": "npm run build && npx wrangler@latest dev",
-    "deploy": "npm run build && npx wrangler@latest deploy"
+    "deploy": "npm run build && npx wrangler@latest deploy",
+    "claude": "npx claude"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -55,7 +56,7 @@
     "vite-plugin-cloudflare-redirect": "^0.1.2"
   },
   "devDependencies": {
-    "@anthropic-ai/claude-code": "^0.2.19",
+    "@anthropic-ai/claude-code": "^1.0.3",
     "@catppuccin/tailwindcss": "^0.1.6",
     "@shikijs/transformers": "^1.22.0",
     "@tailwindcss/typography": "^0.5.15",
